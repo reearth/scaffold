@@ -1,0 +1,45 @@
+type Asset implements Node {
+  id: ID!
+  projectId: ID!
+  name: String!
+
+  project: Project
+}
+
+type AssetConnection {
+  pageInfo: PageInfo!
+  edges: [AssetEdge!]
+}
+
+type AssetEdge {
+  cursor: String!
+  node: Asset!
+}
+
+input AssetFilter {
+  projectId: ID
+  first: Int
+  last: Int
+  after: Cursor
+  before: Cursor
+}
+
+input CreateAssetInput {
+  projectId: ID!
+  name: String!
+}
+
+input UpdateAssetInput {
+  assetId: ID!
+  name: String
+}
+
+extend type Query {
+  assets(filter: AssetFilter!): AssetConnection!
+}
+
+extend type Mutation {
+  createAsset(input: CreateAssetInput!): Asset!
+  updateAsset(input: UpdateAssetInput!): Asset!
+  deleteAsset(assetId: ID!): ID!
+}

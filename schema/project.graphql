@@ -1,0 +1,8 @@
+type Project implements Node {
+  id: ID!
+  workspaceID: ID!
+  name: String!
+
+  assets(filter: AssetFilter!): AssetConnection!
+  # workspace: Workspace
+}
