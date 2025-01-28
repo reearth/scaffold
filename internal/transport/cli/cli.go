@@ -10,9 +10,9 @@ import (
 )
 
 type Config struct {
-	Args  []string
-	UC    transport.Usecases
-	Mongo *mongo.Database
+	Args     []string
+	Usecases transport.Usecases
+	Mongo    *mongo.Database
 }
 
 func Do(conf Config) error {

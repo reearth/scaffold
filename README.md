@@ -13,8 +13,52 @@ This is an example repository for showing the standard module design used in Re:
     - **cli**
     - **echo**
     - **gql**
+    - **usecase.go**: Usecase container
     - ...
-  - **usecase**: Defines interfaces of repos, policies, and gateways.
+  - **usecase**: Define gateways I/F, transaction I/F, gateways container, repo container, and policy container
     - **xxxuc** Actual usecase implementation
+    - **gateway.go**: Gateways interfaces and container
+    - **policy.go**: Policy container
+    - **repo.go**: Repo container
+    - **transaction.go**: Transaciton interfaces
     - ...
-- **pkg**: Domain models
+- **pkg**: Domain models, repo interfaces, policy interfaces
+
+## Dependency Flows
+
+```mermaid
+flowchart
+  subgraph boot
+    config
+  end
+  subgraph infra
+    infra2[mongo, gcp, auth0, cerbos...]
+  end
+  subgraph transport
+    transport2[cli, echo, gql..]
+  end
+  subgraph usecase
+    uc[xxxuc]
+    gatewayIF[Gateway I/F]
+    transaction[Transaction I/F]
+  end
+  subgraph domain
+    model[Domain Models]
+    repoIF[Repo I/F]
+    policyIF[Policy I/F]
+  end
+
+  cmd --> boot
+  cmd --> transport
+  boot -- initialize --> uc
+  boot -- initialize --> infra
+  transport --> uc
+  usecase --> domain
+  uc --> gatewayIF
+  uc --> transaction
+  infra -- impl --> repoIF
+  infra -- impl --> policyIF
+  infra -- impl --> gatewayIF
+  infra -- impl --> transaction
+  infra --> domain
+```

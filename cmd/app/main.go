@@ -14,16 +14,11 @@ func main() {
 
 	usecases, mongo := boot.InitUsecases(cfg)
 
-	var command string
 	if len(os.Args) > 1 {
-		command = os.Args[1]
-	}
-
-	if command != "" {
 		cli.Must(cli.Config{
-			Args:  os.Args,
-			UC:    usecases,
-			Mongo: mongo,
+			Args:     os.Args,
+			Usecases: usecases,
+			Mongo:    mongo,
 		})
 		return
 	}
