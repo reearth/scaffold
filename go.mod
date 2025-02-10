@@ -6,6 +6,7 @@ require (
 	github.com/99designs/gqlgen v0.17.63
 	github.com/auth0/go-jwt-middleware/v2 v2.2.2
 	github.com/caarlos0/env/v11 v11.3.1
+	github.com/google/wire v0.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.13.3
 	github.com/oklog/ulid v1.3.1

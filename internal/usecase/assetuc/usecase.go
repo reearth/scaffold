@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/reearth/server-scaffold/internal/usecase"
 	"github.com/reearth/server-scaffold/pkg/asset"
 	"github.com/reearth/server-scaffold/pkg/project"
 	"github.com/reearth/server-scaffold/pkg/user"
@@ -12,17 +11,27 @@ import (
 )
 
 type Usecase struct {
-	usecase.Deps
+	FindByIDsUsecase     *FindByIDsUsecase
+	FindByProjectUsecase *FindByProjectUsecase
+	CreateUsecase        *CreateUsecase
+	UpdateUsecase        *UpdateUsecase
 }
 
-func New(uc usecase.Deps) *Usecase {
+func New(
+	findByIDsUsecase *FindByIDsUsecase,
+	findByProjectUsecase *FindByProjectUsecase,
+	createUsecase *CreateUsecase,
+	updateUsecase *UpdateUsecase,
+) *Usecase {
 	return &Usecase{
-		Deps: uc,
+		FindByIDsUsecase:     findByIDsUsecase,
+		FindByProjectUsecase: findByProjectUsecase,
+		CreateUsecase:        createUsecase,
+		UpdateUsecase:        updateUsecase,
 	}
 }
 
 type Builder struct {
-	uc        *Usecase
 	ctx       context.Context
 	err       error
 	user      *user.User
@@ -31,8 +40,8 @@ type Builder struct {
 	workspace *workspace.Workspace
 }
 
-func (uc *Usecase) Builder(ctx context.Context, user *user.User) *Builder {
-	return &Builder{uc: uc, ctx: ctx, user: user}
+func UsecaseBuilder(ctx context.Context, user *user.User) *Builder {
+	return &Builder{ctx: ctx, user: user}
 }
 
 func (b *Builder) Result() (*asset.Asset, *project.Project, *workspace.Workspace, error) {
@@ -42,26 +51,26 @@ func (b *Builder) Result() (*asset.Asset, *project.Project, *workspace.Workspace
 	return b.asset, b.project, b.workspace, b.err
 }
 
-func (b *Builder) FindAssetByID(id asset.ID) *Builder {
+func (b *Builder) FindAssetByID(id asset.ID, assetRepo asset.Repo) *Builder {
 	if b.err != nil {
 		return b
 	}
-	b.asset, b.err = b.uc.Repos.Asset.FindByID(b.ctx, id)
+	b.asset, b.err = assetRepo.FindByID(b.ctx, id)
 	return b
 }
 
-func (b *Builder) FindProjectByID(id project.ID) *Builder {
+func (b *Builder) FindProjectByID(id project.ID, projectRepo project.Repo, workspaceRepo workspace.Repo) *Builder {
 	if b.err != nil {
 		return b
 	}
-	b.project, b.err = b.uc.Repos.Project.FindByID(b.ctx, id)
+	b.project, b.err = projectRepo.FindByID(b.ctx, id)
 	if b.err == nil {
-		b.workspace, b.err = b.uc.Repos.Workspace.FindByID(b.ctx, b.project.Workspace())
+		b.workspace, b.err = workspaceRepo.FindByID(b.ctx, b.project.Workspace())
 	}
 	return b
 }
 
-func (b *Builder) FindProjectByAsset() *Builder {
+func (b *Builder) FindProjectByAsset(projectRepo project.Repo, workspaceRepo workspace.Repo) *Builder {
 	if b.err != nil {
 		return b
 	}
@@ -69,49 +78,49 @@ func (b *Builder) FindProjectByAsset() *Builder {
 		b.err = errors.New("asset not found")
 		return b
 	}
-	b.project, b.err = b.uc.Repos.Project.FindByID(b.ctx, b.asset.Project())
+	b.project, b.err = projectRepo.FindByID(b.ctx, b.asset.Project())
 	if b.err == nil {
-		b.workspace, b.err = b.uc.Repos.Workspace.FindByID(b.ctx, b.project.Workspace())
+		b.workspace, b.err = workspaceRepo.FindByID(b.ctx, b.project.Workspace())
 	}
 	return b
 }
 
-func (b *Builder) CanReadAsset() *Builder {
+func (b *Builder) CanReadAsset(assetPolicy asset.Policy) *Builder {
 	if b.err != nil {
 		return b
 	}
-	b.err = b.uc.Policies.Asset.CanRead(b.ctx, b.user, b.workspace, b.project, b.asset)
+	b.err = assetPolicy.CanRead(b.ctx, b.user, b.workspace, b.project, b.asset)
 	return b
 }
 
-func (b *Builder) CanListAssets() *Builder {
+func (b *Builder) CanListAssets(assetPolicy asset.Policy) *Builder {
 	if b.err != nil {
 		return b
 	}
-	b.err = b.uc.Policies.Asset.CanList(b.ctx, b.user, b.workspace, b.project)
+	b.err = assetPolicy.CanList(b.ctx, b.user, b.workspace, b.project)
 	return b
 }
 
-func (b *Builder) CanCreateAsset() *Builder {
+func (b *Builder) CanCreateAsset(assetPolicy asset.Policy) *Builder {
 	if b.err != nil {
 		return b
 	}
-	b.err = b.uc.Policies.Asset.CanCreate(b.ctx, b.user, b.workspace, b.project)
+	b.err = assetPolicy.CanCreate(b.ctx, b.user, b.workspace, b.project)
 	return b
 }
 
-func (b *Builder) CanUpdateAsset() *Builder {
+func (b *Builder) CanUpdateAsset(assetPolicy asset.Policy) *Builder {
 	if b.err != nil {
 		return b
 	}
-	b.err = b.uc.Policies.Asset.CanUpdate(b.ctx, b.user, b.workspace, b.project, b.asset)
+	b.err = assetPolicy.CanUpdate(b.ctx, b.user, b.workspace, b.project, b.asset)
 	return b
 }
 
-func (b *Builder) CanDeleteAsset() *Builder {
+func (b *Builder) CanDeleteAsset(assetPolicy asset.Policy) *Builder {
 	if b.err != nil {
 		return b
 	}
-	b.err = b.uc.Policies.Asset.CanDelete(b.ctx, b.user, b.workspace, b.project, b.asset)
+	b.err = assetPolicy.CanDelete(b.ctx, b.user, b.workspace, b.project, b.asset)
 	return b
 }

@@ -1,15 +1,11 @@
 package useruc
 
-import (
-	"github.com/reearth/server-scaffold/internal/usecase"
-)
-
 type Usecase struct {
-	usecase.Deps
+	FindBySubUsecase *FindBySubUsecase
 }
 
-func New(uc usecase.Deps) *Usecase {
+func New(findBySubUsecase *FindBySubUsecase) *Usecase {
 	return &Usecase{
-		Deps: uc,
+		FindBySubUsecase: findBySubUsecase,
 	}
 }

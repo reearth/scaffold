@@ -6,18 +6,40 @@ import (
 	"github.com/reearth/server-scaffold/pkg/asset"
 	"github.com/reearth/server-scaffold/pkg/project"
 	"github.com/reearth/server-scaffold/pkg/user"
+	"github.com/reearth/server-scaffold/pkg/workspace"
 )
 
-func (uc *Usecase) FindByProject(ctx context.Context, pid project.ID, user *user.User) (asset.List, error) {
-	_, project, _, err := uc.Builder(ctx, user).
-		FindProjectByID(pid).
-		CanListAssets().
+type FindByProjectUsecase struct {
+	assetRepo     asset.Repo
+	projectRepo   project.Repo
+	workspaceRepo workspace.Repo
+	assetPolicy   asset.Policy
+}
+
+func NewFindByProjectUsecase(
+	assetRepo asset.Repo,
+	projectRepo project.Repo,
+	workspaceRepo workspace.Repo,
+	assetPolicy asset.Policy,
+) *FindByProjectUsecase {
+	return &FindByProjectUsecase{
+		assetRepo:     assetRepo,
+		projectRepo:   projectRepo,
+		workspaceRepo: workspaceRepo,
+		assetPolicy:   assetPolicy,
+	}
+}
+
+func (uc *FindByProjectUsecase) Execute(ctx context.Context, pid project.ID, user *user.User) (asset.List, error) {
+	_, project, _, err := UsecaseBuilder(ctx, user).
+		FindProjectByID(pid, uc.projectRepo, uc.workspaceRepo).
+		CanListAssets(uc.assetPolicy).
 		Result()
 	if err != nil {
 		return nil, err
 	}
 
-	assets, err := uc.Repos.Asset.FindByProject(ctx, project.ID())
+	assets, err := uc.assetRepo.FindByProject(ctx, project.ID())
 	if err != nil {
 		return nil, err
 	}

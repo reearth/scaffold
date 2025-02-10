@@ -5,9 +5,11 @@ import (
 	"errors"
 	"io"
 
+	"github.com/reearth/server-scaffold/internal/infra"
 	"github.com/reearth/server-scaffold/pkg/asset"
 	"github.com/reearth/server-scaffold/pkg/project"
 	"github.com/reearth/server-scaffold/pkg/user"
+	"github.com/reearth/server-scaffold/pkg/workspace"
 	"github.com/samber/lo"
 )
 
@@ -30,21 +32,45 @@ func (p CreateParam) Validate() error {
 	return nil
 }
 
-func (uc *Usecase) Create(ctx context.Context, param CreateParam, user *user.User) (*asset.Asset, error) {
+type CreateUsecase struct {
+	assetRepo     asset.Repo
+	projectRepo   project.Repo
+	workspaceRepo workspace.Repo
+	assetPolicy   asset.Policy
+	storage       infra.Storage
+}
+
+func NewCreateUsecase(
+	assetRepo asset.Repo,
+	projectRepo project.Repo,
+	workspaceRepo workspace.Repo,
+	assetPolicy asset.Policy,
+	storage infra.Storage,
+) *CreateUsecase {
+	return &CreateUsecase{
+		assetRepo:     assetRepo,
+		projectRepo:   projectRepo,
+		workspaceRepo: workspaceRepo,
+		assetPolicy:   assetPolicy,
+		storage:       storage,
+	}
+}
+
+func (uc *CreateUsecase) Execute(ctx context.Context, param CreateParam, user *user.User) (*asset.Asset, error) {
 	if err := param.Validate(); err != nil {
 		return nil, err
 	}
 
-	_, project, _, err := uc.Builder(ctx, user).
-		FindProjectByID(param.ProjectID).
-		CanCreateAsset().
+	_, project, _, err := UsecaseBuilder(ctx, user).
+		FindProjectByID(param.ProjectID, uc.projectRepo, uc.workspaceRepo).
+		CanCreateAsset(uc.assetPolicy).
 		Result()
 
 	if err != nil {
 		return nil, err
 	}
 
-	if err := uc.Gateways.Storage.Save(ctx, param.Name, param.Data); err != nil {
+	if err := uc.storage.Save(ctx, param.Name, param.Data); err != nil {
 		return nil, err
 	}
 
@@ -57,7 +83,7 @@ func (uc *Usecase) Create(ctx context.Context, param CreateParam, user *user.Use
 		return nil, err
 	}
 
-	if err := uc.Repos.Asset.Save(ctx, asset); err != nil {
+	if err := uc.assetRepo.Save(ctx, asset); err != nil {
 		return nil, err
 	}
 

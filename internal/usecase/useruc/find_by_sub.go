@@ -6,6 +6,16 @@ import (
 	"github.com/reearth/server-scaffold/pkg/user"
 )
 
-func (uc *Usecase) FindBySub(ctx context.Context, sub string) (*user.User, error) {
-	return uc.Repos.User.FindBySub(ctx, sub)
+type FindBySubUsecase struct {
+	userRepo user.Repo
+}
+
+func NewFindBySubUsecase(userRepo user.Repo) *FindBySubUsecase {
+	return &FindBySubUsecase{
+		userRepo: userRepo,
+	}
+}
+
+func (uc *FindBySubUsecase) Execute(ctx context.Context, sub string) (*user.User, error) {
+	return uc.userRepo.FindBySub(ctx, sub)
 }

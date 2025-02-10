@@ -1,15 +1,7 @@
 package projectuc
 
-import (
-	"github.com/reearth/server-scaffold/internal/usecase"
-)
+type Usecase struct{}
 
-type Usecase struct {
-	usecase.Deps
-}
-
-func New(uc usecase.Deps) *Usecase {
-	return &Usecase{
-		Deps: uc,
-	}
+func New() *Usecase {
+	return &Usecase{}
 }
