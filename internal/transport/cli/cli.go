@@ -32,6 +32,13 @@ type CLI struct {
 	conf Config
 }
 
+func NewCLIConfig(args []string, mongo *mongo.Database) Config {
+	return Config{
+		Args:  args,
+		Mongo: mongo,
+	}
+}
+
 func NewCLI(conf Config) *CLI {
 	return &CLI{
 		conf: conf,

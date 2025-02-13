@@ -4,13 +4,14 @@
 //go:build !wireinject
 // +build !wireinject
 
-package app
+package di
 
 import (
 	"context"
 	"github.com/reearth/server-scaffold/internal/boot"
 	"github.com/reearth/server-scaffold/internal/infra/gcp"
 	"github.com/reearth/server-scaffold/internal/infra/mongo"
+	"github.com/reearth/server-scaffold/internal/transport/cli"
 	"github.com/reearth/server-scaffold/internal/transport/echo"
 	"github.com/reearth/server-scaffold/internal/usecase"
 	"github.com/reearth/server-scaffold/internal/usecase/assetuc"
@@ -47,4 +48,15 @@ func InitializeEcho(ctx context.Context, dev bool) (*echo.Server, error) {
 	echoConfig := echo.NewEchoConfig(config, usecases, dev)
 	server := echo.New(echoConfig)
 	return server, nil
+}
+
+func InitializeCLI(ctx context.Context, args []string) (*cli.CLI, error) {
+	config := boot.LoadConfig()
+	database, err := boot.InitMongo(ctx, config)
+	if err != nil {
+		return nil, err
+	}
+	cliConfig := cli.NewCLIConfig(args, database)
+	cliCLI := cli.NewCLI(cliConfig)
+	return cliCLI, nil
 }

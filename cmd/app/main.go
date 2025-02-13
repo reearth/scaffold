@@ -2,16 +2,26 @@ package main
 
 import (
 	"context"
+	"os"
 
 	"github.com/reearth/server-scaffold/internal/boot"
-	"github.com/reearth/server-scaffold/internal/boot/di/app"
+	"github.com/reearth/server-scaffold/internal/di"
 )
 
 func main() {
 	cfg := boot.LoadConfig()
 	cfg.Print()
 
-	server, err := app.InitializeEcho(context.Background(), true)
+	if len(os.Args) > 1 {
+		cliApp, err := di.InitializeCLI(context.Background(), os.Args)
+		if err != nil {
+			panic(err)
+		}
+		cliApp.Must()
+		return
+	}
+
+	server, err := di.InitializeEcho(context.Background(), true)
 	if err != nil {
 		panic(err)
 	}

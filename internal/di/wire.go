@@ -1,7 +1,7 @@
 //go:build wireinject
 // +build wireinject
 
-package app
+package di
 
 import (
 	"context"
@@ -11,6 +11,7 @@ import (
 	"github.com/reearth/server-scaffold/internal/infra"
 	"github.com/reearth/server-scaffold/internal/infra/gcp"
 	"github.com/reearth/server-scaffold/internal/infra/mongo"
+	"github.com/reearth/server-scaffold/internal/transport/cli"
 	"github.com/reearth/server-scaffold/internal/transport/echo"
 	"github.com/reearth/server-scaffold/internal/usecase"
 	"github.com/reearth/server-scaffold/internal/usecase/assetuc"
@@ -64,6 +65,17 @@ func InitializeEcho(ctx context.Context, dev bool) (*echo.Server, error) {
 		// echo
 		echo.NewEchoConfig,
 		echo.New,
+	)
+
+	return nil, nil
+}
+
+func InitializeCLI(ctx context.Context, args []string) (*cli.CLI, error) {
+	wire.Build(
+		boot.LoadConfig,
+		boot.InitMongo,
+		cli.NewCLIConfig,
+		cli.NewCLI,
 	)
 
 	return nil, nil
