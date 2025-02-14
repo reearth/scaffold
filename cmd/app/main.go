@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/reearth/server-scaffold/internal/boot"
-	"github.com/reearth/server-scaffold/internal/di"
+	"github.com/reearth/server-scaffold/internal/boot/di"
 )
 
 func main() {

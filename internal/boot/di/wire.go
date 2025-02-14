@@ -8,13 +8,13 @@ import (
 
 	"github.com/google/wire"
 	"github.com/reearth/server-scaffold/internal/boot"
-	"github.com/reearth/server-scaffold/internal/infra"
 	"github.com/reearth/server-scaffold/internal/infra/gcp"
 	"github.com/reearth/server-scaffold/internal/infra/mongo"
 	"github.com/reearth/server-scaffold/internal/transport/cli"
 	"github.com/reearth/server-scaffold/internal/transport/echo"
 	"github.com/reearth/server-scaffold/internal/usecase"
 	"github.com/reearth/server-scaffold/internal/usecase/assetuc"
+	"github.com/reearth/server-scaffold/internal/usecase/gateway"
 	"github.com/reearth/server-scaffold/internal/usecase/projectuc"
 	"github.com/reearth/server-scaffold/internal/usecase/useruc"
 	"github.com/reearth/server-scaffold/internal/usecase/workspaceuc"
@@ -41,7 +41,7 @@ func InitializeEcho(ctx context.Context, dev bool) (*echo.Server, error) {
 		wire.Bind(new(project.Repo), new(*mongo.Project)),
 
 		// infra: storage
-		wire.Bind(new(infra.Storage), new(*gcp.Storage)),
+		wire.Bind(new(gateway.Storage), new(*gcp.Storage)),
 		gcp.NewStorage,
 
 		// policy
