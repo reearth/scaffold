@@ -5,7 +5,7 @@ import (
 	"errors"
 	"io"
 
-	"github.com/reearth/server-scaffold/internal/infra"
+	"github.com/reearth/server-scaffold/internal/usecase/gateway"
 	"github.com/reearth/server-scaffold/pkg/asset"
 	"github.com/reearth/server-scaffold/pkg/project"
 	"github.com/reearth/server-scaffold/pkg/user"
@@ -37,7 +37,7 @@ type CreateUsecase struct {
 	projectRepo   project.Repo
 	workspaceRepo workspace.Repo
 	assetPolicy   asset.Policy
-	storage       infra.Storage
+	storage       gateway.Storage
 }
 
 func NewCreateUsecase(
@@ -45,7 +45,7 @@ func NewCreateUsecase(
 	projectRepo project.Repo,
 	workspaceRepo workspace.Repo,
 	assetPolicy asset.Policy,
-	storage infra.Storage,
+	storage gateway.Storage,
 ) *CreateUsecase {
 	return &CreateUsecase{
 		assetRepo:     assetRepo,
