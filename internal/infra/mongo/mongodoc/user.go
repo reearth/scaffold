@@ -1,14 +1,12 @@
 package mongodoc
 
 import (
-	"github.com/reearth/server-scaffold/pkg/project"
 	"github.com/reearth/server-scaffold/pkg/user"
 )
 
 type User struct {
-	ID      user.ID    `bson:"id"`
-	Project project.ID `bson:"project"`
-	Name    string     `bson:"name"`
+	ID   user.ID `bson:"id"`
+	Name string  `bson:"name"`
 }
 
 func (a *User) ToUser() (*user.User, error) {
@@ -19,7 +17,8 @@ func (a *User) ToUser() (*user.User, error) {
 
 func NewUser(a *user.User) (*User, error) {
 	return &User{
-		ID: a.ID(),
+		ID:   a.ID(),
+		Name: a.Name(),
 	}, nil
 }
 

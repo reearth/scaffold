@@ -1,25 +1,25 @@
 package mongodoc
 
 import (
-	"github.com/reearth/server-scaffold/pkg/project"
 	"github.com/reearth/server-scaffold/pkg/workspace"
 )
 
 type Workspace struct {
-	ID      workspace.ID `bson:"id"`
-	Project project.ID   `bson:"project"`
-	Name    string       `bson:"name"`
+	ID      workspace.ID      `bson:"id"`
+	Members workspace.Members `bson:"members"`
 }
 
 func (a *Workspace) ToWorkspace() (*workspace.Workspace, error) {
 	return workspace.New().
 		ID(a.ID).
+		Members(a.Members).
 		Build()
 }
 
 func NewWorkspace(a *workspace.Workspace) (*Workspace, error) {
 	return &Workspace{
-		ID: a.ID(),
+		ID:      a.ID(),
+		Members: a.Members(),
 	}, nil
 }
 
