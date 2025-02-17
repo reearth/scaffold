@@ -35,7 +35,7 @@ failcheck:
 AIR_BIN := $(shell which air)
 dev-install:
 ifndef AIR_BIN
-	@echo "reflex is not installed. Installing..."
+	@echo "air is not installed. Installing..."
 	@go install github.com/air-verse/air@v1.61.5
 else
 	@echo "air is already installed."
