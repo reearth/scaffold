@@ -4,7 +4,7 @@ This is an example repository for showing the standard module design used in Re:
 
 - **cmd**: Entrypoint
 - **internal**
-  - **boot**: Read the config, initialize DB drivers, etc., and finally initialize usecases and run the appropriate transport layer.
+  - **di**: Read the config, initialize DB drivers, etc., and finally initialize usecases and run the appropriate transport layer.
   - **infra**: Implements repos, policies, and gateways.
     - **gcp**
     - **mongo**
@@ -14,61 +14,45 @@ This is an example repository for showing the standard module design used in Re:
     - **echo**
     - **gql**
     - ...
-  - **usecase**: Define gateways I/F, transaction I/F, gateways container, repo container, and policy container
+  - **usecase**: Define gateways interfaces
     - **xxxuc** Actual usecase implementation
-    - **gateway**: Gateways interfaces
-    - **transaction.go**: Transaciton interfaces
+    - **gateway**: Gateways interfaces (including transaction interfaces)
     - **usecase.go**: Usecase container
     - ...
-- **pkg**: Domain models, repo interfaces, policy interfaces
+- **pkg**: Domain models, repo/policy interfaces
 
 ## Dependency Flows
 
 ```mermaid
-graph TD
-  %% CMD calls InitializeEcho and InitializeCLI
-  CMD -->|calls| InitializeEcho
-  CMD -->|calls| InitializeCLI
-
-  %% InitializeEcho dependencies
-  subgraph Echo Server
-    InitializeEcho -->|Config & DB| boot.LoadConfig
-    InitializeEcho -->|Config & DB| boot.InitMongo
-    InitializeEcho -->|Usecases| usecase.NewUsecases
-    InitializeEcho -->|Echo Server| echo.NewEchoConfig
-    InitializeEcho -->|Echo Server| echo.New
+flowchart
+  subgraph di
+    config
+  end
+  subgraph infra
+    infra2[mongo, gcp, auth0, cerbos...]
+  end
+  subgraph transport
+    transport2[cli, echo, gql..]
+  end
+  subgraph usecase
+    uc[xxxuc]
+    gatewayIF[Gateway I/F]
+  end
+  subgraph domain
+    model[Domain Models]
+    repoIF[Repo I/F]
+    policyIF[Policy I/F]
   end
 
-  %% InitializeCLI dependencies
-  subgraph CLI
-    InitializeCLI -->|Config & DB| boot.LoadConfig
-    InitializeCLI -->|Config & DB| boot.InitMongo
-    InitializeCLI -->|CLI Setup| cli.NewCLIConfig
-    InitializeCLI -->|CLI Setup| cli.NewCLI
-  end
-
-  %% Usecases initialization
-  subgraph Usecases
-    usecase.NewUsecases --> assetuc.New
-    usecase.NewUsecases --> projectuc.New
-    usecase.NewUsecases --> workspaceuc.New
-    usecase.NewUsecases --> useruc.New
-  end
-
-  %% Asset Usecase dependencies
-  subgraph Asset Usecase
-    assetuc.New --> assetuc.NewFindByIDsUsecase
-    assetuc.New --> assetuc.NewFindByProjectUsecase
-    assetuc.New --> assetuc.NewCreateUsecase
-    assetuc.New --> assetuc.NewUpdateUsecase
-  end
-
-  %% Infrastructure dependencies
-  subgraph Infrastructure
-    mongo.NewAsset -->|binds| asset.Repo
-    mongo.NewWorkspace -->|binds| workspace.Repo
-    mongo.NewUser -->|binds| user.Repo
-    mongo.NewProject -->|binds| project.Repo
-    gcp.NewStorage -->|binds| gateway.Storage
-  end
+  cmd --> di
+  cmd --> transport
+  di --> |init| uc
+  di --> |init| infra
+  transport --> uc
+  usecase --> domain
+  uc --> gatewayIF
+  infra --> |impl| repoIF
+  infra --> |impl| policyIF
+  infra --> |impl| gatewayIF
+  infra --> domain
 ```
