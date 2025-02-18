@@ -40,7 +40,7 @@ type Create struct {
 	storage       gateway.Storage
 }
 
-func NewCreateUsecase(
+func NewCreate(
 	assetRepo asset.Repo,
 	projectRepo project.Repo,
 	workspaceRepo workspace.Repo,

@@ -6,7 +6,6 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/reearth/server-scaffold/internal/boot"
 	"github.com/reearth/server-scaffold/internal/transport/gql"
 	"github.com/reearth/server-scaffold/internal/usecase"
 	"golang.org/x/net/http2"
@@ -22,10 +21,6 @@ type Config struct {
 	Port     string
 	Usecases usecase.Usecases
 	Dev      bool
-}
-
-func NewEchoConfig(conf *boot.Config, usecases usecase.Usecases, dev bool) Config {
-	return Config{Port: conf.Port, Usecases: usecases, Dev: dev}
 }
 
 func New(conf Config) *Server {

@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/reearth/server-scaffold/internal/boot"
-	"github.com/reearth/server-scaffold/internal/boot/di"
 )
 
 func main() {
@@ -13,7 +12,7 @@ func main() {
 	cfg.Print()
 
 	if len(os.Args) > 1 {
-		cliApp, err := di.InitializeCLI(context.Background(), os.Args)
+		cliApp, err := boot.InitializeCLI(context.Background(), os.Args)
 		if err != nil {
 			panic(err)
 		}
@@ -21,7 +20,7 @@ func main() {
 		return
 	}
 
-	server, err := di.InitializeEcho(context.Background(), true)
+	server, err := boot.InitializeEcho(context.Background(), true)
 	if err != nil {
 		panic(err)
 	}

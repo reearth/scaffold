@@ -1,13 +1,14 @@
 //go:build wireinject
 // +build wireinject
 
-package di
+//go:generate go run github.com/google/wire/cmd/wire
+
+package boot
 
 import (
 	"context"
 
 	"github.com/google/wire"
-	"github.com/reearth/server-scaffold/internal/boot"
 	"github.com/reearth/server-scaffold/internal/infra/gcp"
 	"github.com/reearth/server-scaffold/internal/infra/mongo"
 	"github.com/reearth/server-scaffold/internal/transport/cli"
@@ -27,8 +28,8 @@ import (
 func InitializeEcho(ctx context.Context, dev bool) (*echo.Server, error) {
 	wire.Build(
 		// boot
-		boot.LoadConfig,
-		boot.InitMongo,
+		LoadConfig,
+		InitMongo,
 
 		// infra: mongo
 		mongo.NewAsset,
@@ -48,22 +49,22 @@ func InitializeEcho(ctx context.Context, dev bool) (*echo.Server, error) {
 		asset.NewPolicy,
 
 		// usecases
-		assetuc.NewFindByIDsUsecase,
-		assetuc.NewFindByProjectUsecase,
-		assetuc.NewCreateUsecase,
-		assetuc.NewUpdateUsecase,
+		assetuc.NewFindByIDs,
+		assetuc.NewFindByProject,
+		assetuc.NewCreate,
+		assetuc.NewUpdate,
 		assetuc.New,
 
 		projectuc.New,
 		workspaceuc.New,
 
-		useruc.NewFindBySubUsecase,
+		useruc.NewFindBySub,
 		useruc.New,
 
 		usecase.NewUsecases,
 
 		// echo
-		echo.NewEchoConfig,
+		NewEchoConfig,
 		echo.New,
 	)
 
@@ -72,8 +73,8 @@ func InitializeEcho(ctx context.Context, dev bool) (*echo.Server, error) {
 
 func InitializeCLI(ctx context.Context, args []string) (*cli.CLI, error) {
 	wire.Build(
-		boot.LoadConfig,
-		boot.InitMongo,
+		LoadConfig,
+		InitMongo,
 		cli.NewCLIConfig,
 		cli.NewCLI,
 	)

@@ -4,11 +4,10 @@
 //go:build !wireinject
 // +build !wireinject
 
-package di
+package boot
 
 import (
 	"context"
-	"github.com/reearth/server-scaffold/internal/boot"
 	"github.com/reearth/server-scaffold/internal/infra/gcp"
 	"github.com/reearth/server-scaffold/internal/infra/mongo"
 	"github.com/reearth/server-scaffold/internal/transport/cli"
@@ -24,8 +23,8 @@ import (
 // Injectors from wire.go:
 
 func InitializeEcho(ctx context.Context, dev bool) (*echo.Server, error) {
-	config := boot.LoadConfig()
-	database, err := boot.InitMongo(ctx, config)
+	config := LoadConfig()
+	database, err := InitMongo(ctx, config)
 	if err != nil {
 		return nil, err
 	}
@@ -33,26 +32,26 @@ func InitializeEcho(ctx context.Context, dev bool) (*echo.Server, error) {
 	project := mongo.NewProject(database)
 	workspace := mongo.NewWorkspace(database)
 	policy := asset.NewPolicy()
-	findByIDsUsecase := assetuc.NewFindByIDs(mongoAsset, project, workspace, policy)
-	findByProjectUsecase := assetuc.NewFindByProject(mongoAsset, project, workspace, policy)
+	findByIDs := assetuc.NewFindByIDs(mongoAsset, project, workspace, policy)
+	findByProject := assetuc.NewFindByProject(mongoAsset, project, workspace, policy)
 	storage := gcp.NewStorage()
-	createUsecase := assetuc.NewCreateUsecase(mongoAsset, project, workspace, policy, storage)
-	updateUsecase := assetuc.NewUpdate(mongoAsset, project, workspace, policy)
-	assetucUsecase := assetuc.New(findByIDsUsecase, findByProjectUsecase, createUsecase, updateUsecase)
+	create := assetuc.NewCreate(mongoAsset, project, workspace, policy, storage)
+	update := assetuc.NewUpdate(mongoAsset, project, workspace, policy)
+	assetucUsecase := assetuc.New(findByIDs, findByProject, create, update)
 	projectucUsecase := projectuc.New()
 	workspaceucUsecase := workspaceuc.New()
 	user := mongo.NewUser(database)
-	findBySubUsecase := useruc.NewFindBySub(user)
-	userucUsecase := useruc.New(findBySubUsecase)
+	findBySub := useruc.NewFindBySub(user)
+	userucUsecase := useruc.New(findBySub)
 	usecases := usecase.NewUsecases(assetucUsecase, projectucUsecase, workspaceucUsecase, userucUsecase)
-	echoConfig := echo.NewEchoConfig(config, usecases, dev)
+	echoConfig := NewEchoConfig(config, usecases, dev)
 	server := echo.New(echoConfig)
 	return server, nil
 }
 
 func InitializeCLI(ctx context.Context, args []string) (*cli.CLI, error) {
-	config := boot.LoadConfig()
-	database, err := boot.InitMongo(ctx, config)
+	config := LoadConfig()
+	database, err := InitMongo(ctx, config)
 	if err != nil {
 		return nil, err
 	}
