@@ -9,20 +9,20 @@ import (
 	"github.com/reearth/server-scaffold/pkg/workspace"
 )
 
-type FindByProjectUsecase struct {
+type FindByProject struct {
 	assetRepo     asset.Repo
 	projectRepo   project.Repo
 	workspaceRepo workspace.Repo
 	assetPolicy   asset.Policy
 }
 
-func NewFindByProjectUsecase(
+func NewFindByProject(
 	assetRepo asset.Repo,
 	projectRepo project.Repo,
 	workspaceRepo workspace.Repo,
 	assetPolicy asset.Policy,
-) *FindByProjectUsecase {
-	return &FindByProjectUsecase{
+) *FindByProject {
+	return &FindByProject{
 		assetRepo:     assetRepo,
 		projectRepo:   projectRepo,
 		workspaceRepo: workspaceRepo,
@@ -30,7 +30,7 @@ func NewFindByProjectUsecase(
 	}
 }
 
-func (uc *FindByProjectUsecase) Execute(ctx context.Context, pid project.ID, user *user.User) (asset.List, error) {
+func (uc *FindByProject) Execute(ctx context.Context, pid project.ID, user *user.User) (asset.List, error) {
 	_, project, _, err := UsecaseBuilder(ctx, user).
 		FindProjectByID(pid, uc.projectRepo, uc.workspaceRepo).
 		CanListAssets(uc.assetPolicy).

@@ -65,7 +65,7 @@ func AuthMiddleware(config AuthConfig, uc usecase.Usecases) echo.MiddlewareFunc 
 			// 	return echo.NewHTTPError(http.StatusInternalServerError, "failed to marshal claims")
 			// }
 
-			u, err := uc.User.FindBySubUsecase.Execute(ctx, claims.RegisteredClaims.Subject)
+			u, err := uc.User.FindBySub.Execute(ctx, claims.RegisteredClaims.Subject)
 			if err != nil {
 				return echo.NewHTTPError(500, "failed to find user")
 			}

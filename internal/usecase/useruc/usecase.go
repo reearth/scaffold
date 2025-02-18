@@ -1,11 +1,11 @@
 package useruc
 
 type Usecase struct {
-	FindBySubUsecase *FindBySubUsecase
+	FindBySub *FindBySub
 }
 
-func New(findBySubUsecase *FindBySubUsecase) *Usecase {
+func New(findBySub *FindBySub) *Usecase {
 	return &Usecase{
-		FindBySubUsecase: findBySubUsecase,
+		FindBySub: findBySub,
 	}
 }

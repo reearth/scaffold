@@ -9,7 +9,7 @@ import (
 	"github.com/reearth/server-scaffold/pkg/workspace"
 )
 
-type FindByIDsUsecase struct {
+type FindByIDs struct {
 	assetRepo     asset.Repo
 	projectRepo   project.Repo
 	workspaceRepo workspace.Repo
@@ -17,13 +17,13 @@ type FindByIDsUsecase struct {
 	assetPolicy asset.Policy
 }
 
-func NewFindByIDsUsecase(
+func NewFindByIDs(
 	assetRepo asset.Repo,
 	projectRepo project.Repo,
 	workspaceRepo workspace.Repo,
 	assetPolicy asset.Policy,
-) *FindByIDsUsecase {
-	return &FindByIDsUsecase{
+) *FindByIDs {
+	return &FindByIDs{
 		assetRepo:     assetRepo,
 		projectRepo:   projectRepo,
 		workspaceRepo: workspaceRepo,
@@ -31,7 +31,7 @@ func NewFindByIDsUsecase(
 	}
 }
 
-func (uc *FindByIDsUsecase) Execute(ctx context.Context, ids asset.IDList, user *user.User) (asset.List, error) {
+func (uc *FindByIDs) Execute(ctx context.Context, ids asset.IDList, user *user.User) (asset.List, error) {
 	assets, err := uc.assetRepo.FindByIDs(ctx, ids)
 	if err != nil {
 		return nil, err

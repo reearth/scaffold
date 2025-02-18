@@ -11,23 +11,23 @@ import (
 )
 
 type Usecase struct {
-	FindByIDsUsecase     *FindByIDsUsecase
-	FindByProjectUsecase *FindByProjectUsecase
-	CreateUsecase        *CreateUsecase
-	UpdateUsecase        *UpdateUsecase
+	FindByIDs     *FindByIDs
+	FindByProject *FindByProject
+	Create        *Create
+	Update        *Update
 }
 
 func New(
-	findByIDsUsecase *FindByIDsUsecase,
-	findByProjectUsecase *FindByProjectUsecase,
-	createUsecase *CreateUsecase,
-	updateUsecase *UpdateUsecase,
+	findByIDs *FindByIDs,
+	findByProject *FindByProject,
+	create *Create,
+	update *Update,
 ) *Usecase {
 	return &Usecase{
-		FindByIDsUsecase:     findByIDsUsecase,
-		FindByProjectUsecase: findByProjectUsecase,
-		CreateUsecase:        createUsecase,
-		UpdateUsecase:        updateUsecase,
+		FindByIDs:     findByIDs,
+		FindByProject: findByProject,
+		Create:        create,
+		Update:        update,
 	}
 }
 

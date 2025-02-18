@@ -32,7 +32,7 @@ func (p CreateParam) Validate() error {
 	return nil
 }
 
-type CreateUsecase struct {
+type Create struct {
 	assetRepo     asset.Repo
 	projectRepo   project.Repo
 	workspaceRepo workspace.Repo
@@ -46,8 +46,8 @@ func NewCreateUsecase(
 	workspaceRepo workspace.Repo,
 	assetPolicy asset.Policy,
 	storage gateway.Storage,
-) *CreateUsecase {
-	return &CreateUsecase{
+) *Create {
+	return &Create{
 		assetRepo:     assetRepo,
 		projectRepo:   projectRepo,
 		workspaceRepo: workspaceRepo,
@@ -56,7 +56,7 @@ func NewCreateUsecase(
 	}
 }
 
-func (uc *CreateUsecase) Execute(ctx context.Context, param CreateParam, user *user.User) (*asset.Asset, error) {
+func (uc *Create) Execute(ctx context.Context, param CreateParam, user *user.User) (*asset.Asset, error) {
 	if err := param.Validate(); err != nil {
 		return nil, err
 	}

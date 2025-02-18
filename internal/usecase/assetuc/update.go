@@ -23,21 +23,20 @@ func (p UpdateParam) Validate() error {
 	return nil
 }
 
-type UpdateUsecase struct {
+type Update struct {
 	assetRepo     asset.Repo
 	projectRepo   project.Repo
 	workspaceRepo workspace.Repo
-
-	assetPolicy asset.Policy
+	assetPolicy   asset.Policy
 }
 
-func NewUpdateUsecase(
+func NewUpdate(
 	assetRepo asset.Repo,
 	projectRepo project.Repo,
 	workspaceRepo workspace.Repo,
 	assetPolicy asset.Policy,
-) *UpdateUsecase {
-	return &UpdateUsecase{
+) *Update {
+	return &Update{
 		assetRepo:     assetRepo,
 		projectRepo:   projectRepo,
 		workspaceRepo: workspaceRepo,
@@ -45,7 +44,7 @@ func NewUpdateUsecase(
 	}
 }
 
-func (uc *UpdateUsecase) Execute(ctx context.Context, param UpdateParam, user *user.User) (*asset.Asset, error) {
+func (uc *Update) Execute(ctx context.Context, param UpdateParam, user *user.User) (*asset.Asset, error) {
 	if err := param.Validate(); err != nil {
 		return nil, err
 	}
