@@ -28,13 +28,5 @@ func InitMongo(ctx context.Context, cfg *Config) (*mongo.Database, error) {
 		return nil, fmt.Errorf("failed to ping MongoDB: %v", err)
 	}
 
-	// Setup cleanup
-	go func() {
-		<-ctx.Done()
-		if err := client.Disconnect(context.Background()); err != nil {
-			fmt.Printf("Error disconnecting from MongoDB: %v\n", err)
-		}
-	}()
-
 	return client.Database(cfg.DB_APP), nil
 }

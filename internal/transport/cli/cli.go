@@ -8,45 +8,35 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type Config struct {
-	Args  []string
-	Mongo *mongo.Database
-}
-
-func (c *CLI) Do() error {
-	var command string
-	if len(c.conf.Args) > 1 {
-		command = c.conf.Args[1]
-	}
-
-	if command == "migrate" {
-		return migrate(c.conf.Mongo)
-	}
-
-	// TODO: add more commands for workers
-
-	return errors.New("invalid command")
-}
-
 type CLI struct {
-	conf Config
+	args  []string
+	mongo *mongo.Database
 }
 
-func NewCLIConfig(args []string, mongo *mongo.Database) Config {
-	return Config{
-		Args:  args,
-		Mongo: mongo,
-	}
-}
-
-func NewCLI(conf Config) *CLI {
+func New(args []string, mongo *mongo.Database) *CLI {
 	return &CLI{
-		conf: conf,
+		args:  args,
+		mongo: mongo,
 	}
 }
 
 func (c *CLI) Must() {
 	lo.Must0(c.Do())
+}
+
+func (c *CLI) Do() error {
+	var command string
+	if len(c.args) > 1 {
+		command = c.args[1]
+	}
+
+	if command == "migrate" {
+		return migrate(c.mongo)
+	}
+
+	// TODO: add more commands for workers
+
+	return errors.New("invalid command")
 }
 
 func migrate(mongo *mongo.Database) error {

@@ -13,17 +13,3 @@ type Usecases struct {
 	Workspace *workspaceuc.Usecase
 	User      *useruc.Usecase
 }
-
-func NewUsecases(
-	assetuc *assetuc.Usecase,
-	projectuc *projectuc.Usecase,
-	workspaceuc *workspaceuc.Usecase,
-	useruc *useruc.Usecase,
-) Usecases {
-	return Usecases{
-		Asset:     assetuc,
-		Project:   projectuc,
-		Workspace: workspaceuc,
-		User:      useruc,
-	}
-}

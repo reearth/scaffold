@@ -1,5 +1,4 @@
 //go:build wireinject
-// +build wireinject
 
 //go:generate go run github.com/google/wire/cmd/wire
 
@@ -61,10 +60,10 @@ func InitEcho(ctx context.Context) (*echo.Server, error) {
 		useruc.NewFindBySub,
 		useruc.New,
 
-		usecase.NewUsecases,
+		wire.Struct(new(usecase.Usecases), "*"),
 
 		// echo
-		NewEchoConfig,
+		newEchoConfig,
 		echo.New,
 	)
 
@@ -75,8 +74,7 @@ func InitCLI(ctx context.Context, args []string) (*cli.CLI, error) {
 	wire.Build(
 		LoadConfig,
 		InitMongo,
-		cli.NewCLIConfig,
-		cli.NewCLI,
+		cli.New,
 	)
 
 	return nil, nil

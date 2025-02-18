@@ -43,8 +43,13 @@ func InitEcho(ctx context.Context) (*echo.Server, error) {
 	user := mongo.NewUser(database)
 	findBySub := useruc.NewFindBySub(user)
 	userucUsecase := useruc.New(findBySub)
-	usecases := usecase.NewUsecases(assetucUsecase, projectucUsecase, workspaceucUsecase, userucUsecase)
-	echoConfig := NewEchoConfig(config, usecases)
+	usecases := usecase.Usecases{
+		Asset:     assetucUsecase,
+		Project:   projectucUsecase,
+		Workspace: workspaceucUsecase,
+		User:      userucUsecase,
+	}
+	echoConfig := newEchoConfig(config, usecases)
 	server := echo.New(echoConfig)
 	return server, nil
 }
@@ -55,7 +60,6 @@ func InitCLI(ctx context.Context, args []string) (*cli.CLI, error) {
 	if err != nil {
 		return nil, err
 	}
-	cliConfig := cli.NewCLIConfig(args, database)
-	cliCLI := cli.NewCLI(cliConfig)
+	cliCLI := cli.New(args, database)
 	return cliCLI, nil
 }
