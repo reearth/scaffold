@@ -1,8 +1,5 @@
 TEST_DIR ?= ./...
 
-SCHEMATYPER := github.com/idubinskiy/schematyper
-MANIFEST_DIR := pkg/plugin/manifest
-
 default: help
 
 help:
@@ -14,10 +11,11 @@ help:
 	@echo "  test              Run unit tests with race detector in short mode"
 	@echo "  failcheck         Run unit tests with fail-fast and no parallel execution"
 	@echo "  build             Build the project"
-	@echo "  dev-install       Install tools for make dev - behavior not confirmed in windows."
 	@echo "  dev               Run the application with hot reloading"
+	@echo "  generate          Run go generate"
 	@echo "  run-app           Run the application"
 	@echo "  run-db            Run the MongoDB database using Docker Compose"
+	@echo "  down-db           Stop the MongoDB database using Docker Compose"
 	@echo "  up-gcs            Run the fake-gcs-server using Docker Compose"
 	@echo "  down-gcs          Stop the fake-gcs-server using Docker Compose"
 
@@ -36,20 +34,14 @@ test:
 failcheck:
 	go test -race -short -failfast -p 1 $(TEST_DIR)
 
-AIR_BIN := $(shell which air)
-dev-install:
-ifndef AIR_BIN
-	@echo "air is not installed. Installing..."
-	@go install github.com/air-verse/air@v1.61.5
-else
-	@echo "air is already installed."
-endif
-
-dev: dev-install
-	air
+dev:
+	go run github.com/air-verse/air
 
 build:
 	go build ./cmd/app
+
+generate:
+	go generate ./...
 
 run-app:
 	go run ./cmd/app
@@ -57,9 +49,8 @@ run-app:
 run-db:
 	docker compose -f ./compose.yml up mongo
 
-generate: dev-install
-	go generate ./...	
-	wire internal/boot/di/wire.go
+down-db:
+	docker compose -f ./compose.yml down mongo
 
 run-gcs:
 	docker compose -f ./compose.yml up gcs
@@ -67,4 +58,4 @@ run-gcs:
 down-gcs:
 	docker compose -f ./compose.yml down gcs
 
-.PHONY: lint test failcheck e2e build dev-install dev run-app run-db gql up-gcs down-gcs mockuser schematyper
+.PHONY: lint test failcheck build dev generate run-app run-db down-db run-gcs down-gcs
