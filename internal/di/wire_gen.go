@@ -4,7 +4,7 @@
 //go:build !wireinject
 // +build !wireinject
 
-package boot
+package di
 
 import (
 	"context"
@@ -22,7 +22,7 @@ import (
 
 // Injectors from wire.go:
 
-func InitializeEcho(ctx context.Context, dev bool) (*echo.Server, error) {
+func InitEcho(ctx context.Context) (*echo.Server, error) {
 	config := LoadConfig()
 	database, err := InitMongo(ctx, config)
 	if err != nil {
@@ -44,12 +44,12 @@ func InitializeEcho(ctx context.Context, dev bool) (*echo.Server, error) {
 	findBySub := useruc.NewFindBySub(user)
 	userucUsecase := useruc.New(findBySub)
 	usecases := usecase.NewUsecases(assetucUsecase, projectucUsecase, workspaceucUsecase, userucUsecase)
-	echoConfig := NewEchoConfig(config, usecases, dev)
+	echoConfig := NewEchoConfig(config, usecases)
 	server := echo.New(echoConfig)
 	return server, nil
 }
 
-func InitializeCLI(ctx context.Context, args []string) (*cli.CLI, error) {
+func InitCLI(ctx context.Context, args []string) (*cli.CLI, error) {
 	config := LoadConfig()
 	database, err := InitMongo(ctx, config)
 	if err != nil {

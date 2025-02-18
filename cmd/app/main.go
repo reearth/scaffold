@@ -4,29 +4,19 @@ import (
 	"context"
 	"os"
 
-	"github.com/reearth/server-scaffold/internal/boot"
+	"github.com/reearth/server-scaffold/internal/di"
+	"github.com/samber/lo"
 )
 
 func main() {
-	cfg := boot.LoadConfig()
-	cfg.Print()
+	ctx := context.Background()
 
 	if len(os.Args) > 1 {
-		cliApp, err := boot.InitializeCLI(context.Background(), os.Args)
-		if err != nil {
-			panic(err)
-		}
+		cliApp := lo.Must(di.InitCLI(ctx, os.Args))
 		cliApp.Must()
 		return
 	}
 
-	server, err := boot.InitializeEcho(context.Background(), true)
-	if err != nil {
-		panic(err)
-	}
-
-	err = server.Start()
-	if err != nil {
-		panic(err)
-	}
+	server := lo.Must(di.InitEcho(ctx))
+	lo.Must0(server.Start())
 }

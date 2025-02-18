@@ -1,4 +1,4 @@
-package boot
+package di
 
 import (
 	"os"
@@ -11,9 +11,10 @@ import (
 )
 
 type Config struct {
-	DB     string `env:"DB" pp:"-"`
-	DB_APP string `env:"DB_APP" default:"reearth"`
+	DB     string `pp:"-"`
+	DB_APP string `envDefault:"reearth"`
 	Port   string `env:"PORT" envDefault:"8080"`
+	Dev    bool
 }
 
 func (cfg *Config) Print() {
@@ -32,5 +33,6 @@ func LoadConfig() *Config {
 		panic(err)
 	}
 
+	cfg.Print()
 	return &cfg
 }

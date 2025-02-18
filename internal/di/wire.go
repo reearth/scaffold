@@ -3,7 +3,7 @@
 
 //go:generate go run github.com/google/wire/cmd/wire
 
-package boot
+package di
 
 import (
 	"context"
@@ -25,7 +25,7 @@ import (
 	"github.com/reearth/server-scaffold/pkg/workspace"
 )
 
-func InitializeEcho(ctx context.Context, dev bool) (*echo.Server, error) {
+func InitEcho(ctx context.Context) (*echo.Server, error) {
 	wire.Build(
 		// boot
 		LoadConfig,
@@ -71,7 +71,7 @@ func InitializeEcho(ctx context.Context, dev bool) (*echo.Server, error) {
 	return nil, nil
 }
 
-func InitializeCLI(ctx context.Context, args []string) (*cli.CLI, error) {
+func InitCLI(ctx context.Context, args []string) (*cli.CLI, error) {
 	wire.Build(
 		LoadConfig,
 		InitMongo,
