@@ -24,10 +24,14 @@ help:
 lint:
 	golangci-lint run --fix
 
-TARGET_TEST :=./...
+TARGET_TEST ?=
 REEARTH_DB := mongodb://localhost
 test:
-	REEARTH_DB=${REEARTH_DB} go test ./... -run ${TARGET_TEST}
+	@if [ -z "$(TARGET_TEST)" ]; then \
+		REEARTH_DB=$(REEARTH_DB) go test ./... ; \
+	else \
+		REEARTH_DB=$(REEARTH_DB) go test ./... -run "$(TARGET_TEST)"; \
+	fi
 
 failcheck:
 	go test -race -short -failfast -p 1 $(TEST_DIR)
@@ -54,7 +58,8 @@ run-db:
 	docker compose -f ./compose.yml up mongo
 
 generate: dev-install
-	go generate ./...
+	go generate ./...	
+	wire internal/boot/di/wire.go
 
 run-gcs:
 	docker compose -f ./compose.yml up gcs
