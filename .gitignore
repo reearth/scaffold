@@ -21,12 +21,13 @@
 go.work
 go.work.sum
 
-# env file
+# env files
 .env
 *.env
+.env.*
 
 # tmp
-tmp
+/tmp
 
 # mongo
 /mongo
