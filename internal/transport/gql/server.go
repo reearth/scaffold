@@ -10,11 +10,11 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler/lru"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
-	transport2 "github.com/reearth/server-scaffold/internal/transport"
+	"github.com/reearth/server-scaffold/internal/usecase"
 	"github.com/vektah/gqlparser/v2/ast"
 )
 
-func NewServer(u transport2.Usecases) *handler.Server {
+func NewServer(u usecase.Usecases) *handler.Server {
 	resolver := NewResolver(u)
 	srv := handler.New(NewExecutableSchema(Config{Resolvers: resolver}))
 

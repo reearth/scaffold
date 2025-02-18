@@ -4,26 +4,50 @@ import (
 	"context"
 
 	"github.com/reearth/server-scaffold/pkg/asset"
+	"github.com/reearth/server-scaffold/pkg/project"
 	"github.com/reearth/server-scaffold/pkg/user"
+	"github.com/reearth/server-scaffold/pkg/workspace"
 )
 
-func (uc *Usecase) FindByIDs(ctx context.Context, ids asset.IDList, user *user.User) (asset.List, error) {
-	assets, err := uc.Repos.Asset.FindByIDs(ctx, ids)
+type FindByIDs struct {
+	assetRepo     asset.Repo
+	projectRepo   project.Repo
+	workspaceRepo workspace.Repo
+
+	assetPolicy asset.Policy
+}
+
+func NewFindByIDs(
+	assetRepo asset.Repo,
+	projectRepo project.Repo,
+	workspaceRepo workspace.Repo,
+	assetPolicy asset.Policy,
+) *FindByIDs {
+	return &FindByIDs{
+		assetRepo:     assetRepo,
+		projectRepo:   projectRepo,
+		workspaceRepo: workspaceRepo,
+		assetPolicy:   assetPolicy,
+	}
+}
+
+func (uc *FindByIDs) Execute(ctx context.Context, ids asset.IDList, user *user.User) (asset.List, error) {
+	assets, err := uc.assetRepo.FindByIDs(ctx, ids)
 	if err != nil {
 		return nil, err
 	}
 
-	projects, err := uc.Repos.Project.FindByIDs(ctx, assets.ProjectIDs())
+	projects, err := uc.projectRepo.FindByIDs(ctx, assets.ProjectIDs())
 	if err != nil {
 		return nil, err
 	}
 
-	workspaces, err := uc.Repos.Workspace.FindByIDs(ctx, projects.WorkspaceIDs())
+	workspaces, err := uc.workspaceRepo.FindByIDs(ctx, projects.WorkspaceIDs())
 	if err != nil {
 		return nil, err
 	}
 
-	assets, err = uc.Policies.Asset.Filter(ctx, user, workspaces, projects, assets)
+	assets, err = uc.assetPolicy.Filter(ctx, user, workspaces, projects, assets)
 	if err != nil {
 		return nil, err
 	}

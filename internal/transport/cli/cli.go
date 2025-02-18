@@ -4,34 +4,39 @@ import (
 	"errors"
 
 	"github.com/reearth/server-scaffold/internal/infra/mongo/mongomigrate"
-	"github.com/reearth/server-scaffold/internal/transport"
 	"github.com/samber/lo"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type Config struct {
-	Args     []string
-	Usecases transport.Usecases
-	Mongo    *mongo.Database
+type CLI struct {
+	args  []string
+	mongo *mongo.Database
 }
 
-func Do(conf Config) error {
+func New(args []string, mongo *mongo.Database) *CLI {
+	return &CLI{
+		args:  args,
+		mongo: mongo,
+	}
+}
+
+func (c *CLI) Must() {
+	lo.Must0(c.Do())
+}
+
+func (c *CLI) Do() error {
 	var command string
-	if len(conf.Args) > 1 {
-		command = conf.Args[1]
+	if len(c.args) > 1 {
+		command = c.args[1]
 	}
 
 	if command == "migrate" {
-		return migrate(conf.Mongo)
+		return migrate(c.mongo)
 	}
 
 	// TODO: add more commands for workers
 
 	return errors.New("invalid command")
-}
-
-func Must(conf Config) {
-	lo.Must0(Do(conf))
 }
 
 func migrate(mongo *mongo.Database) error {

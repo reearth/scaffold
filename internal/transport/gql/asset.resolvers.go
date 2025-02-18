@@ -15,7 +15,7 @@ import (
 
 // CreateAsset is the resolver for the createAsset field.
 func (r *mutationResolver) CreateAsset(ctx context.Context, input gqlmodel.CreateAssetInput) (*gqlmodel.Asset, error) {
-	a, err := r.uc.Asset.Create(ctx, assetuc.CreateParam{
+	a, err := r.uc.Asset.Create.Execute(ctx, assetuc.CreateParam{
 		ProjectID: project.ID(input.ProjectID),
 		Name:      input.Name,
 		// Data:      input.Data,

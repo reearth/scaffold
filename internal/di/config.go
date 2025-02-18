@@ -1,7 +1,9 @@
-package boot
+package di
 
 import (
 	"os"
+
+	"log"
 
 	"github.com/caarlos0/env/v11"
 	"github.com/joho/godotenv"
@@ -10,8 +12,9 @@ import (
 
 type Config struct {
 	DB     string `pp:"-"`
-	DB_APP string
+	DB_APP string `envDefault:"reearth"`
 	Port   string `env:"PORT" envDefault:"8080"`
+	Dev    bool
 }
 
 func (cfg *Config) Print() {
@@ -19,10 +22,10 @@ func (cfg *Config) Print() {
 }
 
 func LoadConfig() *Config {
-	if err := godotenv.Load(); err != nil {
-		if !os.IsNotExist(err) {
-			panic(err)
-		}
+	if err := godotenv.Load(".env"); err != nil && !os.IsNotExist(err) {
+		panic(err)
+	} else if err == nil {
+		log.Println("config: .env loaded")
 	}
 
 	var cfg Config
@@ -30,5 +33,6 @@ func LoadConfig() *Config {
 		panic(err)
 	}
 
+	cfg.Print()
 	return &cfg
 }

@@ -4,7 +4,7 @@ This is an example repository for showing the standard module design used in Re:
 
 - **cmd**: Entrypoint
 - **internal**
-  - **boot**: Read the config, initialize DB drivers, etc., and finally initialize usecases and run the appropriate transport layer.
+  - **di**: Read the config, initialize DB drivers, etc., and finally initialize usecases and run the appropriate transport layer.
   - **infra**: Implements repos, policies, and gateways.
     - **gcp**
     - **mongo**
@@ -13,22 +13,19 @@ This is an example repository for showing the standard module design used in Re:
     - **cli**
     - **echo**
     - **gql**
+    - ...
+  - **usecase**: Define gateways interfaces
+    - **xxxuc** Actual usecase implementation
+    - **gateway**: Gateways interfaces (including transaction interfaces)
     - **usecase.go**: Usecase container
     - ...
-  - **usecase**: Define gateways I/F, transaction I/F, gateways container, repo container, and policy container
-    - **xxxuc** Actual usecase implementation
-    - **gateway.go**: Gateways interfaces and container
-    - **policy.go**: Policy container
-    - **repo.go**: Repo container
-    - **transaction.go**: Transaciton interfaces
-    - ...
-- **pkg**: Domain models, repo interfaces, policy interfaces
+- **pkg**: Domain models, repo/policy interfaces
 
 ## Dependency Flows
 
 ```mermaid
 flowchart
-  subgraph boot
+  subgraph di
     config
   end
   subgraph infra
@@ -40,7 +37,6 @@ flowchart
   subgraph usecase
     uc[xxxuc]
     gatewayIF[Gateway I/F]
-    transaction[Transaction I/F]
   end
   subgraph domain
     model[Domain Models]
@@ -48,17 +44,15 @@ flowchart
     policyIF[Policy I/F]
   end
 
-  cmd --> boot
+  cmd --> di
   cmd --> transport
-  boot -- initialize --> uc
-  boot -- initialize --> infra
+  di --> |init| uc
+  di --> |init| infra
   transport --> uc
   usecase --> domain
   uc --> gatewayIF
-  uc --> transaction
-  infra -- impl --> repoIF
-  infra -- impl --> policyIF
-  infra -- impl --> gatewayIF
-  infra -- impl --> transaction
+  infra --> |impl| repoIF
+  infra --> |impl| policyIF
+  infra --> |impl| gatewayIF
   infra --> domain
 ```

@@ -6,8 +6,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/reearth/server-scaffold/internal/transport"
 	"github.com/reearth/server-scaffold/internal/transport/gql"
+	"github.com/reearth/server-scaffold/internal/usecase"
 	"golang.org/x/net/http2"
 )
 
@@ -19,7 +19,7 @@ type Server struct {
 
 type Config struct {
 	Port     string
-	Usecases transport.Usecases
+	Usecases usecase.Usecases
 	Dev      bool
 }
 

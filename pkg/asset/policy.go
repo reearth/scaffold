@@ -20,7 +20,9 @@ type Policy interface {
 
 type DefaultPolicy struct{}
 
-var _ Policy = DefaultPolicy{}
+func NewPolicy() Policy {
+	return DefaultPolicy{}
+}
 
 func (DefaultPolicy) CanRead(ctx context.Context, user *user.User, ws *workspace.Workspace, project *project.Project, asset *Asset) error {
 	if !ws.Members().HasRoleOrHigher(user.ID(), workspace.RoleMember) {

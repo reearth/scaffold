@@ -4,12 +4,12 @@ import (
 	"context"
 	"io"
 
-	"github.com/reearth/server-scaffold/internal/usecase"
+	"github.com/reearth/server-scaffold/internal/usecase/gateway"
 )
 
 type Storage struct{}
 
-var _ usecase.Storage = (*Storage)(nil)
+var _ gateway.Storage = (*Storage)(nil)
 
 func NewStorage() *Storage {
 	return &Storage{}

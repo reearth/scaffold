@@ -11,8 +11,8 @@ import (
 	"github.com/auth0/go-jwt-middleware/v2/jwks"
 	"github.com/auth0/go-jwt-middleware/v2/validator"
 	"github.com/labstack/echo/v4"
-	"github.com/reearth/server-scaffold/internal/transport"
 	"github.com/reearth/server-scaffold/internal/transport/gql"
+	"github.com/reearth/server-scaffold/internal/usecase"
 )
 
 type AuthConfig struct {
@@ -37,7 +37,7 @@ func (a AuthConfig) Validator() (*validator.Validator, error) {
 	)
 }
 
-func UseAuthMiddleware(e *echo.Group, config AuthConfig, uc transport.Usecases) error {
+func UseAuthMiddleware(e *echo.Group, config AuthConfig, uc usecase.Usecases) error {
 	validator, err := config.Validator()
 	if err != nil {
 		return err
@@ -51,7 +51,7 @@ func UseAuthMiddleware(e *echo.Group, config AuthConfig, uc transport.Usecases) 
 	return nil
 }
 
-func AuthMiddleware(config AuthConfig, uc transport.Usecases) echo.MiddlewareFunc {
+func AuthMiddleware(config AuthConfig, uc usecase.Usecases) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			ctx := c.Request().Context()
@@ -65,7 +65,7 @@ func AuthMiddleware(config AuthConfig, uc transport.Usecases) echo.MiddlewareFun
 			// 	return echo.NewHTTPError(http.StatusInternalServerError, "failed to marshal claims")
 			// }
 
-			u, err := uc.User.FindBySub(ctx, claims.RegisteredClaims.Subject)
+			u, err := uc.User.FindBySub.Execute(ctx, claims.RegisteredClaims.Subject)
 			if err != nil {
 				return echo.NewHTTPError(500, "failed to find user")
 			}

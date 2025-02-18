@@ -3,7 +3,7 @@ package gql
 import (
 	"context"
 
-	"github.com/reearth/server-scaffold/internal/transport"
+	"github.com/reearth/server-scaffold/internal/usecase"
 	"github.com/reearth/server-scaffold/pkg/user"
 )
 
@@ -12,10 +12,10 @@ import (
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	uc transport.Usecases
+	uc usecase.Usecases
 }
 
-func NewResolver(uc transport.Usecases) *Resolver {
+func NewResolver(uc usecase.Usecases) *Resolver {
 	return &Resolver{uc: uc}
 }
 

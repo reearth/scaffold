@@ -1,32 +1,22 @@
 package main
 
 import (
+	"context"
 	"os"
 
-	"github.com/reearth/server-scaffold/internal/boot"
-	"github.com/reearth/server-scaffold/internal/transport/cli"
-	"github.com/reearth/server-scaffold/internal/transport/echo"
+	"github.com/reearth/server-scaffold/internal/di"
+	"github.com/samber/lo"
 )
 
 func main() {
-	cfg := boot.LoadConfig()
-	cfg.Print()
-
-	usecases, mongo := boot.InitUsecases(cfg)
+	ctx := context.Background()
 
 	if len(os.Args) > 1 {
-		cli.Must(cli.Config{
-			Args:     os.Args,
-			Usecases: usecases,
-			Mongo:    mongo,
-		})
+		cliApp := lo.Must(di.InitCLI(ctx, os.Args))
+		cliApp.Must()
 		return
 	}
 
-	if err := echo.New(echo.Config{
-		Port:     cfg.Port,
-		Usecases: usecases,
-	}).Start(); err != nil {
-		panic(err)
-	}
+	server := lo.Must(di.InitEcho(ctx))
+	lo.Must0(server.Start())
 }
