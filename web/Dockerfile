@@ -1,28 +1,24 @@
 ARG NODE_VERSION=22.11.0
 ARG NGINX_VERSION=1.27
-ARG NODE_OPTIONS="--max-old-space-size=4096"
 ARG GITHUB_SHA
 
 FROM node:${NODE_VERSION}-slim AS builder
 
+# https://pnpm.io/ja/next/docker
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-ENV NODE_OPTIONS=$NODE_OPTIONS
-ENV GITHUB_SHA=$GITHUB_SHA
 
 RUN npm install -g corepack && corepack enable
 
+COPY . /app
 WORKDIR /app
 
-RUN --mount=type=bind,source=package.json,target=package.json \
-  --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
-  --mount=type=cache,id=pnpm,target=/pnpm/store \
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
   pnpm install --frozen-lockfile
 
-COPY . /app
+ENV GITHUB_SHA=$GITHUB_SHA
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-  pnpm run build
+RUN pnpm run build
 
 FROM nginx:${NGINX_VERSION}-alpine
 WORKDIR /usr/share/nginx/html
