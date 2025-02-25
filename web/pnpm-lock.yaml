@@ -60,9 +60,6 @@ importers:
       vite:
         specifier: ^6.2.0
         version: 6.2.0
-      vite-plugin-git-revision:
-        specifier: ^0.1.9
-        version: 0.1.9(vite@6.2.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.7.3)(vite@6.2.0)
@@ -2000,11 +1997,6 @@ packages:
     resolution: {integrity: sha512-2fX0QwX4GkkkpULXdT1Pf4q0tC1i1lFOyseKoonavXUNlQ77KpW2XqBGGNIm/J4Ows4KxgGJzDguYVPKwG/n5A==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
-
-  vite-plugin-git-revision@0.1.9:
-    resolution: {integrity: sha512-gq4JxxMu6kZVizULpq5WU0MgW3raVq1OLQJljFv2W3wz99C6UwO3Zek3lVID5XAxYUgei91TepfLmVcqzxFxyA==}
-    peerDependencies:
-      vite: '>=2.0.0'
 
   vite-tsconfig-paths@5.1.4:
     resolution: {integrity: sha512-cYj0LRuLV2c2sMqhqhGpaO3LretdtMn/BVX4cPLanIZuwwrkVl+lK84E/miEXkCHWXuq65rhNN4rXsBcOB3S4w==}
@@ -4255,10 +4247,6 @@ snapshots:
       - terser
       - tsx
       - yaml
-
-  vite-plugin-git-revision@0.1.9(vite@6.2.0):
-    dependencies:
-      vite: 6.2.0
 
   vite-tsconfig-paths@5.1.4(typescript@5.7.3)(vite@6.2.0):
     dependencies:

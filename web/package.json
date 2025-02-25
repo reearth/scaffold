@@ -7,6 +7,7 @@
     "test": "vitest",
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "fix": "eslint --fix .",
     "format": "prettier --write .",
@@ -33,7 +34,6 @@
     "prettier": "^3.5.2",
     "typescript": "~5.7.2",
     "vite": "^6.2.0",
-    "vite-plugin-git-revision": "^0.1.9",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.7"
   },
@@ -43,5 +43,6 @@
       "esbuild"
     ]
   },
-  "prettier": "eslint-config-reearth/.prettierrc.json"
+  "prettier": "eslint-config-reearth/.prettierrc.json",
+  "packageManager": "pnpm@10.5.0"
 }
