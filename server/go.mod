@@ -1,10 +1,9 @@
 module github.com/reearth/scaffold/server
 
-go 1.23.4
+go 1.24.0
 
 require (
 	github.com/99designs/gqlgen v0.17.63
-	github.com/air-verse/air v1.61.7
 	github.com/auth0/go-jwt-middleware/v2 v2.2.2
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/google/wire v0.6.0
@@ -22,6 +21,7 @@ require (
 require (
 	dario.cat/mergo v1.0.1 // indirect
 	github.com/agnivade/levenshtein v1.2.0 // indirect
+	github.com/air-verse/air v1.61.7 // indirect
 	github.com/bep/godartsass v1.2.0 // indirect
 	github.com/bep/godartsass/v2 v2.1.0 // indirect
 	github.com/bep/golibsass v1.2.0 // indirect
@@ -72,7 +72,9 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-// tool (
-// 	github.com/99designs/gqlgen
-// 	github.com/99designs/gqlgen/graphql/introspection
-// )
+tool (
+	github.com/99designs/gqlgen
+	github.com/99designs/gqlgen/graphql/introspection
+	github.com/air-verse/air
+	github.com/google/wire/cmd/wire
+)
