@@ -62,6 +62,8 @@ jobs:
     uses: reearth/actions/.github/workflows/build-docker.yml@main
     with:
       image: ghcr.io/reearth/scaffold-web
+      context: web
+      use_dockerhub: false
       name: ${{ needs.build-prepare.outputs.name }}
       new_tag: ${{ needs.build-prepare.outputs.new_tag }}
       new_tag_short: ${{ needs.build-prepare.outputs.new_tag_short }}
@@ -76,6 +78,8 @@ jobs:
     uses: reearth/actions/.github/workflows/build-docker.yml@main
     with:
       image: ghcr.io/reearth/scaffold-api
+      context: server
+      use_dockerhub: false
       name: ${{ needs.build-prepare.outputs.name }}
       new_tag: ${{ needs.build-prepare.outputs.new_tag }}
       new_tag_short: ${{ needs.build-prepare.outputs.new_tag_short }}
