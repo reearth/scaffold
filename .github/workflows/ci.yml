@@ -19,7 +19,7 @@ jobs:
       - uses: reearth/actions/.github/actions/prepare-build@main
         id: prepare
         with:
-          repo: reearth/scaffold
+          repo: ${{ vars.REPO }}
           # checkout: true
       - name: changed files for web
         id: web
@@ -63,7 +63,7 @@ jobs:
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_web == 'true'
     uses: reearth/actions/.github/workflows/build-docker.yml@main
     with:
-      image: ghcr.io/reearth/scaffold-web
+      image: ${{ vars.IMAGE_WEB }}
       context: web
       use_dockerhub: false
       name: ${{ needs.prepare.outputs.name }}
@@ -79,7 +79,7 @@ jobs:
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_server == 'true'
     uses: reearth/actions/.github/workflows/build-docker.yml@main
     with:
-      image: ghcr.io/reearth/scaffold-api
+      image: ${{ vars.IMAGE_SERVER }}
       context: server
       use_dockerhub: false
       name: ${{ needs.prepare.outputs.name }}
@@ -102,9 +102,11 @@ jobs:
   # deploy-web:
   #   needs: [build, ci-web]
   #   if: needs.ci-web.result == 'success'
-  #   uses: ./.github/workflows/deploy_test.yml
+  #   uses: eearth/actions/.github/workflows/deploy-cloudrun.yml@main
   #   with:
-  #     target: web
+  #     name: ${{ vars.SERVICE_NAME_WEB }}
+  #     image: ${{ vars.IMAGE_WEB }}
+  #     region: ${{ vars.REGION }}
   #   secrets:
   #     GCP_SA_EMAIL: ${{ secrets.GCP_SA_EMAIL }}
   #     GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
@@ -113,9 +115,11 @@ jobs:
   # deploy-server:
   #   needs: [build, ci-server]
   #   if: needs.ci-server.result == 'success'
-  #   uses: ./.github/workflows/deploy_test.yml
+  #   uses: eearth/actions/.github/workflows/deploy-cloudrun.yml@main
   #   with:
-  #     target: server
+  #     name: ${{ vars.SERVICE_NAME_WEB }}
+  #     image: ${{ vars.IMAGE_WEB }}
+  #     region: ${{ vars.REGION }}
   #   secrets:
   #     GCP_SA_EMAIL: ${{ secrets.GCP_SA_EMAIL }}
   #     GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
