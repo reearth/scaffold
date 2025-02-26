@@ -8,11 +8,19 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      web: ${{ steps.web.outputs.any_modified }}
-      server: ${{ steps.server.outputs.any_modified }}
+      changed_web: ${{ steps.web.outputs.any_modified }}
+      changed_server: ${{ steps.server.outputs.any_modified }}
+      build: ${{ steps.prepare.outputs.build }}
+      sha_short: ${{ steps.prepare.outputs.sha_short }}
+      new_tag: ${{ steps.prepare.outputs.new_tag }}
+      new_tag_short: ${{ steps.prepare.outputs.new_tag_short }}
+      name: ${{ steps.prepare.outputs.name }}
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
+      - uses: reearth/actions/.github/actions/prepare-build@main
+        id: prepare
+        with:
+          repo: reearth/scaffold
+          # checkout: true
       - name: changed files for web
         id: web
         uses: tj-actions/changed-files@v45
@@ -29,16 +37,16 @@ jobs:
           files: |
             server/**
             .github/workflows/ci.yml
-            .github/workflows/ci_server.yml
+            .github/workflows/ci-server.yml
 
   ci-web:
     needs: prepare
-    if: needs.prepare.outputs.web == 'true'
+    if: needs.prepare.outputs.changed_web == 'true'
     uses: ./.github/workflows/ci-web.yml
 
   ci-server:
     needs: prepare
-    if: needs.prepare.outputs.server == 'true'
+    if: needs.prepare.outputs.changed_server == 'true'
     uses: ./.github/workflows/ci-server.yml
 
   ci:
@@ -50,40 +58,34 @@ jobs:
     steps:
       - run: echo OK
 
-  build-prepare:
-    needs: prepare
-    uses: reearth/actions/.github/workflows/prepare-build.yml@main
-    with:
-      repo: reearth/scaffold
-
   build-web:
-    needs: [prepare, build-prepare]
-    if: needs.prepare.outputs.web == 'true'
+    needs: prepare
+    if: needs.prepare.outputs.build && needs.prepare.outputs.changed_web == 'true'
     uses: reearth/actions/.github/workflows/build-docker.yml@main
     with:
       image: ghcr.io/reearth/scaffold-web
       context: web
       use_dockerhub: false
-      name: ${{ needs.build-prepare.outputs.name }}
-      new_tag: ${{ needs.build-prepare.outputs.new_tag }}
-      new_tag_short: ${{ needs.build-prepare.outputs.new_tag_short }}
-      sha_short: ${{ needs.build-prepare.outputs.sha_short }}
+      name: ${{ needs.prepare.outputs.name }}
+      new_tag: ${{ needs.prepare.outputs.new_tag }}
+      new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
+      sha_short: ${{ needs.prepare.outputs.sha_short }}
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
   build-server:
-    needs: [prepare, build-prepare]
-    if: needs.prepare.outputs.server == 'true'
+    needs: prepare
+    if: needs.prepare.outputs.build && needs.prepare.outputs.changed_server == 'true'
     uses: reearth/actions/.github/workflows/build-docker.yml@main
     with:
       image: ghcr.io/reearth/scaffold-api
       context: server
       use_dockerhub: false
-      name: ${{ needs.build-prepare.outputs.name }}
-      new_tag: ${{ needs.build-prepare.outputs.new_tag }}
-      new_tag_short: ${{ needs.build-prepare.outputs.new_tag_short }}
-      sha_short: ${{ needs.build-prepare.outputs.sha_short }}
+      name: ${{ needs.prepare.outputs.name }}
+      new_tag: ${{ needs.prepare.outputs.new_tag }}
+      new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
+      sha_short: ${{ needs.prepare.outputs.sha_short }}
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
