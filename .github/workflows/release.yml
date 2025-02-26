@@ -1,0 +1,22 @@
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: false
+        description: 'Next version (NOTE: Switch the branch to "release"!)'
+        type: choice
+        default: minor
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/release'
+    steps:
+      - uses: reearth/actions/.github/actions/release@main
+        with:
+          version: ${{ inputs.version }}

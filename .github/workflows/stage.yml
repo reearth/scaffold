@@ -1,0 +1,10 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  stage:
+    name: Stage
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: reearth/actions/.github/actions/stage@main
