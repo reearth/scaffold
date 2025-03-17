@@ -16,13 +16,13 @@ jobs:
       new_tag_short: ${{ steps.prepare.outputs.new_tag_short }}
       name: ${{ steps.prepare.outputs.name }}
     steps:
-      - uses: reearth/actions/.github/actions/prepare-build@main
+      - uses: reearth/actions/prepare-build@main
         id: prepare
         with:
           repo: ${{ vars.REPO }}
       - name: changed files for server
         id: server
-        uses: tj-actions/changed-files@v45
+        uses: step-security/changed-files@v45
         with:
           files: |
             server/**
@@ -30,7 +30,7 @@ jobs:
             .github/workflows/ci-server.yml
       - name: changed files for web
         id: web
-        uses: tj-actions/changed-files@v45
+        uses: step-security/changed-files@v45
         with:
           files: |
             web/**
