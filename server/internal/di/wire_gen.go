@@ -32,11 +32,32 @@ func InitEcho(ctx context.Context) (*echo.Server, error) {
 	project := mongo.NewProject(database)
 	workspace := mongo.NewWorkspace(database)
 	policy := todo.NewPolicy()
-	findByIDs := todouc.NewFindByIDs(mongoTodo, project, workspace, policy)
-	findByProject := todouc.NewFindByProject(mongoTodo, project, workspace, policy)
+	findByIDs := &todouc.FindByIDs{
+		TodoRepo:      mongoTodo,
+		ProjectRepo:   project,
+		WorkspaceRepo: workspace,
+		TodoPolicy:    policy,
+	}
+	findByProject := &todouc.FindByProject{
+		TodoRepo:      mongoTodo,
+		ProjectRepo:   project,
+		WorkspaceRepo: workspace,
+		TodoPolicy:    policy,
+	}
 	storage := gcp.NewStorage()
-	create := todouc.NewCreate(mongoTodo, project, workspace, policy, storage)
-	update := todouc.NewUpdate(mongoTodo, project, workspace, policy)
+	create := &todouc.Create{
+		TodoRepo:      mongoTodo,
+		ProjectRepo:   project,
+		WorkspaceRepo: workspace,
+		TodoPolicy:    policy,
+		Storage:       storage,
+	}
+	update := &todouc.Update{
+		TodoRepo:      mongoTodo,
+		ProjectRepo:   project,
+		WorkspaceRepo: workspace,
+		TodoPolicy:    policy,
+	}
 	todoucUsecase := &todouc.Usecase{
 		FindByIDs:     findByIDs,
 		FindByProject: findByProject,
@@ -46,7 +67,9 @@ func InitEcho(ctx context.Context) (*echo.Server, error) {
 	projectucUsecase := &projectuc.Usecase{}
 	workspaceucUsecase := &workspaceuc.Usecase{}
 	user := mongo.NewUser(database)
-	findBySub := useruc.NewFindBySub(user)
+	findBySub := &useruc.FindBySub{
+		UserRepo: user,
+	}
 	userucUsecase := &useruc.Usecase{
 		FindBySub: findBySub,
 	}

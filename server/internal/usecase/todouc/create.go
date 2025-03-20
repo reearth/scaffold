@@ -33,27 +33,11 @@ func (p CreateParam) Validate() error {
 }
 
 type Create struct {
-	assetRepo     todo.Repo
-	projectRepo   project.Repo
-	workspaceRepo workspace.Repo
-	assetPolicy   todo.Policy
-	storage       gateway.Storage
-}
-
-func NewCreate(
-	assetRepo todo.Repo,
-	projectRepo project.Repo,
-	workspaceRepo workspace.Repo,
-	assetPolicy todo.Policy,
-	storage gateway.Storage,
-) *Create {
-	return &Create{
-		assetRepo:     assetRepo,
-		projectRepo:   projectRepo,
-		workspaceRepo: workspaceRepo,
-		assetPolicy:   assetPolicy,
-		storage:       storage,
-	}
+	TodoRepo      todo.Repo
+	ProjectRepo   project.Repo
+	WorkspaceRepo workspace.Repo
+	TodoPolicy    todo.Policy
+	Storage       gateway.Storage
 }
 
 func (uc *Create) Execute(ctx context.Context, param CreateParam, user *user.User) (*todo.Todo, error) {
@@ -61,16 +45,16 @@ func (uc *Create) Execute(ctx context.Context, param CreateParam, user *user.Use
 		return nil, err
 	}
 
-	_, project, _, err := UsecaseBuilder(ctx, user).
-		FindProjectByID(param.ProjectID, uc.projectRepo, uc.workspaceRepo).
-		CanCreateTodo(uc.assetPolicy).
+	_, project, _, err := build(ctx, user).
+		FindProjectByID(param.ProjectID, uc.ProjectRepo, uc.WorkspaceRepo).
+		CanCreateTodo(uc.TodoPolicy).
 		Result()
 
 	if err != nil {
 		return nil, err
 	}
 
-	if err := uc.storage.Save(ctx, param.Name, param.Data); err != nil {
+	if err := uc.Storage.Save(ctx, param.Name, param.Data); err != nil {
 		return nil, err
 	}
 
@@ -83,7 +67,7 @@ func (uc *Create) Execute(ctx context.Context, param CreateParam, user *user.Use
 		return nil, err
 	}
 
-	if err := uc.assetRepo.Save(ctx, asset); err != nil {
+	if err := uc.TodoRepo.Save(ctx, asset); err != nil {
 		return nil, err
 	}
 

@@ -24,24 +24,10 @@ func (p UpdateParam) Validate() error {
 }
 
 type Update struct {
-	assetRepo     todo.Repo
-	projectRepo   project.Repo
-	workspaceRepo workspace.Repo
-	assetPolicy   todo.Policy
-}
-
-func NewUpdate(
-	assetRepo todo.Repo,
-	projectRepo project.Repo,
-	workspaceRepo workspace.Repo,
-	assetPolicy todo.Policy,
-) *Update {
-	return &Update{
-		assetRepo:     assetRepo,
-		projectRepo:   projectRepo,
-		workspaceRepo: workspaceRepo,
-		assetPolicy:   assetPolicy,
-	}
+	TodoRepo      todo.Repo
+	ProjectRepo   project.Repo
+	WorkspaceRepo workspace.Repo
+	TodoPolicy    todo.Policy
 }
 
 func (uc *Update) Execute(ctx context.Context, param UpdateParam, user *user.User) (*todo.Todo, error) {
@@ -49,22 +35,22 @@ func (uc *Update) Execute(ctx context.Context, param UpdateParam, user *user.Use
 		return nil, err
 	}
 
-	asset, _, _, err := UsecaseBuilder(ctx, user).
-		FindTodoByID(param.ID, uc.assetRepo).
-		FindProjectByTodo(uc.projectRepo, uc.workspaceRepo).
-		CanUpdateTodo(uc.assetPolicy).
+	todo, _, _, err := build(ctx, user).
+		FindTodoByID(param.ID, uc.TodoRepo).
+		FindProjectByTodo(uc.ProjectRepo, uc.WorkspaceRepo).
+		CanUpdateTodo(uc.TodoPolicy).
 		Result()
 	if err != nil {
 		return nil, err
 	}
 
 	if param.Name != nil {
-		asset.SetName(*param.Name)
+		todo.SetName(*param.Name)
 	}
 
-	if err := uc.assetRepo.Save(ctx, asset); err != nil {
+	if err := uc.TodoRepo.Save(ctx, todo); err != nil {
 		return nil, err
 	}
 
-	return asset, nil
+	return todo, nil
 }

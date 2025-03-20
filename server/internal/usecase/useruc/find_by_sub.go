@@ -7,15 +7,9 @@ import (
 )
 
 type FindBySub struct {
-	userRepo user.Repo
-}
-
-func NewFindBySub(userRepo user.Repo) *FindBySub {
-	return &FindBySub{
-		userRepo: userRepo,
-	}
+	UserRepo user.Repo
 }
 
 func (uc *FindBySub) Execute(ctx context.Context, sub string) (*user.User, error) {
-	return uc.userRepo.FindBySub(ctx, sub)
+	return uc.UserRepo.FindBySub(ctx, sub)
 }

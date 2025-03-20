@@ -3,7 +3,7 @@ package useruc
 import "github.com/google/wire"
 
 var Wire = wire.NewSet(
-	NewFindBySub,
+	wire.Struct(new(FindBySub), "*"),
 	wire.Struct(new(Usecase), "*"),
 )
 

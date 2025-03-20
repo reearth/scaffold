@@ -12,10 +12,10 @@ import (
 )
 
 var Wire = wire.NewSet(
-	NewFindByIDs,
-	NewFindByProject,
-	NewCreate,
-	NewUpdate,
+	wire.Struct(new(FindByIDs), "*"),
+	wire.Struct(new(FindByProject), "*"),
+	wire.Struct(new(Create), "*"),
+	wire.Struct(new(Update), "*"),
 	wire.Struct(new(Usecase), "*"),
 )
 
@@ -26,7 +26,7 @@ type Usecase struct {
 	Update        *Update
 }
 
-type Builder struct {
+type builder struct {
 	ctx       context.Context
 	err       error
 	user      *user.User
@@ -35,18 +35,18 @@ type Builder struct {
 	workspace *workspace.Workspace
 }
 
-func UsecaseBuilder(ctx context.Context, user *user.User) *Builder {
-	return &Builder{ctx: ctx, user: user}
+func build(ctx context.Context, user *user.User) *builder {
+	return &builder{ctx: ctx, user: user}
 }
 
-func (b *Builder) Result() (*todo.Todo, *project.Project, *workspace.Workspace, error) {
+func (b *builder) Result() (*todo.Todo, *project.Project, *workspace.Workspace, error) {
 	if b.err != nil {
 		return nil, nil, nil, b.err
 	}
 	return b.todo, b.project, b.workspace, b.err
 }
 
-func (b *Builder) FindTodoByID(id todo.ID, assetRepo todo.Repo) *Builder {
+func (b *builder) FindTodoByID(id todo.ID, assetRepo todo.Repo) *builder {
 	if b.err != nil {
 		return b
 	}
@@ -54,7 +54,7 @@ func (b *Builder) FindTodoByID(id todo.ID, assetRepo todo.Repo) *Builder {
 	return b
 }
 
-func (b *Builder) FindProjectByID(id project.ID, projectRepo project.Repo, workspaceRepo workspace.Repo) *Builder {
+func (b *builder) FindProjectByID(id project.ID, projectRepo project.Repo, workspaceRepo workspace.Repo) *builder {
 	if b.err != nil {
 		return b
 	}
@@ -65,7 +65,7 @@ func (b *Builder) FindProjectByID(id project.ID, projectRepo project.Repo, works
 	return b
 }
 
-func (b *Builder) FindProjectByTodo(projectRepo project.Repo, workspaceRepo workspace.Repo) *Builder {
+func (b *builder) FindProjectByTodo(projectRepo project.Repo, workspaceRepo workspace.Repo) *builder {
 	if b.err != nil {
 		return b
 	}
@@ -80,7 +80,7 @@ func (b *Builder) FindProjectByTodo(projectRepo project.Repo, workspaceRepo work
 	return b
 }
 
-func (b *Builder) CanReadTodo(assetPolicy todo.Policy) *Builder {
+func (b *builder) CanReadTodo(assetPolicy todo.Policy) *builder {
 	if b.err != nil {
 		return b
 	}
@@ -88,7 +88,7 @@ func (b *Builder) CanReadTodo(assetPolicy todo.Policy) *Builder {
 	return b
 }
 
-func (b *Builder) CanListTodo(assetPolicy todo.Policy) *Builder {
+func (b *builder) CanListTodo(assetPolicy todo.Policy) *builder {
 	if b.err != nil {
 		return b
 	}
@@ -96,7 +96,7 @@ func (b *Builder) CanListTodo(assetPolicy todo.Policy) *Builder {
 	return b
 }
 
-func (b *Builder) CanCreateTodo(assetPolicy todo.Policy) *Builder {
+func (b *builder) CanCreateTodo(assetPolicy todo.Policy) *builder {
 	if b.err != nil {
 		return b
 	}
@@ -104,7 +104,7 @@ func (b *Builder) CanCreateTodo(assetPolicy todo.Policy) *Builder {
 	return b
 }
 
-func (b *Builder) CanUpdateTodo(assetPolicy todo.Policy) *Builder {
+func (b *builder) CanUpdateTodo(assetPolicy todo.Policy) *builder {
 	if b.err != nil {
 		return b
 	}
@@ -112,7 +112,7 @@ func (b *Builder) CanUpdateTodo(assetPolicy todo.Policy) *Builder {
 	return b
 }
 
-func (b *Builder) CanDeleteTodo(assetPolicy todo.Policy) *Builder {
+func (b *builder) CanDeleteTodo(assetPolicy todo.Policy) *builder {
 	if b.err != nil {
 		return b
 	}

@@ -10,44 +10,29 @@ import (
 )
 
 type FindByIDs struct {
-	assetRepo     todo.Repo
-	projectRepo   project.Repo
-	workspaceRepo workspace.Repo
-
-	assetPolicy todo.Policy
-}
-
-func NewFindByIDs(
-	assetRepo todo.Repo,
-	projectRepo project.Repo,
-	workspaceRepo workspace.Repo,
-	assetPolicy todo.Policy,
-) *FindByIDs {
-	return &FindByIDs{
-		assetRepo:     assetRepo,
-		projectRepo:   projectRepo,
-		workspaceRepo: workspaceRepo,
-		assetPolicy:   assetPolicy,
-	}
+	TodoRepo      todo.Repo
+	ProjectRepo   project.Repo
+	WorkspaceRepo workspace.Repo
+	TodoPolicy    todo.Policy
 }
 
 func (uc *FindByIDs) Execute(ctx context.Context, ids todo.IDList, user *user.User) (todo.List, error) {
-	assets, err := uc.assetRepo.FindByIDs(ctx, ids)
+	assets, err := uc.TodoRepo.FindByIDs(ctx, ids)
 	if err != nil {
 		return nil, err
 	}
 
-	projects, err := uc.projectRepo.FindByIDs(ctx, assets.ProjectIDs())
+	projects, err := uc.ProjectRepo.FindByIDs(ctx, assets.ProjectIDs())
 	if err != nil {
 		return nil, err
 	}
 
-	workspaces, err := uc.workspaceRepo.FindByIDs(ctx, projects.WorkspaceIDs())
+	workspaces, err := uc.WorkspaceRepo.FindByIDs(ctx, projects.WorkspaceIDs())
 	if err != nil {
 		return nil, err
 	}
 
-	assets, err = uc.assetPolicy.Filter(ctx, user, workspaces, projects, assets)
+	assets, err = uc.TodoPolicy.Filter(ctx, user, workspaces, projects, assets)
 	if err != nil {
 		return nil, err
 	}
