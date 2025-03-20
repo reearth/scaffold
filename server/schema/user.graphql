@@ -1,0 +1,17 @@
+type User implements Node {
+  id: ID!
+  name: String!
+  email: String!
+}
+
+type Me implements Node {
+  id: ID!
+  name: String!
+  email: String!
+  workspaces: WorkspaceConnection @goField(forceResolver: true)
+}
+
+extend type Query {
+  me: Me
+  user(email: String!): User
+}

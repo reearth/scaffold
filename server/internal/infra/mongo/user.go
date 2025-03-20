@@ -8,9 +8,9 @@ import (
 	"github.com/reearth/scaffold/server/internal/infra/mongo/mongodoc"
 	"github.com/reearth/scaffold/server/pkg/project"
 	"github.com/reearth/scaffold/server/pkg/user"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/bson"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 type User struct {
@@ -92,7 +92,7 @@ func (a *User) findOne(ctx context.Context, filter bson.M) (*user.User, error) {
 	return doc.ToUser()
 }
 
-func (a *User) findMany(ctx context.Context, filter bson.M, opts ...*options.FindOptions) (user.List, error) {
+func (a *User) findMany(ctx context.Context, filter bson.M, opts ...options.Lister[options.FindOptions]) (user.List, error) {
 	var docs mongodoc.UserList
 	cursor, err := a.col().Find(ctx, filter, opts...)
 	if err != nil {

@@ -1,4 +1,4 @@
-package asset
+package todo
 
 import (
 	"context"
@@ -10,11 +10,11 @@ import (
 )
 
 type Policy interface {
-	CanRead(ctx context.Context, user *user.User, workspace *workspace.Workspace, project *project.Project, asset *Asset) error
+	CanRead(ctx context.Context, user *user.User, workspace *workspace.Workspace, project *project.Project, asset *Todo) error
 	CanList(ctx context.Context, user *user.User, workspace *workspace.Workspace, project *project.Project) error
 	CanCreate(ctx context.Context, user *user.User, workspace *workspace.Workspace, project *project.Project) error
-	CanUpdate(ctx context.Context, user *user.User, workspace *workspace.Workspace, project *project.Project, asset *Asset) error
-	CanDelete(ctx context.Context, user *user.User, workspace *workspace.Workspace, project *project.Project, asset *Asset) error
+	CanUpdate(ctx context.Context, user *user.User, workspace *workspace.Workspace, project *project.Project, asset *Todo) error
+	CanDelete(ctx context.Context, user *user.User, workspace *workspace.Workspace, project *project.Project, asset *Todo) error
 	Filter(ctx context.Context, user *user.User, workspaces workspace.List, projects project.List, assets List) (List, error)
 }
 
@@ -24,7 +24,7 @@ func NewPolicy() Policy {
 	return DefaultPolicy{}
 }
 
-func (DefaultPolicy) CanRead(ctx context.Context, user *user.User, ws *workspace.Workspace, project *project.Project, asset *Asset) error {
+func (DefaultPolicy) CanRead(ctx context.Context, user *user.User, ws *workspace.Workspace, project *project.Project, asset *Todo) error {
 	if !ws.Members().HasRoleOrHigher(user.ID(), workspace.RoleMember) {
 		return derror.ErrPermissionDenied
 	}
@@ -45,14 +45,14 @@ func (DefaultPolicy) CanCreate(ctx context.Context, user *user.User, ws *workspa
 	return nil
 }
 
-func (DefaultPolicy) CanUpdate(ctx context.Context, user *user.User, ws *workspace.Workspace, project *project.Project, asset *Asset) error {
+func (DefaultPolicy) CanUpdate(ctx context.Context, user *user.User, ws *workspace.Workspace, project *project.Project, asset *Todo) error {
 	if !ws.Members().HasRoleOrHigher(user.ID(), workspace.RoleMember) {
 		return derror.ErrPermissionDenied
 	}
 	return nil
 }
 
-func (DefaultPolicy) CanDelete(ctx context.Context, user *user.User, ws *workspace.Workspace, project *project.Project, asset *Asset) error {
+func (DefaultPolicy) CanDelete(ctx context.Context, user *user.User, ws *workspace.Workspace, project *project.Project, asset *Todo) error {
 	if !ws.Members().HasRoleOrHigher(user.ID(), workspace.RoleMember) {
 		return derror.ErrPermissionDenied
 	}

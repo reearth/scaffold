@@ -13,6 +13,8 @@ help:
 	@echo "  build             Build the project"
 	@echo "  dev               Run the application with hot reloading"
 	@echo "  generate          Run go generate"
+	@echo "  gql               Run go generate ./internal/transport/gql/..."
+	@echo "  di                Run go generate ./internal/di"
 	@echo "  run-app           Run the application"
 	@echo "  run-db            Run the MongoDB database using Docker Compose"
 	@echo "  down-db           Stop the MongoDB database using Docker Compose"
@@ -42,6 +44,12 @@ build:
 
 generate:
 	go generate ./...
+
+gql:
+	go generate ./internal/transport/gql/...
+
+di:
+	go generate ./internal/di
 
 run-app:
 	go run ./cmd/app

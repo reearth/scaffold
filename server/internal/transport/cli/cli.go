@@ -5,7 +5,7 @@ import (
 
 	"github.com/reearth/scaffold/server/internal/infra/mongo/mongomigrate"
 	"github.com/samber/lo"
-	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
 type CLI struct {

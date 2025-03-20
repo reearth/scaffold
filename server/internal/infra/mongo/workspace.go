@@ -6,9 +6,9 @@ import (
 	"github.com/reearth/scaffold/server/internal/infra/mongo/mongodoc"
 	"github.com/reearth/scaffold/server/pkg/project"
 	"github.com/reearth/scaffold/server/pkg/workspace"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/bson"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 type Workspace struct {

@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/reearth/scaffold/server/internal/transport/gql/gqlmodel"
@@ -17,36 +18,13 @@ import (
 
 // region    ************************** generated!.gotpl **************************
 
-type ProjectResolver interface {
-	Workspace(ctx context.Context, obj *gqlmodel.Project) (*gqlmodel.Workspace, error)
+type TodoResolver interface {
+	Project(ctx context.Context, obj *gqlmodel.Todo) (*gqlmodel.Project, error)
 }
 
 // endregion ************************** generated!.gotpl **************************
 
 // region    ***************************** args.gotpl *****************************
-
-func (ec *executionContext) field_Project_todos_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
-	var err error
-	args := map[string]any{}
-	arg0, err := ec.field_Project_todos_argsFilter(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["filter"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Project_todos_argsFilter(
-	ctx context.Context,
-	rawArgs map[string]any,
-) (gqlmodel.TodoFilter, error) {
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
-	if tmp, ok := rawArgs["filter"]; ok {
-		return ec.unmarshalNTodoFilter2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐTodoFilter(ctx, tmp)
-	}
-
-	var zeroVal gqlmodel.TodoFilter
-	return zeroVal, nil
-}
 
 // endregion ***************************** args.gotpl *****************************
 
@@ -56,8 +34,8 @@ func (ec *executionContext) field_Project_todos_argsFilter(
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _Project_id(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.Project) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Project_id(ctx, field)
+func (ec *executionContext) _Todo_id(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.Todo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Todo_id(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -87,9 +65,9 @@ func (ec *executionContext) _Project_id(ctx context.Context, field graphql.Colle
 	return ec.marshalNID2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Project_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Todo_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "Project",
+		Object:     "Todo",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -100,8 +78,8 @@ func (ec *executionContext) fieldContext_Project_id(_ context.Context, field gra
 	return fc, nil
 }
 
-func (ec *executionContext) _Project_workspaceID(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.Project) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Project_workspaceID(ctx, field)
+func (ec *executionContext) _Todo_projectId(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.Todo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Todo_projectId(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -114,7 +92,7 @@ func (ec *executionContext) _Project_workspaceID(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.WorkspaceID, nil
+		return obj.ProjectID, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -131,9 +109,9 @@ func (ec *executionContext) _Project_workspaceID(ctx context.Context, field grap
 	return ec.marshalNID2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Project_workspaceID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Todo_projectId(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "Project",
+		Object:     "Todo",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -144,8 +122,8 @@ func (ec *executionContext) fieldContext_Project_workspaceID(_ context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _Project_name(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.Project) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Project_name(ctx, field)
+func (ec *executionContext) _Todo_name(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.Todo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Todo_name(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -175,9 +153,9 @@ func (ec *executionContext) _Project_name(ctx context.Context, field graphql.Col
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Project_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Todo_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "Project",
+		Object:     "Todo",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -188,8 +166,8 @@ func (ec *executionContext) fieldContext_Project_name(_ context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Project_todos(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.Project) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Project_todos(ctx, field)
+func (ec *executionContext) _Todo_done(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.Todo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Todo_done(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -202,7 +180,7 @@ func (ec *executionContext) _Project_todos(ctx context.Context, field graphql.Co
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Todos, nil
+		return obj.Done, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -214,43 +192,26 @@ func (ec *executionContext) _Project_todos(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*gqlmodel.TodoConnection)
+	res := resTmp.(bool)
 	fc.Result = res
-	return ec.marshalNTodoConnection2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐTodoConnection(ctx, field.Selections, res)
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Project_todos(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Todo_done(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "Project",
+		Object:     "Todo",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "pageInfo":
-				return ec.fieldContext_TodoConnection_pageInfo(ctx, field)
-			case "edges":
-				return ec.fieldContext_TodoConnection_edges(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type TodoConnection", field.Name)
+			return nil, errors.New("field of type Boolean does not have child fields")
 		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Project_todos_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
 	}
 	return fc, nil
 }
 
-func (ec *executionContext) _Project_workspace(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.Project) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Project_workspace(ctx, field)
+func (ec *executionContext) _Todo_createdAt(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.Todo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Todo_createdAt(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -263,7 +224,95 @@ func (ec *executionContext) _Project_workspace(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Project().Workspace(rctx, obj)
+		return obj.CreatedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Todo_createdAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Todo",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Todo_updatedAt(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.Todo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Todo_updatedAt(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Todo_updatedAt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Todo",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Todo_project(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.Todo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Todo_project(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Todo().Project(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -272,36 +321,38 @@ func (ec *executionContext) _Project_workspace(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*gqlmodel.Workspace)
+	res := resTmp.(*gqlmodel.Project)
 	fc.Result = res
-	return ec.marshalOWorkspace2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐWorkspace(ctx, field.Selections, res)
+	return ec.marshalOProject2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐProject(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Project_workspace(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Todo_project(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "Project",
+		Object:     "Todo",
 		Field:      field,
 		IsMethod:   true,
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_Workspace_id(ctx, field)
+				return ec.fieldContext_Project_id(ctx, field)
+			case "workspaceID":
+				return ec.fieldContext_Project_workspaceID(ctx, field)
 			case "name":
-				return ec.fieldContext_Workspace_name(ctx, field)
-			case "members":
-				return ec.fieldContext_Workspace_members(ctx, field)
-			case "projects":
-				return ec.fieldContext_Workspace_projects(ctx, field)
+				return ec.fieldContext_Project_name(ctx, field)
+			case "todos":
+				return ec.fieldContext_Project_todos(ctx, field)
+			case "workspace":
+				return ec.fieldContext_Project_workspace(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Workspace", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type Project", field.Name)
 		},
 	}
 	return fc, nil
 }
 
-func (ec *executionContext) _ProjectConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.ProjectConnection) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProjectConnection_pageInfo(ctx, field)
+func (ec *executionContext) _TodoConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.TodoConnection) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TodoConnection_pageInfo(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -331,9 +382,9 @@ func (ec *executionContext) _ProjectConnection_pageInfo(ctx context.Context, fie
 	return ec.marshalNPageInfo2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐPageInfo(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ProjectConnection_pageInfo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TodoConnection_pageInfo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "ProjectConnection",
+		Object:     "TodoConnection",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -354,8 +405,8 @@ func (ec *executionContext) fieldContext_ProjectConnection_pageInfo(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _ProjectConnection_edges(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.ProjectConnection) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProjectConnection_edges(ctx, field)
+func (ec *executionContext) _TodoConnection_edges(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.TodoConnection) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TodoConnection_edges(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -375,37 +426,34 @@ func (ec *executionContext) _ProjectConnection_edges(ctx context.Context, field 
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.([]*gqlmodel.ProjectEdge)
+	res := resTmp.([]*gqlmodel.TodoEdge)
 	fc.Result = res
-	return ec.marshalNProjectEdge2ᚕᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐProjectEdgeᚄ(ctx, field.Selections, res)
+	return ec.marshalOTodoEdge2ᚕᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐTodoEdgeᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ProjectConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TodoConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "ProjectConnection",
+		Object:     "TodoConnection",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "cursor":
-				return ec.fieldContext_ProjectEdge_cursor(ctx, field)
+				return ec.fieldContext_TodoEdge_cursor(ctx, field)
 			case "node":
-				return ec.fieldContext_ProjectEdge_node(ctx, field)
+				return ec.fieldContext_TodoEdge_node(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type ProjectEdge", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TodoEdge", field.Name)
 		},
 	}
 	return fc, nil
 }
 
-func (ec *executionContext) _ProjectEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.ProjectEdge) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProjectEdge_cursor(ctx, field)
+func (ec *executionContext) _TodoEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.TodoEdge) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TodoEdge_cursor(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -432,24 +480,24 @@ func (ec *executionContext) _ProjectEdge_cursor(ctx context.Context, field graph
 	}
 	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNCursor2string(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ProjectEdge_cursor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TodoEdge_cursor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "ProjectEdge",
+		Object:     "TodoEdge",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Cursor does not have child fields")
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
 }
 
-func (ec *executionContext) _ProjectEdge_node(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.ProjectEdge) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ProjectEdge_node(ctx, field)
+func (ec *executionContext) _TodoEdge_node(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.TodoEdge) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TodoEdge_node(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -474,31 +522,35 @@ func (ec *executionContext) _ProjectEdge_node(ctx context.Context, field graphql
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*gqlmodel.Project)
+	res := resTmp.(*gqlmodel.Todo)
 	fc.Result = res
-	return ec.marshalNProject2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐProject(ctx, field.Selections, res)
+	return ec.marshalNTodo2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐTodo(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ProjectEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TodoEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "ProjectEdge",
+		Object:     "TodoEdge",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_Project_id(ctx, field)
-			case "workspaceID":
-				return ec.fieldContext_Project_workspaceID(ctx, field)
+				return ec.fieldContext_Todo_id(ctx, field)
+			case "projectId":
+				return ec.fieldContext_Todo_projectId(ctx, field)
 			case "name":
-				return ec.fieldContext_Project_name(ctx, field)
-			case "todos":
-				return ec.fieldContext_Project_todos(ctx, field)
-			case "workspace":
-				return ec.fieldContext_Project_workspace(ctx, field)
+				return ec.fieldContext_Todo_name(ctx, field)
+			case "done":
+				return ec.fieldContext_Todo_done(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Todo_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Todo_updatedAt(ctx, field)
+			case "project":
+				return ec.fieldContext_Todo_project(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Project", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type Todo", field.Name)
 		},
 	}
 	return fc, nil
@@ -508,27 +560,27 @@ func (ec *executionContext) fieldContext_ProjectEdge_node(_ context.Context, fie
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputCreateProjectInput(ctx context.Context, obj any) (gqlmodel.CreateProjectInput, error) {
-	var it gqlmodel.CreateProjectInput
+func (ec *executionContext) unmarshalInputCreateTodoInput(ctx context.Context, obj any) (gqlmodel.CreateTodoInput, error) {
+	var it gqlmodel.CreateTodoInput
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"workspaceID", "name"}
+	fieldsInOrder := [...]string{"projectId", "name"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "workspaceID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("workspaceID"))
+		case "projectId":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("projectId"))
 			data, err := ec.unmarshalNID2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.WorkspaceID = data
+			it.ProjectID = data
 		case "name":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -542,27 +594,27 @@ func (ec *executionContext) unmarshalInputCreateProjectInput(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputProjectFilter(ctx context.Context, obj any) (gqlmodel.ProjectFilter, error) {
-	var it gqlmodel.ProjectFilter
+func (ec *executionContext) unmarshalInputTodoFilter(ctx context.Context, obj any) (gqlmodel.TodoFilter, error) {
+	var it gqlmodel.TodoFilter
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"workspaceID", "first", "last", "after", "before"}
+	fieldsInOrder := [...]string{"projectId", "first", "last", "after", "before"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "workspaceID":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("workspaceID"))
+		case "projectId":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("projectId"))
 			data, err := ec.unmarshalOID2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.WorkspaceID = data
+			it.ProjectID = data
 		case "first":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
 			data, err := ec.unmarshalOInt2ᚖint32(ctx, v)
@@ -597,14 +649,14 @@ func (ec *executionContext) unmarshalInputProjectFilter(ctx context.Context, obj
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateProjectInput(ctx context.Context, obj any) (gqlmodel.UpdateProjectInput, error) {
-	var it gqlmodel.UpdateProjectInput
+func (ec *executionContext) unmarshalInputUpdateTodoInput(ctx context.Context, obj any) (gqlmodel.UpdateTodoInput, error) {
+	var it gqlmodel.UpdateTodoInput
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"id", "name"}
+	fieldsInOrder := [...]string{"id", "name", "done"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -625,6 +677,13 @@ func (ec *executionContext) unmarshalInputUpdateProjectInput(ctx context.Context
 				return it, err
 			}
 			it.Name = data
+		case "done":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("done"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Done = data
 		}
 	}
 
@@ -639,38 +698,48 @@ func (ec *executionContext) unmarshalInputUpdateProjectInput(ctx context.Context
 
 // region    **************************** object.gotpl ****************************
 
-var projectImplementors = []string{"Project", "Node"}
+var todoImplementors = []string{"Todo", "Node"}
 
-func (ec *executionContext) _Project(ctx context.Context, sel ast.SelectionSet, obj *gqlmodel.Project) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, projectImplementors)
+func (ec *executionContext) _Todo(ctx context.Context, sel ast.SelectionSet, obj *gqlmodel.Todo) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, todoImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	deferred := make(map[string]*graphql.FieldSet)
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("Project")
+			out.Values[i] = graphql.MarshalString("Todo")
 		case "id":
-			out.Values[i] = ec._Project_id(ctx, field, obj)
+			out.Values[i] = ec._Todo_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
-		case "workspaceID":
-			out.Values[i] = ec._Project_workspaceID(ctx, field, obj)
+		case "projectId":
+			out.Values[i] = ec._Todo_projectId(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "name":
-			out.Values[i] = ec._Project_name(ctx, field, obj)
+			out.Values[i] = ec._Todo_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
-		case "todos":
-			out.Values[i] = ec._Project_todos(ctx, field, obj)
+		case "done":
+			out.Values[i] = ec._Todo_done(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
-		case "workspace":
+		case "createdAt":
+			out.Values[i] = ec._Todo_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "updatedAt":
+			out.Values[i] = ec._Todo_updatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "project":
 			field := field
 
 			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
@@ -679,7 +748,7 @@ func (ec *executionContext) _Project(ctx context.Context, sel ast.SelectionSet, 
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Project_workspace(ctx, field, obj)
+				res = ec._Todo_project(ctx, field, obj)
 				return res
 			}
 
@@ -726,27 +795,24 @@ func (ec *executionContext) _Project(ctx context.Context, sel ast.SelectionSet, 
 	return out
 }
 
-var projectConnectionImplementors = []string{"ProjectConnection"}
+var todoConnectionImplementors = []string{"TodoConnection"}
 
-func (ec *executionContext) _ProjectConnection(ctx context.Context, sel ast.SelectionSet, obj *gqlmodel.ProjectConnection) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, projectConnectionImplementors)
+func (ec *executionContext) _TodoConnection(ctx context.Context, sel ast.SelectionSet, obj *gqlmodel.TodoConnection) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, todoConnectionImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	deferred := make(map[string]*graphql.FieldSet)
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("ProjectConnection")
+			out.Values[i] = graphql.MarshalString("TodoConnection")
 		case "pageInfo":
-			out.Values[i] = ec._ProjectConnection_pageInfo(ctx, field, obj)
+			out.Values[i] = ec._TodoConnection_pageInfo(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
 		case "edges":
-			out.Values[i] = ec._ProjectConnection_edges(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
+			out.Values[i] = ec._TodoConnection_edges(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -770,24 +836,24 @@ func (ec *executionContext) _ProjectConnection(ctx context.Context, sel ast.Sele
 	return out
 }
 
-var projectEdgeImplementors = []string{"ProjectEdge"}
+var todoEdgeImplementors = []string{"TodoEdge"}
 
-func (ec *executionContext) _ProjectEdge(ctx context.Context, sel ast.SelectionSet, obj *gqlmodel.ProjectEdge) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, projectEdgeImplementors)
+func (ec *executionContext) _TodoEdge(ctx context.Context, sel ast.SelectionSet, obj *gqlmodel.TodoEdge) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, todoEdgeImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	deferred := make(map[string]*graphql.FieldSet)
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("ProjectEdge")
+			out.Values[i] = graphql.MarshalString("TodoEdge")
 		case "cursor":
-			out.Values[i] = ec._ProjectEdge_cursor(ctx, field, obj)
+			out.Values[i] = ec._TodoEdge_cursor(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
 		case "node":
-			out.Values[i] = ec._ProjectEdge_node(ctx, field, obj)
+			out.Values[i] = ec._TodoEdge_node(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -818,40 +884,63 @@ func (ec *executionContext) _ProjectEdge(ctx context.Context, sel ast.SelectionS
 
 // region    ***************************** type.gotpl *****************************
 
-func (ec *executionContext) unmarshalNCreateProjectInput2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐCreateProjectInput(ctx context.Context, v any) (gqlmodel.CreateProjectInput, error) {
-	res, err := ec.unmarshalInputCreateProjectInput(ctx, v)
+func (ec *executionContext) unmarshalNCreateTodoInput2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐCreateTodoInput(ctx context.Context, v any) (gqlmodel.CreateTodoInput, error) {
+	res, err := ec.unmarshalInputCreateTodoInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNProject2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐProject(ctx context.Context, sel ast.SelectionSet, v gqlmodel.Project) graphql.Marshaler {
-	return ec._Project(ctx, sel, &v)
+func (ec *executionContext) marshalNTodo2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐTodo(ctx context.Context, sel ast.SelectionSet, v gqlmodel.Todo) graphql.Marshaler {
+	return ec._Todo(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNProject2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐProject(ctx context.Context, sel ast.SelectionSet, v *gqlmodel.Project) graphql.Marshaler {
+func (ec *executionContext) marshalNTodo2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐTodo(ctx context.Context, sel ast.SelectionSet, v *gqlmodel.Todo) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
 		}
 		return graphql.Null
 	}
-	return ec._Project(ctx, sel, v)
+	return ec._Todo(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNProjectConnection2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐProjectConnection(ctx context.Context, sel ast.SelectionSet, v gqlmodel.ProjectConnection) graphql.Marshaler {
-	return ec._ProjectConnection(ctx, sel, &v)
+func (ec *executionContext) marshalNTodoConnection2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐTodoConnection(ctx context.Context, sel ast.SelectionSet, v gqlmodel.TodoConnection) graphql.Marshaler {
+	return ec._TodoConnection(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNProjectConnection2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐProjectConnection(ctx context.Context, sel ast.SelectionSet, v *gqlmodel.ProjectConnection) graphql.Marshaler {
+func (ec *executionContext) marshalNTodoConnection2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐTodoConnection(ctx context.Context, sel ast.SelectionSet, v *gqlmodel.TodoConnection) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
 		}
 		return graphql.Null
 	}
-	return ec._ProjectConnection(ctx, sel, v)
+	return ec._TodoConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNProjectEdge2ᚕᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐProjectEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*gqlmodel.ProjectEdge) graphql.Marshaler {
+func (ec *executionContext) marshalNTodoEdge2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐTodoEdge(ctx context.Context, sel ast.SelectionSet, v *gqlmodel.TodoEdge) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._TodoEdge(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNTodoFilter2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐTodoFilter(ctx context.Context, v any) (gqlmodel.TodoFilter, error) {
+	res, err := ec.unmarshalInputTodoFilter(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNUpdateTodoInput2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐUpdateTodoInput(ctx context.Context, v any) (gqlmodel.UpdateTodoInput, error) {
+	res, err := ec.unmarshalInputUpdateTodoInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOTodoEdge2ᚕᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐTodoEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*gqlmodel.TodoEdge) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -875,7 +964,7 @@ func (ec *executionContext) marshalNProjectEdge2ᚕᚖgithubᚗcomᚋreearthᚋs
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNProjectEdge2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐProjectEdge(ctx, sel, v[i])
+			ret[i] = ec.marshalNTodoEdge2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐTodoEdge(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -893,33 +982,6 @@ func (ec *executionContext) marshalNProjectEdge2ᚕᚖgithubᚗcomᚋreearthᚋs
 	}
 
 	return ret
-}
-
-func (ec *executionContext) marshalNProjectEdge2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐProjectEdge(ctx context.Context, sel ast.SelectionSet, v *gqlmodel.ProjectEdge) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._ProjectEdge(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalNProjectFilter2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐProjectFilter(ctx context.Context, v any) (gqlmodel.ProjectFilter, error) {
-	res, err := ec.unmarshalInputProjectFilter(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) unmarshalNUpdateProjectInput2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐUpdateProjectInput(ctx context.Context, v any) (gqlmodel.UpdateProjectInput, error) {
-	res, err := ec.unmarshalInputUpdateProjectInput(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOProject2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐProject(ctx context.Context, sel ast.SelectionSet, v *gqlmodel.Project) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._Project(ctx, sel, v)
 }
 
 // endregion ***************************** type.gotpl *****************************

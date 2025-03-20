@@ -2,43 +2,47 @@
 
 package gqlmodel
 
+import (
+	"fmt"
+	"io"
+	"strconv"
+	"time"
+)
+
 type Node interface {
 	IsNode()
 	GetID() ID
 }
 
-type Asset struct {
-	ID        ID       `json:"id"`
-	ProjectID ID       `json:"projectId"`
-	Name      string   `json:"name"`
-	Project   *Project `json:"project,omitempty"`
+type AddWorkspaceMemberInput struct {
+	WorkspaceID ID   `json:"workspaceId"`
+	UserID      ID   `json:"userId"`
+	Role        Role `json:"role"`
 }
 
-func (Asset) IsNode()        {}
-func (this Asset) GetID() ID { return this.ID }
-
-type AssetConnection struct {
-	PageInfo *PageInfo    `json:"pageInfo"`
-	Edges    []*AssetEdge `json:"edges,omitempty"`
+type CreateProjectInput struct {
+	WorkspaceID ID     `json:"workspaceID"`
+	Name        string `json:"name"`
 }
 
-type AssetEdge struct {
-	Cursor string `json:"cursor"`
-	Node   *Asset `json:"node"`
-}
-
-type AssetFilter struct {
-	ProjectID *ID     `json:"projectId,omitempty"`
-	First     *int32  `json:"first,omitempty"`
-	Last      *int32  `json:"last,omitempty"`
-	After     *string `json:"after,omitempty"`
-	Before    *string `json:"before,omitempty"`
-}
-
-type CreateAssetInput struct {
+type CreateTodoInput struct {
 	ProjectID ID     `json:"projectId"`
 	Name      string `json:"name"`
 }
+
+type CreateWorkspaceInput struct {
+	Name string `json:"name"`
+}
+
+type Me struct {
+	ID         ID                   `json:"id"`
+	Name       string               `json:"name"`
+	Email      string               `json:"email"`
+	Workspaces *WorkspaceConnection `json:"workspaces,omitempty"`
+}
+
+func (Me) IsNode()        {}
+func (this Me) GetID() ID { return this.ID }
 
 type Mutation struct {
 }
@@ -51,19 +55,164 @@ type PageInfo struct {
 }
 
 type Project struct {
-	ID          ID               `json:"id"`
-	WorkspaceID ID               `json:"workspaceID"`
-	Name        string           `json:"name"`
-	Assets      *AssetConnection `json:"assets"`
+	ID          ID              `json:"id"`
+	WorkspaceID ID              `json:"workspaceID"`
+	Name        string          `json:"name"`
+	Todos       *TodoConnection `json:"todos"`
+	Workspace   *Workspace      `json:"workspace,omitempty"`
 }
 
 func (Project) IsNode()        {}
 func (this Project) GetID() ID { return this.ID }
 
+type ProjectConnection struct {
+	PageInfo *PageInfo      `json:"pageInfo"`
+	Edges    []*ProjectEdge `json:"edges"`
+}
+
+type ProjectEdge struct {
+	Cursor string   `json:"cursor"`
+	Node   *Project `json:"node"`
+}
+
+type ProjectFilter struct {
+	WorkspaceID *ID     `json:"workspaceID,omitempty"`
+	First       *int32  `json:"first,omitempty"`
+	Last        *int32  `json:"last,omitempty"`
+	After       *string `json:"after,omitempty"`
+	Before      *string `json:"before,omitempty"`
+}
+
 type Query struct {
 }
 
-type UpdateAssetInput struct {
-	AssetID ID      `json:"assetId"`
-	Name    *string `json:"name,omitempty"`
+type Todo struct {
+	ID        ID        `json:"id"`
+	ProjectID ID        `json:"projectId"`
+	Name      string    `json:"name"`
+	Done      bool      `json:"done"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	Project   *Project  `json:"project,omitempty"`
+}
+
+func (Todo) IsNode()        {}
+func (this Todo) GetID() ID { return this.ID }
+
+type TodoConnection struct {
+	PageInfo *PageInfo   `json:"pageInfo"`
+	Edges    []*TodoEdge `json:"edges,omitempty"`
+}
+
+type TodoEdge struct {
+	Cursor string `json:"cursor"`
+	Node   *Todo  `json:"node"`
+}
+
+type TodoFilter struct {
+	ProjectID *ID     `json:"projectId,omitempty"`
+	First     *int32  `json:"first,omitempty"`
+	Last      *int32  `json:"last,omitempty"`
+	After     *string `json:"after,omitempty"`
+	Before    *string `json:"before,omitempty"`
+}
+
+type UpdateProjectInput struct {
+	ID   ID      `json:"id"`
+	Name *string `json:"name,omitempty"`
+}
+
+type UpdateTodoInput struct {
+	ID   ID      `json:"id"`
+	Name *string `json:"name,omitempty"`
+	Done *bool   `json:"done,omitempty"`
+}
+
+type UpdateWorkspaceInput struct {
+	ID   ID      `json:"id"`
+	Name *string `json:"name,omitempty"`
+}
+
+type UpdatwWorkspaceMemberInput struct {
+	WorkspaceID ID   `json:"workspaceId"`
+	UserID      ID   `json:"userId"`
+	Role        Role `json:"role"`
+}
+
+type User struct {
+	ID    ID     `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
+
+func (User) IsNode()        {}
+func (this User) GetID() ID { return this.ID }
+
+type Workspace struct {
+	ID       ID                 `json:"id"`
+	Name     string             `json:"name"`
+	Members  []*WorkspaceMember `json:"members"`
+	Projects *ProjectConnection `json:"projects"`
+}
+
+func (Workspace) IsNode()        {}
+func (this Workspace) GetID() ID { return this.ID }
+
+type WorkspaceConnection struct {
+	PageInfo *PageInfo        `json:"pageInfo"`
+	Edges    []*WorkspaceEdge `json:"edges"`
+}
+
+type WorkspaceEdge struct {
+	Cursor string     `json:"cursor"`
+	Node   *Workspace `json:"node"`
+}
+
+type WorkspaceMember struct {
+	UserID ID    `json:"userId"`
+	Role   Role  `json:"role"`
+	User   *User `json:"user,omitempty"`
+}
+
+type Role string
+
+const (
+	RoleOwner  Role = "OWNER"
+	RoleAdmin  Role = "ADMIN"
+	RoleMember Role = "MEMBER"
+)
+
+var AllRole = []Role{
+	RoleOwner,
+	RoleAdmin,
+	RoleMember,
+}
+
+func (e Role) IsValid() bool {
+	switch e {
+	case RoleOwner, RoleAdmin, RoleMember:
+		return true
+	}
+	return false
+}
+
+func (e Role) String() string {
+	return string(e)
+}
+
+func (e *Role) UnmarshalGQL(v any) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = Role(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid Role", str)
+	}
+	return nil
+}
+
+func (e Role) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }

@@ -1,27 +1,27 @@
-package assetuc
+package todouc
 
 import (
 	"context"
 
-	"github.com/reearth/scaffold/server/pkg/asset"
 	"github.com/reearth/scaffold/server/pkg/project"
+	"github.com/reearth/scaffold/server/pkg/todo"
 	"github.com/reearth/scaffold/server/pkg/user"
 	"github.com/reearth/scaffold/server/pkg/workspace"
 )
 
 type FindByIDs struct {
-	assetRepo     asset.Repo
+	assetRepo     todo.Repo
 	projectRepo   project.Repo
 	workspaceRepo workspace.Repo
 
-	assetPolicy asset.Policy
+	assetPolicy todo.Policy
 }
 
 func NewFindByIDs(
-	assetRepo asset.Repo,
+	assetRepo todo.Repo,
 	projectRepo project.Repo,
 	workspaceRepo workspace.Repo,
-	assetPolicy asset.Policy,
+	assetPolicy todo.Policy,
 ) *FindByIDs {
 	return &FindByIDs{
 		assetRepo:     assetRepo,
@@ -31,7 +31,7 @@ func NewFindByIDs(
 	}
 }
 
-func (uc *FindByIDs) Execute(ctx context.Context, ids asset.IDList, user *user.User) (asset.List, error) {
+func (uc *FindByIDs) Execute(ctx context.Context, ids todo.IDList, user *user.User) (todo.List, error) {
 	assets, err := uc.assetRepo.FindByIDs(ctx, ids)
 	if err != nil {
 		return nil, err

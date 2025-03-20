@@ -1,13 +1,22 @@
-package assetuc
+package todouc
 
 import (
 	"context"
 	"errors"
 
-	"github.com/reearth/scaffold/server/pkg/asset"
+	"github.com/google/wire"
 	"github.com/reearth/scaffold/server/pkg/project"
+	"github.com/reearth/scaffold/server/pkg/todo"
 	"github.com/reearth/scaffold/server/pkg/user"
 	"github.com/reearth/scaffold/server/pkg/workspace"
+)
+
+var Wire = wire.NewSet(
+	NewFindByIDs,
+	NewFindByProject,
+	NewCreate,
+	NewUpdate,
+	wire.Struct(new(Usecase), "*"),
 )
 
 type Usecase struct {
@@ -17,25 +26,11 @@ type Usecase struct {
 	Update        *Update
 }
 
-func New(
-	findByIDs *FindByIDs,
-	findByProject *FindByProject,
-	create *Create,
-	update *Update,
-) *Usecase {
-	return &Usecase{
-		FindByIDs:     findByIDs,
-		FindByProject: findByProject,
-		Create:        create,
-		Update:        update,
-	}
-}
-
 type Builder struct {
 	ctx       context.Context
 	err       error
 	user      *user.User
-	asset     *asset.Asset
+	todo      *todo.Todo
 	project   *project.Project
 	workspace *workspace.Workspace
 }
@@ -44,18 +39,18 @@ func UsecaseBuilder(ctx context.Context, user *user.User) *Builder {
 	return &Builder{ctx: ctx, user: user}
 }
 
-func (b *Builder) Result() (*asset.Asset, *project.Project, *workspace.Workspace, error) {
+func (b *Builder) Result() (*todo.Todo, *project.Project, *workspace.Workspace, error) {
 	if b.err != nil {
 		return nil, nil, nil, b.err
 	}
-	return b.asset, b.project, b.workspace, b.err
+	return b.todo, b.project, b.workspace, b.err
 }
 
-func (b *Builder) FindAssetByID(id asset.ID, assetRepo asset.Repo) *Builder {
+func (b *Builder) FindTodoByID(id todo.ID, assetRepo todo.Repo) *Builder {
 	if b.err != nil {
 		return b
 	}
-	b.asset, b.err = assetRepo.FindByID(b.ctx, id)
+	b.todo, b.err = assetRepo.FindByID(b.ctx, id)
 	return b
 }
 
@@ -70,30 +65,30 @@ func (b *Builder) FindProjectByID(id project.ID, projectRepo project.Repo, works
 	return b
 }
 
-func (b *Builder) FindProjectByAsset(projectRepo project.Repo, workspaceRepo workspace.Repo) *Builder {
+func (b *Builder) FindProjectByTodo(projectRepo project.Repo, workspaceRepo workspace.Repo) *Builder {
 	if b.err != nil {
 		return b
 	}
-	if b.asset == nil {
+	if b.todo == nil {
 		b.err = errors.New("asset not found")
 		return b
 	}
-	b.project, b.err = projectRepo.FindByID(b.ctx, b.asset.Project())
+	b.project, b.err = projectRepo.FindByID(b.ctx, b.todo.Project())
 	if b.err == nil {
 		b.workspace, b.err = workspaceRepo.FindByID(b.ctx, b.project.Workspace())
 	}
 	return b
 }
 
-func (b *Builder) CanReadAsset(assetPolicy asset.Policy) *Builder {
+func (b *Builder) CanReadTodo(assetPolicy todo.Policy) *Builder {
 	if b.err != nil {
 		return b
 	}
-	b.err = assetPolicy.CanRead(b.ctx, b.user, b.workspace, b.project, b.asset)
+	b.err = assetPolicy.CanRead(b.ctx, b.user, b.workspace, b.project, b.todo)
 	return b
 }
 
-func (b *Builder) CanListAssets(assetPolicy asset.Policy) *Builder {
+func (b *Builder) CanListTodo(assetPolicy todo.Policy) *Builder {
 	if b.err != nil {
 		return b
 	}
@@ -101,7 +96,7 @@ func (b *Builder) CanListAssets(assetPolicy asset.Policy) *Builder {
 	return b
 }
 
-func (b *Builder) CanCreateAsset(assetPolicy asset.Policy) *Builder {
+func (b *Builder) CanCreateTodo(assetPolicy todo.Policy) *Builder {
 	if b.err != nil {
 		return b
 	}
@@ -109,18 +104,18 @@ func (b *Builder) CanCreateAsset(assetPolicy asset.Policy) *Builder {
 	return b
 }
 
-func (b *Builder) CanUpdateAsset(assetPolicy asset.Policy) *Builder {
+func (b *Builder) CanUpdateTodo(assetPolicy todo.Policy) *Builder {
 	if b.err != nil {
 		return b
 	}
-	b.err = assetPolicy.CanUpdate(b.ctx, b.user, b.workspace, b.project, b.asset)
+	b.err = assetPolicy.CanUpdate(b.ctx, b.user, b.workspace, b.project, b.todo)
 	return b
 }
 
-func (b *Builder) CanDeleteAsset(assetPolicy asset.Policy) *Builder {
+func (b *Builder) CanDeleteTodo(assetPolicy todo.Policy) *Builder {
 	if b.err != nil {
 		return b
 	}
-	b.err = assetPolicy.CanDelete(b.ctx, b.user, b.workspace, b.project, b.asset)
+	b.err = assetPolicy.CanDelete(b.ctx, b.user, b.workspace, b.project, b.todo)
 	return b
 }

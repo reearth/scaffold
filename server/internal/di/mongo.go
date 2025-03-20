@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 func InitMongo(ctx context.Context, cfg *Config) (*mongo.Database, error) {
@@ -19,13 +19,13 @@ func InitMongo(ctx context.Context, cfg *Config) (*mongo.Database, error) {
 		SetConnectTimeout(10 * time.Second).
 		SetServerSelectionTimeout(5 * time.Second)
 
-	client, err := mongo.Connect(ctx, opts)
+	client, err := mongo.Connect(opts)
 	if err != nil {
-		return nil, fmt.Errorf("mongo.Connect: %v", err)
+		return nil, fmt.Errorf("mongo.Connect: %w", err)
 	}
 
 	if err := client.Ping(ctx, nil); err != nil {
-		return nil, fmt.Errorf("failed to ping MongoDB: %v", err)
+		return nil, fmt.Errorf("failed to ping MongoDB: %w", err)
 	}
 
 	return client.Database(cfg.DB_APP), nil

@@ -33,35 +33,37 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Me() MeResolver
 	Mutation() MutationResolver
+	Project() ProjectResolver
 	Query() QueryResolver
+	Todo() TodoResolver
 }
 
 type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
-	Asset struct {
-		ID        func(childComplexity int) int
-		Name      func(childComplexity int) int
-		Project   func(childComplexity int) int
-		ProjectID func(childComplexity int) int
-	}
-
-	AssetConnection struct {
-		Edges    func(childComplexity int) int
-		PageInfo func(childComplexity int) int
-	}
-
-	AssetEdge struct {
-		Cursor func(childComplexity int) int
-		Node   func(childComplexity int) int
+	Me struct {
+		Email      func(childComplexity int) int
+		ID         func(childComplexity int) int
+		Name       func(childComplexity int) int
+		Workspaces func(childComplexity int) int
 	}
 
 	Mutation struct {
-		CreateAsset func(childComplexity int, input gqlmodel.CreateAssetInput) int
-		DeleteAsset func(childComplexity int, assetID gqlmodel.ID) int
-		UpdateAsset func(childComplexity int, input gqlmodel.UpdateAssetInput) int
+		AddWorkspaceMember        func(childComplexity int, input gqlmodel.AddWorkspaceMemberInput) int
+		CreateProject             func(childComplexity int, input gqlmodel.CreateProjectInput) int
+		CreateTodo                func(childComplexity int, input gqlmodel.CreateTodoInput) int
+		CreateWorkspace           func(childComplexity int, input gqlmodel.CreateWorkspaceInput) int
+		DeleteProject             func(childComplexity int, projectID gqlmodel.ID) int
+		DeleteTodo                func(childComplexity int, todoID gqlmodel.ID) int
+		DeleteWorkspace           func(childComplexity int, workspaceID gqlmodel.ID) int
+		RemoveWorkspaceMember     func(childComplexity int, workspaceID gqlmodel.ID, userID gqlmodel.ID) int
+		UpdateProject             func(childComplexity int, input gqlmodel.UpdateProjectInput) int
+		UpdateTodo                func(childComplexity int, input gqlmodel.UpdateTodoInput) int
+		UpdateWorkspace           func(childComplexity int, input gqlmodel.UpdateWorkspaceInput) int
+		UpdateWorkspaceMemberRole func(childComplexity int, input gqlmodel.UpdatwWorkspaceMemberInput) int
 	}
 
 	PageInfo struct {
@@ -72,16 +74,80 @@ type ComplexityRoot struct {
 	}
 
 	Project struct {
-		Assets      func(childComplexity int, filter gqlmodel.AssetFilter) int
 		ID          func(childComplexity int) int
 		Name        func(childComplexity int) int
+		Todos       func(childComplexity int, filter gqlmodel.TodoFilter) int
+		Workspace   func(childComplexity int) int
 		WorkspaceID func(childComplexity int) int
 	}
 
+	ProjectConnection struct {
+		Edges    func(childComplexity int) int
+		PageInfo func(childComplexity int) int
+	}
+
+	ProjectEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
 	Query struct {
-		Assets func(childComplexity int, filter gqlmodel.AssetFilter) int
-		Node   func(childComplexity int, id gqlmodel.ID) int
-		Nodes  func(childComplexity int, ids []gqlmodel.ID) int
+		Me         func(childComplexity int) int
+		Node       func(childComplexity int, id gqlmodel.ID) int
+		Nodes      func(childComplexity int, ids []gqlmodel.ID) int
+		Projects   func(childComplexity int, filter gqlmodel.ProjectFilter) int
+		Todos      func(childComplexity int, filter gqlmodel.TodoFilter) int
+		User       func(childComplexity int, email string) int
+		Workspaces func(childComplexity int) int
+	}
+
+	Todo struct {
+		CreatedAt func(childComplexity int) int
+		Done      func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Name      func(childComplexity int) int
+		Project   func(childComplexity int) int
+		ProjectID func(childComplexity int) int
+		UpdatedAt func(childComplexity int) int
+	}
+
+	TodoConnection struct {
+		Edges    func(childComplexity int) int
+		PageInfo func(childComplexity int) int
+	}
+
+	TodoEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
+	User struct {
+		Email func(childComplexity int) int
+		ID    func(childComplexity int) int
+		Name  func(childComplexity int) int
+	}
+
+	Workspace struct {
+		ID       func(childComplexity int) int
+		Members  func(childComplexity int) int
+		Name     func(childComplexity int) int
+		Projects func(childComplexity int, filter gqlmodel.ProjectFilter) int
+	}
+
+	WorkspaceConnection struct {
+		Edges    func(childComplexity int) int
+		PageInfo func(childComplexity int) int
+	}
+
+	WorkspaceEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
+	}
+
+	WorkspaceMember struct {
+		Role   func(childComplexity int) int
+		User   func(childComplexity int) int
+		UserID func(childComplexity int) int
 	}
 }
 
@@ -104,97 +170,177 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
-	case "Asset.id":
-		if e.complexity.Asset.ID == nil {
+	case "Me.email":
+		if e.complexity.Me.Email == nil {
 			break
 		}
 
-		return e.complexity.Asset.ID(childComplexity), true
+		return e.complexity.Me.Email(childComplexity), true
 
-	case "Asset.name":
-		if e.complexity.Asset.Name == nil {
+	case "Me.id":
+		if e.complexity.Me.ID == nil {
 			break
 		}
 
-		return e.complexity.Asset.Name(childComplexity), true
+		return e.complexity.Me.ID(childComplexity), true
 
-	case "Asset.project":
-		if e.complexity.Asset.Project == nil {
+	case "Me.name":
+		if e.complexity.Me.Name == nil {
 			break
 		}
 
-		return e.complexity.Asset.Project(childComplexity), true
+		return e.complexity.Me.Name(childComplexity), true
 
-	case "Asset.projectId":
-		if e.complexity.Asset.ProjectID == nil {
+	case "Me.workspaces":
+		if e.complexity.Me.Workspaces == nil {
 			break
 		}
 
-		return e.complexity.Asset.ProjectID(childComplexity), true
+		return e.complexity.Me.Workspaces(childComplexity), true
 
-	case "AssetConnection.edges":
-		if e.complexity.AssetConnection.Edges == nil {
+	case "Mutation.addWorkspaceMember":
+		if e.complexity.Mutation.AddWorkspaceMember == nil {
 			break
 		}
 
-		return e.complexity.AssetConnection.Edges(childComplexity), true
-
-	case "AssetConnection.pageInfo":
-		if e.complexity.AssetConnection.PageInfo == nil {
-			break
-		}
-
-		return e.complexity.AssetConnection.PageInfo(childComplexity), true
-
-	case "AssetEdge.cursor":
-		if e.complexity.AssetEdge.Cursor == nil {
-			break
-		}
-
-		return e.complexity.AssetEdge.Cursor(childComplexity), true
-
-	case "AssetEdge.node":
-		if e.complexity.AssetEdge.Node == nil {
-			break
-		}
-
-		return e.complexity.AssetEdge.Node(childComplexity), true
-
-	case "Mutation.createAsset":
-		if e.complexity.Mutation.CreateAsset == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_createAsset_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_addWorkspaceMember_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateAsset(childComplexity, args["input"].(gqlmodel.CreateAssetInput)), true
+		return e.complexity.Mutation.AddWorkspaceMember(childComplexity, args["input"].(gqlmodel.AddWorkspaceMemberInput)), true
 
-	case "Mutation.deleteAsset":
-		if e.complexity.Mutation.DeleteAsset == nil {
+	case "Mutation.createProject":
+		if e.complexity.Mutation.CreateProject == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteAsset_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createProject_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.DeleteAsset(childComplexity, args["assetId"].(gqlmodel.ID)), true
+		return e.complexity.Mutation.CreateProject(childComplexity, args["input"].(gqlmodel.CreateProjectInput)), true
 
-	case "Mutation.updateAsset":
-		if e.complexity.Mutation.UpdateAsset == nil {
+	case "Mutation.createTodo":
+		if e.complexity.Mutation.CreateTodo == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_updateAsset_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createTodo_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateAsset(childComplexity, args["input"].(gqlmodel.UpdateAssetInput)), true
+		return e.complexity.Mutation.CreateTodo(childComplexity, args["input"].(gqlmodel.CreateTodoInput)), true
+
+	case "Mutation.createWorkspace":
+		if e.complexity.Mutation.CreateWorkspace == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createWorkspace_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateWorkspace(childComplexity, args["input"].(gqlmodel.CreateWorkspaceInput)), true
+
+	case "Mutation.deleteProject":
+		if e.complexity.Mutation.DeleteProject == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteProject_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteProject(childComplexity, args["projectId"].(gqlmodel.ID)), true
+
+	case "Mutation.deleteTodo":
+		if e.complexity.Mutation.DeleteTodo == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteTodo_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteTodo(childComplexity, args["todoId"].(gqlmodel.ID)), true
+
+	case "Mutation.deleteWorkspace":
+		if e.complexity.Mutation.DeleteWorkspace == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteWorkspace_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteWorkspace(childComplexity, args["workspaceId"].(gqlmodel.ID)), true
+
+	case "Mutation.removeWorkspaceMember":
+		if e.complexity.Mutation.RemoveWorkspaceMember == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_removeWorkspaceMember_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.RemoveWorkspaceMember(childComplexity, args["workspaceId"].(gqlmodel.ID), args["userId"].(gqlmodel.ID)), true
+
+	case "Mutation.updateProject":
+		if e.complexity.Mutation.UpdateProject == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateProject_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateProject(childComplexity, args["input"].(gqlmodel.UpdateProjectInput)), true
+
+	case "Mutation.updateTodo":
+		if e.complexity.Mutation.UpdateTodo == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateTodo_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateTodo(childComplexity, args["input"].(gqlmodel.UpdateTodoInput)), true
+
+	case "Mutation.updateWorkspace":
+		if e.complexity.Mutation.UpdateWorkspace == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateWorkspace_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateWorkspace(childComplexity, args["input"].(gqlmodel.UpdateWorkspaceInput)), true
+
+	case "Mutation.updateWorkspaceMemberRole":
+		if e.complexity.Mutation.UpdateWorkspaceMemberRole == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateWorkspaceMemberRole_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateWorkspaceMemberRole(childComplexity, args["input"].(gqlmodel.UpdatwWorkspaceMemberInput)), true
 
 	case "PageInfo.endCursor":
 		if e.complexity.PageInfo.EndCursor == nil {
@@ -224,18 +370,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.PageInfo.StartCursor(childComplexity), true
 
-	case "Project.assets":
-		if e.complexity.Project.Assets == nil {
-			break
-		}
-
-		args, err := ec.field_Project_assets_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Project.Assets(childComplexity, args["filter"].(gqlmodel.AssetFilter)), true
-
 	case "Project.id":
 		if e.complexity.Project.ID == nil {
 			break
@@ -250,6 +384,25 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.Name(childComplexity), true
 
+	case "Project.todos":
+		if e.complexity.Project.Todos == nil {
+			break
+		}
+
+		args, err := ec.field_Project_todos_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Project.Todos(childComplexity, args["filter"].(gqlmodel.TodoFilter)), true
+
+	case "Project.workspace":
+		if e.complexity.Project.Workspace == nil {
+			break
+		}
+
+		return e.complexity.Project.Workspace(childComplexity), true
+
 	case "Project.workspaceID":
 		if e.complexity.Project.WorkspaceID == nil {
 			break
@@ -257,17 +410,40 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.WorkspaceID(childComplexity), true
 
-	case "Query.assets":
-		if e.complexity.Query.Assets == nil {
+	case "ProjectConnection.edges":
+		if e.complexity.ProjectConnection.Edges == nil {
 			break
 		}
 
-		args, err := ec.field_Query_assets_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
+		return e.complexity.ProjectConnection.Edges(childComplexity), true
+
+	case "ProjectConnection.pageInfo":
+		if e.complexity.ProjectConnection.PageInfo == nil {
+			break
 		}
 
-		return e.complexity.Query.Assets(childComplexity, args["filter"].(gqlmodel.AssetFilter)), true
+		return e.complexity.ProjectConnection.PageInfo(childComplexity), true
+
+	case "ProjectEdge.cursor":
+		if e.complexity.ProjectEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.ProjectEdge.Cursor(childComplexity), true
+
+	case "ProjectEdge.node":
+		if e.complexity.ProjectEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.ProjectEdge.Node(childComplexity), true
+
+	case "Query.me":
+		if e.complexity.Query.Me == nil {
+			break
+		}
+
+		return e.complexity.Query.Me(childComplexity), true
 
 	case "Query.Node":
 		if e.complexity.Query.Node == nil {
@@ -293,6 +469,229 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Nodes(childComplexity, args["ids"].([]gqlmodel.ID)), true
 
+	case "Query.projects":
+		if e.complexity.Query.Projects == nil {
+			break
+		}
+
+		args, err := ec.field_Query_projects_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Projects(childComplexity, args["filter"].(gqlmodel.ProjectFilter)), true
+
+	case "Query.todos":
+		if e.complexity.Query.Todos == nil {
+			break
+		}
+
+		args, err := ec.field_Query_todos_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Todos(childComplexity, args["filter"].(gqlmodel.TodoFilter)), true
+
+	case "Query.user":
+		if e.complexity.Query.User == nil {
+			break
+		}
+
+		args, err := ec.field_Query_user_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.User(childComplexity, args["email"].(string)), true
+
+	case "Query.workspaces":
+		if e.complexity.Query.Workspaces == nil {
+			break
+		}
+
+		return e.complexity.Query.Workspaces(childComplexity), true
+
+	case "Todo.createdAt":
+		if e.complexity.Todo.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Todo.CreatedAt(childComplexity), true
+
+	case "Todo.done":
+		if e.complexity.Todo.Done == nil {
+			break
+		}
+
+		return e.complexity.Todo.Done(childComplexity), true
+
+	case "Todo.id":
+		if e.complexity.Todo.ID == nil {
+			break
+		}
+
+		return e.complexity.Todo.ID(childComplexity), true
+
+	case "Todo.name":
+		if e.complexity.Todo.Name == nil {
+			break
+		}
+
+		return e.complexity.Todo.Name(childComplexity), true
+
+	case "Todo.project":
+		if e.complexity.Todo.Project == nil {
+			break
+		}
+
+		return e.complexity.Todo.Project(childComplexity), true
+
+	case "Todo.projectId":
+		if e.complexity.Todo.ProjectID == nil {
+			break
+		}
+
+		return e.complexity.Todo.ProjectID(childComplexity), true
+
+	case "Todo.updatedAt":
+		if e.complexity.Todo.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Todo.UpdatedAt(childComplexity), true
+
+	case "TodoConnection.edges":
+		if e.complexity.TodoConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.TodoConnection.Edges(childComplexity), true
+
+	case "TodoConnection.pageInfo":
+		if e.complexity.TodoConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.TodoConnection.PageInfo(childComplexity), true
+
+	case "TodoEdge.cursor":
+		if e.complexity.TodoEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.TodoEdge.Cursor(childComplexity), true
+
+	case "TodoEdge.node":
+		if e.complexity.TodoEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.TodoEdge.Node(childComplexity), true
+
+	case "User.email":
+		if e.complexity.User.Email == nil {
+			break
+		}
+
+		return e.complexity.User.Email(childComplexity), true
+
+	case "User.id":
+		if e.complexity.User.ID == nil {
+			break
+		}
+
+		return e.complexity.User.ID(childComplexity), true
+
+	case "User.name":
+		if e.complexity.User.Name == nil {
+			break
+		}
+
+		return e.complexity.User.Name(childComplexity), true
+
+	case "Workspace.id":
+		if e.complexity.Workspace.ID == nil {
+			break
+		}
+
+		return e.complexity.Workspace.ID(childComplexity), true
+
+	case "Workspace.members":
+		if e.complexity.Workspace.Members == nil {
+			break
+		}
+
+		return e.complexity.Workspace.Members(childComplexity), true
+
+	case "Workspace.name":
+		if e.complexity.Workspace.Name == nil {
+			break
+		}
+
+		return e.complexity.Workspace.Name(childComplexity), true
+
+	case "Workspace.projects":
+		if e.complexity.Workspace.Projects == nil {
+			break
+		}
+
+		args, err := ec.field_Workspace_projects_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Workspace.Projects(childComplexity, args["filter"].(gqlmodel.ProjectFilter)), true
+
+	case "WorkspaceConnection.edges":
+		if e.complexity.WorkspaceConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.WorkspaceConnection.Edges(childComplexity), true
+
+	case "WorkspaceConnection.pageInfo":
+		if e.complexity.WorkspaceConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.WorkspaceConnection.PageInfo(childComplexity), true
+
+	case "WorkspaceEdge.cursor":
+		if e.complexity.WorkspaceEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.WorkspaceEdge.Cursor(childComplexity), true
+
+	case "WorkspaceEdge.node":
+		if e.complexity.WorkspaceEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.WorkspaceEdge.Node(childComplexity), true
+
+	case "WorkspaceMember.role":
+		if e.complexity.WorkspaceMember.Role == nil {
+			break
+		}
+
+		return e.complexity.WorkspaceMember.Role(childComplexity), true
+
+	case "WorkspaceMember.user":
+		if e.complexity.WorkspaceMember.User == nil {
+			break
+		}
+
+		return e.complexity.WorkspaceMember.User(childComplexity), true
+
+	case "WorkspaceMember.userId":
+		if e.complexity.WorkspaceMember.UserID == nil {
+			break
+		}
+
+		return e.complexity.WorkspaceMember.UserID(childComplexity), true
+
 	}
 	return 0, false
 }
@@ -301,9 +700,16 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	opCtx := graphql.GetOperationContext(ctx)
 	ec := executionContext{opCtx, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
-		ec.unmarshalInputAssetFilter,
-		ec.unmarshalInputCreateAssetInput,
-		ec.unmarshalInputUpdateAssetInput,
+		ec.unmarshalInputAddWorkspaceMemberInput,
+		ec.unmarshalInputCreateProjectInput,
+		ec.unmarshalInputCreateTodoInput,
+		ec.unmarshalInputCreateWorkspaceInput,
+		ec.unmarshalInputProjectFilter,
+		ec.unmarshalInputTodoFilter,
+		ec.unmarshalInputUpdateProjectInput,
+		ec.unmarshalInputUpdateTodoInput,
+		ec.unmarshalInputUpdateWorkspaceInput,
+		ec.unmarshalInputUpdatwWorkspaceMemberInput,
 	)
 	first := true
 
@@ -401,62 +807,72 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "../../../schema/asset.graphql", Input: `type Asset implements Node {
+	{Name: "../../../schema/project.graphql", Input: `type Project implements Node {
   id: ID!
-  projectId: ID!
+  workspaceID: ID!
   name: String!
-
-  project: Project
+  todos(filter: TodoFilter!): TodoConnection!
+  workspace: Workspace @goField(forceResolver: true)
 }
 
-type AssetConnection {
+type ProjectConnection {
   pageInfo: PageInfo!
-  edges: [AssetEdge!]
+  edges: [ProjectEdge!]!
 }
 
-type AssetEdge {
-  cursor: String!
-  node: Asset!
+type ProjectEdge {
+  cursor: Cursor!
+  node: Project!
 }
 
-input AssetFilter {
-  projectId: ID
+input ProjectFilter {
+  workspaceID: ID
   first: Int
   last: Int
   after: Cursor
   before: Cursor
 }
 
-input CreateAssetInput {
-  projectId: ID!
+extend type Query {
+  projects(filter: ProjectFilter!): ProjectConnection!
+}
+
+input CreateProjectInput {
+  workspaceID: ID!
   name: String!
 }
 
-input UpdateAssetInput {
-  assetId: ID!
+input UpdateProjectInput {
+  id: ID!
   name: String
 }
 
-extend type Query {
-  assets(filter: AssetFilter!): AssetConnection!
-}
-
 extend type Mutation {
-  createAsset(input: CreateAssetInput!): Asset!
-  updateAsset(input: UpdateAssetInput!): Asset!
-  deleteAsset(assetId: ID!): ID!
+  createProject(input: CreateProjectInput!): Project!
+  updateProject(input: UpdateProjectInput!): Project!
+  deleteProject(projectId: ID!): ID!
 }
 `, BuiltIn: false},
-	{Name: "../../../schema/project.graphql", Input: `type Project implements Node {
-  id: ID!
-  workspaceID: ID!
-  name: String!
+	{Name: "../../../schema/shared.graphql", Input: `directive @goModel(
+  model: String
+  models: [String!]
+  forceGenerate: Boolean
+) on OBJECT | INPUT_OBJECT | SCALAR | ENUM | INTERFACE | UNION
 
-  assets(filter: AssetFilter!): AssetConnection!
-  # workspace: Workspace
-}
-`, BuiltIn: false},
-	{Name: "../../../schema/shared.graphql", Input: `scalar Cursor
+directive @goField(
+  forceResolver: Boolean
+  name: String
+  omittable: Boolean
+) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+
+directive @goTag(
+  key: String!
+  value: String
+) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+
+scalar Cursor
+
+scalar Time
 
 interface Node {
   id: ID!
@@ -479,6 +895,138 @@ type Mutation
 schema {
   query: Query
   mutation: Mutation
+}
+`, BuiltIn: false},
+	{Name: "../../../schema/todo.graphql", Input: `type Todo implements Node {
+  id: ID!
+  projectId: ID!
+  name: String!
+  done: Boolean!
+  createdAt: Time!
+  updatedAt: Time!
+  project: Project @goField(forceResolver: true)
+}
+
+type TodoConnection {
+  pageInfo: PageInfo!
+  edges: [TodoEdge!]
+}
+
+type TodoEdge {
+  cursor: String!
+  node: Todo!
+}
+
+input TodoFilter {
+  projectId: ID
+  first: Int
+  last: Int
+  after: Cursor
+  before: Cursor
+}
+
+input CreateTodoInput {
+  projectId: ID!
+  name: String!
+}
+
+input UpdateTodoInput {
+  id: ID!
+  name: String
+  done: Boolean
+}
+
+extend type Query {
+  todos(filter: TodoFilter!): TodoConnection!
+}
+
+extend type Mutation {
+  createTodo(input: CreateTodoInput!): Todo!
+  updateTodo(input: UpdateTodoInput!): Todo!
+  deleteTodo(todoId: ID!): ID!
+}
+`, BuiltIn: false},
+	{Name: "../../../schema/user.graphql", Input: `type User implements Node {
+  id: ID!
+  name: String!
+  email: String!
+}
+
+type Me implements Node {
+  id: ID!
+  name: String!
+  email: String!
+  workspaces: WorkspaceConnection @goField(forceResolver: true)
+}
+
+extend type Query {
+  me: Me
+  user(email: String!): User
+}
+`, BuiltIn: false},
+	{Name: "../../../schema/workspace.graphql", Input: `type Workspace implements Node {
+  id: ID!
+  name: String!
+  members: [WorkspaceMember!]!
+  projects(filter: ProjectFilter!): ProjectConnection!
+}
+
+type WorkspaceMember {
+  userId: ID!
+  role: Role!
+  user: User
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+type WorkspaceConnection {
+  pageInfo: PageInfo!
+  edges: [WorkspaceEdge!]!
+}
+
+type WorkspaceEdge {
+  cursor: Cursor!
+  node: Workspace!
+}
+
+extend type Query {
+  workspaces: [Workspace!]
+}
+
+input CreateWorkspaceInput {
+  name: String!
+}
+
+input UpdateWorkspaceInput {
+  id: ID!
+  name: String
+}
+
+input AddWorkspaceMemberInput {
+  workspaceId: ID!
+  userId: ID!
+  role: Role!
+}
+
+input UpdatwWorkspaceMemberInput {
+  workspaceId: ID!
+  userId: ID!
+  role: Role!
+}
+
+extend type Mutation {
+  createWorkspace(input: CreateWorkspaceInput!): Workspace!
+  updateWorkspace(input: UpdateWorkspaceInput!): Workspace!
+  deleteWorkspace(workspaceId: ID!): ID!
+  addWorkspaceMember(input: AddWorkspaceMemberInput!): WorkspaceMember!
+  updateWorkspaceMemberRole(
+    input: UpdatwWorkspaceMemberInput!
+  ): WorkspaceMember!
+  removeWorkspaceMember(workspaceId: ID!, userId: ID!): ID!
 }
 `, BuiltIn: false},
 }

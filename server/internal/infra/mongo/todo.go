@@ -4,38 +4,38 @@ import (
 	"context"
 
 	"github.com/reearth/scaffold/server/internal/infra/mongo/mongodoc"
-	"github.com/reearth/scaffold/server/pkg/asset"
 	"github.com/reearth/scaffold/server/pkg/project"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"github.com/reearth/scaffold/server/pkg/todo"
+	"go.mongodb.org/mongo-driver/v2/bson"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
-type Asset struct {
+type Todo struct {
 	m *mongo.Database
 }
 
-var _ asset.Repo = (*Asset)(nil)
+var _ todo.Repo = (*Todo)(nil)
 
-func NewAsset(db *mongo.Database) *Asset {
-	return &Asset{m: db}
+func NewTodo(db *mongo.Database) *Todo {
+	return &Todo{m: db}
 }
 
-func (a *Asset) FindByID(ctx context.Context, id asset.ID) (*asset.Asset, error) {
+func (a *Todo) FindByID(ctx context.Context, id todo.ID) (*todo.Todo, error) {
 	res := a.col().FindOne(ctx, bson.M{"id": id})
 	if res.Err() != nil {
 		return nil, res.Err()
 	}
 
-	var doc mongodoc.Asset
+	var doc mongodoc.Todo
 	if err := res.Decode(&doc); err != nil {
 		return nil, err
 	}
 
-	return doc.ToAsset()
+	return doc.Into()
 }
 
-func (a *Asset) FindByIDs(ctx context.Context, ids asset.IDList) (asset.List, error) {
+func (a *Todo) FindByIDs(ctx context.Context, ids todo.IDList) (todo.List, error) {
 	res, err := a.col().Find(ctx, bson.M{"id": bson.M{"$in": ids}})
 	if err != nil {
 		return nil, err
@@ -46,10 +46,10 @@ func (a *Asset) FindByIDs(ctx context.Context, ids asset.IDList) (asset.List, er
 		return nil, err
 	}
 
-	return docs.ToAssetList()
+	return docs.Into()
 }
 
-func (a *Asset) FindByProject(ctx context.Context, pid project.ID) (asset.List, error) {
+func (a *Todo) FindByProject(ctx context.Context, pid project.ID) (todo.List, error) {
 	res, err := a.col().Find(ctx, bson.M{"project": pid})
 	if err != nil {
 		return nil, err
@@ -60,10 +60,10 @@ func (a *Asset) FindByProject(ctx context.Context, pid project.ID) (asset.List, 
 		return nil, err
 	}
 
-	return docs.ToAssetList()
+	return docs.Into()
 }
 
-func (a *Asset) Save(ctx context.Context, asset *asset.Asset) error {
+func (a *Todo) Save(ctx context.Context, asset *todo.Todo) error {
 	doc, err := mongodoc.New(asset)
 	if err != nil {
 		return err
@@ -78,11 +78,11 @@ func (a *Asset) Save(ctx context.Context, asset *asset.Asset) error {
 	return err
 }
 
-func (a *Asset) Delete(ctx context.Context, id asset.ID) error {
+func (a *Todo) Delete(ctx context.Context, id todo.ID) error {
 	_, err := a.col().DeleteOne(ctx, bson.M{"id": id})
 	return err
 }
 
-func (a *Asset) col() *mongo.Collection {
-	return a.m.Collection("asset")
+func (a *Todo) col() *mongo.Collection {
+	return a.m.Collection("todo")
 }

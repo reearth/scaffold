@@ -13,11 +13,11 @@ import (
 	"github.com/reearth/scaffold/server/internal/transport/cli"
 	"github.com/reearth/scaffold/server/internal/transport/echo"
 	"github.com/reearth/scaffold/server/internal/usecase"
-	"github.com/reearth/scaffold/server/internal/usecase/assetuc"
 	"github.com/reearth/scaffold/server/internal/usecase/projectuc"
+	"github.com/reearth/scaffold/server/internal/usecase/todouc"
 	"github.com/reearth/scaffold/server/internal/usecase/useruc"
 	"github.com/reearth/scaffold/server/internal/usecase/workspaceuc"
-	"github.com/reearth/scaffold/server/pkg/asset"
+	"github.com/reearth/scaffold/server/pkg/todo"
 )
 
 // Injectors from wire.go:
@@ -28,23 +28,30 @@ func InitEcho(ctx context.Context) (*echo.Server, error) {
 	if err != nil {
 		return nil, err
 	}
-	mongoAsset := mongo.NewAsset(database)
+	mongoTodo := mongo.NewTodo(database)
 	project := mongo.NewProject(database)
 	workspace := mongo.NewWorkspace(database)
-	policy := asset.NewPolicy()
-	findByIDs := assetuc.NewFindByIDs(mongoAsset, project, workspace, policy)
-	findByProject := assetuc.NewFindByProject(mongoAsset, project, workspace, policy)
+	policy := todo.NewPolicy()
+	findByIDs := todouc.NewFindByIDs(mongoTodo, project, workspace, policy)
+	findByProject := todouc.NewFindByProject(mongoTodo, project, workspace, policy)
 	storage := gcp.NewStorage()
-	create := assetuc.NewCreate(mongoAsset, project, workspace, policy, storage)
-	update := assetuc.NewUpdate(mongoAsset, project, workspace, policy)
-	assetucUsecase := assetuc.New(findByIDs, findByProject, create, update)
-	projectucUsecase := projectuc.New()
-	workspaceucUsecase := workspaceuc.New()
+	create := todouc.NewCreate(mongoTodo, project, workspace, policy, storage)
+	update := todouc.NewUpdate(mongoTodo, project, workspace, policy)
+	todoucUsecase := &todouc.Usecase{
+		FindByIDs:     findByIDs,
+		FindByProject: findByProject,
+		Create:        create,
+		Update:        update,
+	}
+	projectucUsecase := &projectuc.Usecase{}
+	workspaceucUsecase := &workspaceuc.Usecase{}
 	user := mongo.NewUser(database)
 	findBySub := useruc.NewFindBySub(user)
-	userucUsecase := useruc.New(findBySub)
+	userucUsecase := &useruc.Usecase{
+		FindBySub: findBySub,
+	}
 	usecases := usecase.Usecases{
-		Asset:     assetucUsecase,
+		Todo:      todoucUsecase,
 		Project:   projectucUsecase,
 		Workspace: workspaceucUsecase,
 		User:      userucUsecase,

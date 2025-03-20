@@ -1,26 +1,26 @@
-package assetuc
+package todouc
 
 import (
 	"context"
 
-	"github.com/reearth/scaffold/server/pkg/asset"
 	"github.com/reearth/scaffold/server/pkg/project"
+	"github.com/reearth/scaffold/server/pkg/todo"
 	"github.com/reearth/scaffold/server/pkg/user"
 	"github.com/reearth/scaffold/server/pkg/workspace"
 )
 
 type FindByProject struct {
-	assetRepo     asset.Repo
+	assetRepo     todo.Repo
 	projectRepo   project.Repo
 	workspaceRepo workspace.Repo
-	assetPolicy   asset.Policy
+	assetPolicy   todo.Policy
 }
 
 func NewFindByProject(
-	assetRepo asset.Repo,
+	assetRepo todo.Repo,
 	projectRepo project.Repo,
 	workspaceRepo workspace.Repo,
-	assetPolicy asset.Policy,
+	assetPolicy todo.Policy,
 ) *FindByProject {
 	return &FindByProject{
 		assetRepo:     assetRepo,
@@ -30,10 +30,10 @@ func NewFindByProject(
 	}
 }
 
-func (uc *FindByProject) Execute(ctx context.Context, pid project.ID, user *user.User) (asset.List, error) {
+func (uc *FindByProject) Execute(ctx context.Context, pid project.ID, user *user.User) (todo.List, error) {
 	_, project, _, err := UsecaseBuilder(ctx, user).
 		FindProjectByID(pid, uc.projectRepo, uc.workspaceRepo).
-		CanListAssets(uc.assetPolicy).
+		CanListTodo(uc.assetPolicy).
 		Result()
 	if err != nil {
 		return nil, err

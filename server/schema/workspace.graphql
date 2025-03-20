@@ -1,0 +1,64 @@
+type Workspace implements Node {
+  id: ID!
+  name: String!
+  members: [WorkspaceMember!]!
+  projects(filter: ProjectFilter!): ProjectConnection!
+}
+
+type WorkspaceMember {
+  userId: ID!
+  role: Role!
+  user: User
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+type WorkspaceConnection {
+  pageInfo: PageInfo!
+  edges: [WorkspaceEdge!]!
+}
+
+type WorkspaceEdge {
+  cursor: Cursor!
+  node: Workspace!
+}
+
+extend type Query {
+  workspaces: [Workspace!]
+}
+
+input CreateWorkspaceInput {
+  name: String!
+}
+
+input UpdateWorkspaceInput {
+  id: ID!
+  name: String
+}
+
+input AddWorkspaceMemberInput {
+  workspaceId: ID!
+  userId: ID!
+  role: Role!
+}
+
+input UpdatwWorkspaceMemberInput {
+  workspaceId: ID!
+  userId: ID!
+  role: Role!
+}
+
+extend type Mutation {
+  createWorkspace(input: CreateWorkspaceInput!): Workspace!
+  updateWorkspace(input: UpdateWorkspaceInput!): Workspace!
+  deleteWorkspace(workspaceId: ID!): ID!
+  addWorkspaceMember(input: AddWorkspaceMemberInput!): WorkspaceMember!
+  updateWorkspaceMemberRole(
+    input: UpdatwWorkspaceMemberInput!
+  ): WorkspaceMember!
+  removeWorkspaceMember(workspaceId: ID!, userId: ID!): ID!
+}

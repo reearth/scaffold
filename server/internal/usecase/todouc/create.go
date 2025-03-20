@@ -1,4 +1,4 @@
-package assetuc
+package todouc
 
 import (
 	"context"
@@ -6,8 +6,8 @@ import (
 	"io"
 
 	"github.com/reearth/scaffold/server/internal/usecase/gateway"
-	"github.com/reearth/scaffold/server/pkg/asset"
 	"github.com/reearth/scaffold/server/pkg/project"
+	"github.com/reearth/scaffold/server/pkg/todo"
 	"github.com/reearth/scaffold/server/pkg/user"
 	"github.com/reearth/scaffold/server/pkg/workspace"
 	"github.com/samber/lo"
@@ -33,18 +33,18 @@ func (p CreateParam) Validate() error {
 }
 
 type Create struct {
-	assetRepo     asset.Repo
+	assetRepo     todo.Repo
 	projectRepo   project.Repo
 	workspaceRepo workspace.Repo
-	assetPolicy   asset.Policy
+	assetPolicy   todo.Policy
 	storage       gateway.Storage
 }
 
 func NewCreate(
-	assetRepo asset.Repo,
+	assetRepo todo.Repo,
 	projectRepo project.Repo,
 	workspaceRepo workspace.Repo,
-	assetPolicy asset.Policy,
+	assetPolicy todo.Policy,
 	storage gateway.Storage,
 ) *Create {
 	return &Create{
@@ -56,14 +56,14 @@ func NewCreate(
 	}
 }
 
-func (uc *Create) Execute(ctx context.Context, param CreateParam, user *user.User) (*asset.Asset, error) {
+func (uc *Create) Execute(ctx context.Context, param CreateParam, user *user.User) (*todo.Todo, error) {
 	if err := param.Validate(); err != nil {
 		return nil, err
 	}
 
 	_, project, _, err := UsecaseBuilder(ctx, user).
 		FindProjectByID(param.ProjectID, uc.projectRepo, uc.workspaceRepo).
-		CanCreateAsset(uc.assetPolicy).
+		CanCreateTodo(uc.assetPolicy).
 		Result()
 
 	if err != nil {
@@ -74,7 +74,7 @@ func (uc *Create) Execute(ctx context.Context, param CreateParam, user *user.Use
 		return nil, err
 	}
 
-	asset, err := asset.New().
+	asset, err := todo.New().
 		NewID().
 		Project(project.ID()).
 		Name(param.Name).

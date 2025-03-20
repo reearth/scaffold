@@ -1,10 +1,10 @@
-package asset
+package todo
 
 import (
 	"github.com/reearth/scaffold/server/pkg/project"
 )
 
-type List []*Asset
+type List []*Todo
 
 func (l List) ProjectIDs() project.IDList {
 	ids := make(project.IDList, 0, len(l))

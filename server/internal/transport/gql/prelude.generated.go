@@ -2249,17 +2249,17 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) unmarshalNID2githubᚗcomᚋreearthᚋserverᚑscaffoldᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx context.Context, v any) (gqlmodel.ID, error) {
+func (ec *executionContext) unmarshalNID2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx context.Context, v any) (gqlmodel.ID, error) {
 	var res gqlmodel.ID
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNID2githubᚗcomᚋreearthᚋserverᚑscaffoldᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx context.Context, sel ast.SelectionSet, v gqlmodel.ID) graphql.Marshaler {
+func (ec *executionContext) marshalNID2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx context.Context, sel ast.SelectionSet, v gqlmodel.ID) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) unmarshalNID2ᚕgithubᚗcomᚋreearthᚋserverᚑscaffoldᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐIDᚄ(ctx context.Context, v any) ([]gqlmodel.ID, error) {
+func (ec *executionContext) unmarshalNID2ᚕgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐIDᚄ(ctx context.Context, v any) ([]gqlmodel.ID, error) {
 	var vSlice []any
 	if v != nil {
 		vSlice = graphql.CoerceList(v)
@@ -2268,7 +2268,7 @@ func (ec *executionContext) unmarshalNID2ᚕgithubᚗcomᚋreearthᚋserverᚑsc
 	res := make([]gqlmodel.ID, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNID2githubᚗcomᚋreearthᚋserverᚑscaffoldᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNID2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -2276,10 +2276,10 @@ func (ec *executionContext) unmarshalNID2ᚕgithubᚗcomᚋreearthᚋserverᚑsc
 	return res, nil
 }
 
-func (ec *executionContext) marshalNID2ᚕgithubᚗcomᚋreearthᚋserverᚑscaffoldᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐIDᚄ(ctx context.Context, sel ast.SelectionSet, v []gqlmodel.ID) graphql.Marshaler {
+func (ec *executionContext) marshalNID2ᚕgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐIDᚄ(ctx context.Context, sel ast.SelectionSet, v []gqlmodel.ID) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	for i := range v {
-		ret[i] = ec.marshalNID2githubᚗcomᚋreearthᚋserverᚑscaffoldᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx, sel, v[i])
+		ret[i] = ec.marshalNID2githubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx, sel, v[i])
 	}
 
 	for _, e := range ret {
@@ -2585,7 +2585,7 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) unmarshalOID2ᚖgithubᚗcomᚋreearthᚋserverᚑscaffoldᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx context.Context, v any) (*gqlmodel.ID, error) {
+func (ec *executionContext) unmarshalOID2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx context.Context, v any) (*gqlmodel.ID, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -2594,7 +2594,7 @@ func (ec *executionContext) unmarshalOID2ᚖgithubᚗcomᚋreearthᚋserverᚑsc
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOID2ᚖgithubᚗcomᚋreearthᚋserverᚑscaffoldᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx context.Context, sel ast.SelectionSet, v *gqlmodel.ID) graphql.Marshaler {
+func (ec *executionContext) marshalOID2ᚖgithubᚗcomᚋreearthᚋscaffoldᚋserverᚋinternalᚋtransportᚋgqlᚋgqlmodelᚐID(ctx context.Context, sel ast.SelectionSet, v *gqlmodel.ID) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -2615,6 +2615,44 @@ func (ec *executionContext) marshalOInt2ᚖint32(ctx context.Context, sel ast.Se
 	}
 	res := graphql.MarshalInt32(*v)
 	return res
+}
+
+func (ec *executionContext) unmarshalOString2ᚕstringᚄ(ctx context.Context, v any) ([]string, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []any
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]string, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNString2string(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOString2ᚕstringᚄ(ctx context.Context, sel ast.SelectionSet, v []string) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNString2string(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v any) (*string, error) {

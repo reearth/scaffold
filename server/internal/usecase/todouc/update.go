@@ -1,18 +1,18 @@
-package assetuc
+package todouc
 
 import (
 	"context"
 	"errors"
 
-	"github.com/reearth/scaffold/server/pkg/asset"
 	"github.com/reearth/scaffold/server/pkg/project"
+	"github.com/reearth/scaffold/server/pkg/todo"
 	"github.com/reearth/scaffold/server/pkg/user"
 	"github.com/reearth/scaffold/server/pkg/workspace"
 	"github.com/samber/lo"
 )
 
 type UpdateParam struct {
-	ID   asset.ID
+	ID   todo.ID
 	Name *string
 }
 
@@ -24,17 +24,17 @@ func (p UpdateParam) Validate() error {
 }
 
 type Update struct {
-	assetRepo     asset.Repo
+	assetRepo     todo.Repo
 	projectRepo   project.Repo
 	workspaceRepo workspace.Repo
-	assetPolicy   asset.Policy
+	assetPolicy   todo.Policy
 }
 
 func NewUpdate(
-	assetRepo asset.Repo,
+	assetRepo todo.Repo,
 	projectRepo project.Repo,
 	workspaceRepo workspace.Repo,
-	assetPolicy asset.Policy,
+	assetPolicy todo.Policy,
 ) *Update {
 	return &Update{
 		assetRepo:     assetRepo,
@@ -44,15 +44,15 @@ func NewUpdate(
 	}
 }
 
-func (uc *Update) Execute(ctx context.Context, param UpdateParam, user *user.User) (*asset.Asset, error) {
+func (uc *Update) Execute(ctx context.Context, param UpdateParam, user *user.User) (*todo.Todo, error) {
 	if err := param.Validate(); err != nil {
 		return nil, err
 	}
 
 	asset, _, _, err := UsecaseBuilder(ctx, user).
-		FindAssetByID(param.ID, uc.assetRepo).
-		FindProjectByAsset(uc.projectRepo, uc.workspaceRepo).
-		CanUpdateAsset(uc.assetPolicy).
+		FindTodoByID(param.ID, uc.assetRepo).
+		FindProjectByTodo(uc.projectRepo, uc.workspaceRepo).
+		CanUpdateTodo(uc.assetPolicy).
 		Result()
 	if err != nil {
 		return nil, err

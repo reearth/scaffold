@@ -1,35 +1,35 @@
 package gqlmodel
 
 import (
-	"github.com/reearth/scaffold/server/pkg/asset"
 	"github.com/reearth/scaffold/server/pkg/project"
+	"github.com/reearth/scaffold/server/pkg/todo"
 )
 
-func NewAsset(a *asset.Asset) *Asset {
+func NewTodo(a *todo.Todo) *Todo {
 	if a == nil {
 		return nil
 	}
-	return &Asset{
+	return &Todo{
 		ID:        ID(a.ID()),
 		Name:      a.Name(),
 		ProjectID: ID(a.Project()),
 	}
 }
 
-func NewAssets(assets asset.List) []*Asset {
+func NewAssets(assets todo.List) []*Todo {
 	if assets == nil {
 		return nil
 	}
-	res := make([]*Asset, 0, len(assets))
+	res := make([]*Todo, 0, len(assets))
 	for _, a := range assets {
-		res = append(res, NewAsset(a))
+		res = append(res, NewTodo(a))
 	}
 	return res
 }
 
-func (a *Asset) Into() (*asset.Asset, error) {
-	return asset.New().
-		ID(asset.ID(a.ID)).
+func (a *Todo) Into() (*todo.Todo, error) {
+	return todo.New().
+		ID(todo.ID(a.ID)).
 		Name(a.Name).
 		Project(project.ID(a.ProjectID)).
 		Build()

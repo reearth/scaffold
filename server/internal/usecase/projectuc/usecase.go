@@ -1,7 +1,9 @@
 package projectuc
 
-type Usecase struct{}
+import "github.com/google/wire"
 
-func New() *Usecase {
-	return &Usecase{}
-}
+var Wire = wire.NewSet(
+	wire.Struct(new(Usecase), "*"),
+)
+
+type Usecase struct{}

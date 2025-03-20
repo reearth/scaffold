@@ -1,7 +1,5 @@
 //go:build wireinject
 
-//go:generate go run github.com/google/wire/cmd/wire
-
 package di
 
 import (
@@ -13,13 +11,9 @@ import (
 	"github.com/reearth/scaffold/server/internal/transport/cli"
 	"github.com/reearth/scaffold/server/internal/transport/echo"
 	"github.com/reearth/scaffold/server/internal/usecase"
-	"github.com/reearth/scaffold/server/internal/usecase/assetuc"
 	"github.com/reearth/scaffold/server/internal/usecase/gateway"
-	"github.com/reearth/scaffold/server/internal/usecase/projectuc"
-	"github.com/reearth/scaffold/server/internal/usecase/useruc"
-	"github.com/reearth/scaffold/server/internal/usecase/workspaceuc"
-	"github.com/reearth/scaffold/server/pkg/asset"
 	"github.com/reearth/scaffold/server/pkg/project"
+	"github.com/reearth/scaffold/server/pkg/todo"
 	"github.com/reearth/scaffold/server/pkg/user"
 	"github.com/reearth/scaffold/server/pkg/workspace"
 )
@@ -31,8 +25,8 @@ func InitEcho(ctx context.Context) (*echo.Server, error) {
 		InitMongo,
 
 		// infra: mongo
-		mongo.NewAsset,
-		wire.Bind(new(asset.Repo), new(*mongo.Asset)),
+		mongo.NewTodo,
+		wire.Bind(new(todo.Repo), new(*mongo.Todo)),
 		mongo.NewWorkspace,
 		wire.Bind(new(workspace.Repo), new(*mongo.Workspace)),
 		mongo.NewUser,
@@ -45,22 +39,10 @@ func InitEcho(ctx context.Context) (*echo.Server, error) {
 		gcp.NewStorage,
 
 		// policy
-		asset.NewPolicy,
+		todo.NewPolicy,
 
 		// usecases
-		assetuc.NewFindByIDs,
-		assetuc.NewFindByProject,
-		assetuc.NewCreate,
-		assetuc.NewUpdate,
-		assetuc.New,
-
-		projectuc.New,
-		workspaceuc.New,
-
-		useruc.NewFindBySub,
-		useruc.New,
-
-		wire.Struct(new(usecase.Usecases), "*"),
+		usecase.Wire,
 
 		// echo
 		newEchoConfig,
