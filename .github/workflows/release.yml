@@ -17,6 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/release'
     steps:
-      - uses: reearth/actions/.github/actions/release@main
+      - uses: reearth/actions/release@main
         with:
           version: ${{ inputs.version }}

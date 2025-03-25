@@ -102,7 +102,7 @@ jobs:
   #   if: needs.ci-server.result == 'success'
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: reearth/actions/.github/actions/deploy-cloud-run@main
+  #     - uses: reearth/actions/deploy-cloud-run@main
   #       with:
   #         service: ${{ vars.SERVICE_NAME_API }}
   #         image: ${{ needs.build-server.outputs.image }}
@@ -115,7 +115,7 @@ jobs:
   #   if: needs.ci-web.result == 'success'
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: reearth/actions/.github/actions/deploy-cloud-run@main
+  #     - uses: reearth/actions/deploy-cloud-run@main
   #       with:
   #         service: ${{ vars.SERVICE_NAME_WEB }}
   #         image: ${{ needs.build-web.outputs.image }}
