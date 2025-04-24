@@ -58,14 +58,14 @@ jobs:
         working-directory: web
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          package_json_file: web/package.json
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: pnpm
-          cache-dependency-path: "**/pnpm-lock.yaml"
+          cache-dependency-path: "web/pnpm-lock.yaml"
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: web/package.json
       - name: Install
         run: pnpm install --frozen-lockfile
       - uses: reearth/actions/license-checker/npm@ecb4231198dc0992c3f69c333ee9748ec50ee8a4
