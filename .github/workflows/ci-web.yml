@@ -2,7 +2,7 @@ on:
   workflow_call:
 jobs:
   nginx-config-validation:
-    uses: reearth/actions/.github/workflows/validate-nginx-config.yml@dd85721d9bf22ec466ec9446e7b939eb22de900a
+    uses: reearth/actions/.github/workflows/validate-nginx-config.yml@ecb4231198dc0992c3f69c333ee9748ec50ee8a4
     with:
       template_directory: docker
       template_values: '{"PORT": 8080, "REAL_IP_HEADER": "X-Forwarded-For"}'
@@ -14,11 +14,11 @@ jobs:
       run:
         working-directory: web
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4
         with:
           package_json_file: web/package.json
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: lts/*
           cache: pnpm
@@ -40,7 +40,7 @@ jobs:
       - name: Pack
         if: github.ref_name == 'main' || github.ref_name == 'release'
         run: tar -zcvf dist.tar.gz dist
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: github.ref_name == 'main' || github.ref_name == 'release'
         with:
           name: dist

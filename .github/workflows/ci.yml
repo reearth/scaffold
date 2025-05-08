@@ -22,7 +22,7 @@ jobs:
           repo: ${{ vars.REPO }}
       - name: changed files for server
         id: server
-        uses: step-security/changed-files@v45
+        uses: step-security/changed-files@95b56dadb92a30ca9036f16423fd3c088a71ee94 # v46
         with:
           files: |
             server/**
@@ -30,7 +30,7 @@ jobs:
             .github/workflows/ci-server.yml
       - name: changed files for web
         id: web
-        uses: step-security/changed-files@v45
+        uses: step-security/changed-files@95b56dadb92a30ca9036f16423fd3c088a71ee94 # v46
         with:
           files: |
             web/**
