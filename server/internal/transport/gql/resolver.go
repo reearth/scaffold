@@ -1,10 +1,7 @@
 package gql
 
 import (
-	"context"
-
 	"github.com/reearth/scaffold/server/internal/usecase"
-	"github.com/reearth/scaffold/server/pkg/user"
 )
 
 // This file will not be regenerated automatically.
@@ -21,7 +18,7 @@ func NewResolver(uc usecase.Usecases) *Resolver {
 
 type UserKey struct{}
 
-func (r *Resolver) user(ctx context.Context) *user.User {
-	u, _ := ctx.Value(UserKey{}).(*user.User)
-	return u
-}
+// func (r *Resolver) user(ctx context.Context) *user.User {
+// 	u, _ := ctx.Value(UserKey{}).(*user.User)
+// 	return u
+// }

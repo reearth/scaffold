@@ -7,8 +7,9 @@ import (
 
 func newEchoConfig(conf *Config, usecases usecase.Usecases) echo.Config {
 	return echo.Config{
-		Dev:      conf.Dev,
-		Port:     conf.Port,
-		Usecases: usecases,
+		Dev:          conf.Dev,
+		Port:         conf.Port,
+		Usecases:     usecases,
+		JWTProviders: conf.JWTProviders(),
 	}
 }

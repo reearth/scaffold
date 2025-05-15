@@ -165,7 +165,7 @@ func (e *executableSchema) Schema() *ast.Schema {
 	return parsedSchema
 }
 
-func (e *executableSchema) Complexity(typeName, field string, childComplexity int, rawArgs map[string]any) (int, bool) {
+func (e *executableSchema) Complexity(ctx context.Context, typeName, field string, childComplexity int, rawArgs map[string]any) (int, bool) {
 	ec := executionContext{nil, e, 0, 0, nil}
 	_ = ec
 	switch typeName + "." + field {
@@ -203,7 +203,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_addWorkspaceMember_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_addWorkspaceMember_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -215,7 +215,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createProject_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createProject_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -227,7 +227,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createTodo_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createTodo_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -239,7 +239,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_createWorkspace_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createWorkspace_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -251,7 +251,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteProject_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteProject_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -263,7 +263,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteTodo_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteTodo_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -275,7 +275,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_deleteWorkspace_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_deleteWorkspace_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -287,7 +287,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_removeWorkspaceMember_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_removeWorkspaceMember_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -299,7 +299,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateProject_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateProject_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -311,7 +311,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateTodo_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateTodo_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -323,7 +323,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateWorkspace_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateWorkspace_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -335,7 +335,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Mutation_updateWorkspaceMemberRole_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_updateWorkspaceMemberRole_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -389,7 +389,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Project_todos_args(context.TODO(), rawArgs)
+		args, err := ec.field_Project_todos_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -450,7 +450,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_Node_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_Node_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -462,7 +462,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_Nodes_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_Nodes_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -474,7 +474,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_projects_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_projects_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -486,7 +486,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_todos_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_todos_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -498,7 +498,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_user_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_user_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}
@@ -636,7 +636,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Workspace_projects_args(context.TODO(), rawArgs)
+		args, err := ec.field_Workspace_projects_args(ctx, rawArgs)
 		if err != nil {
 			return 0, false
 		}

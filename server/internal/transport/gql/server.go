@@ -14,7 +14,7 @@ import (
 	"github.com/vektah/gqlparser/v2/ast"
 )
 
-func NewServer(u usecase.Usecases) *handler.Server {
+func NewServer(u usecase.Usecases, dev bool) *handler.Server {
 	resolver := NewResolver(u)
 	srv := handler.New(NewExecutableSchema(Config{Resolvers: resolver}))
 
@@ -24,7 +24,10 @@ func NewServer(u usecase.Usecases) *handler.Server {
 
 	srv.SetQueryCache(lru.New[*ast.QueryDocument](1000))
 
-	srv.Use(extension.Introspection{})
+	if dev {
+		srv.Use(extension.Introspection{})
+	}
+
 	srv.Use(extension.AutomaticPersistedQuery{
 		Cache: lru.New[string](100),
 	})

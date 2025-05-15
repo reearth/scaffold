@@ -5,16 +5,33 @@ import (
 
 	"log"
 
-	"github.com/caarlos0/env/v11"
 	"github.com/joho/godotenv"
-	"github.com/yudai/pp"
+	"github.com/k0kubun/pp/v3"
+	"github.com/kelseyhightower/envconfig"
+	"github.com/reearth/reearthx/appx"
+	"github.com/samber/lo"
 )
 
+func init() {
+	pp.Default.SetColoringEnabled(false)
+	pp.Default.SetOmitEmpty(true)
+}
+
+const configPrefix = "REEARTH"
+
 type Config struct {
-	DB     string `pp:"-"`
-	DB_APP string `envDefault:"reearth"`
-	Port   string `env:"PORT" envDefault:"8080"`
 	Dev    bool
+	DB     string `pp:"-"`
+	DB_APP string `default:"reearth"`
+	Port   string `envconfig:"PORT" default:"8080"`
+	Auth   appx.JWTProvider
+}
+
+func (cfg *Config) JWTProviders() []appx.JWTProvider {
+	if cfg.Auth.IsEmpty() {
+		return nil
+	}
+	return []appx.JWTProvider{cfg.Auth}
 }
 
 func (cfg *Config) Print() {
@@ -28,11 +45,15 @@ func LoadConfig() *Config {
 		log.Println("config: .env loaded")
 	}
 
-	var cfg Config
-	if err := env.Parse(&cfg); err != nil {
-		panic(err)
-	}
+	return loadConfig(true)
+}
 
-	cfg.Print()
+func loadConfig(print bool) *Config {
+	var cfg Config
+	lo.Must0(envconfig.Process(configPrefix, &cfg))
+
+	if print {
+		cfg.Print()
+	}
 	return &cfg
 }
