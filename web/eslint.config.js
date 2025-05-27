@@ -1,3 +1,9 @@
 import config from "eslint-config-reearth";
 
-export default [...config("", { reactRecommended: true })];
+/** @type { import("eslint").Linter.Config[] } */
+export default [
+  ...config("", { reactRecommended: true }),
+  {
+    ignores: ["/dist", "/coverage", "**/__gen__"],
+  },
+];
