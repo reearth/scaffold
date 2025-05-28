@@ -1,33 +1,35 @@
-import { useState } from "react";
-
-import reactLogo from "./assets/react.svg";
-
-import viteLogo from "/vite.svg";
-import "./App.css";
+import React from 'react'
+import { Button } from "../@/components/ui/button";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount(count => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="space-y-4 text-center">
+        <h1 className="text-4xl font-bold text-foreground">
+          Vite + Tailwind CSS + shadcn/ui
+        </h1>
+
+        <p className="text-muted-foreground">
+          テスト用のページです
         </p>
+
+        <div className="flex gap-4 justify-center">
+          <Button>Default</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="destructive">Destructive</Button>
+          <Button variant="outline">Outline</Button>
+          <Button variant="ghost">Ghost</Button>
+        </div>
+
+        <div className="mt-8 p-6 border rounded-lg">
+          <h2 className="text-2xl font-semibold mb-2">カード例</h2>
+          <p className="text-muted-foreground">
+            Tailwind CSSのユーティリティクラスが正しく動作しています
+          </p>
+        </div>
       </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
-  );
+    </div>
+  )
 }
 
-export default App;
+export default App
