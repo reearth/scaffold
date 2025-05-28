@@ -28,7 +28,7 @@ jobs:
         working-directory: web
       - name: Test
         run: pnpm run coverage
-        working-directory: web/apps
+        working-directory: web
       # - name: Send coverage report
       #   uses: codecov/codecov-action@v4
       #   with:

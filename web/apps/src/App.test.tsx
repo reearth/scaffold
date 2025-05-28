@@ -6,6 +6,6 @@ import App from "./App";
 
 test("renders learn react link", () => {
   render(<App />);
-  const linkElement = screen.getByText("Vite + React");
+  const linkElement = screen.getByText("テスト用のページです");
   expect(linkElement).toBeVisible();
 });
