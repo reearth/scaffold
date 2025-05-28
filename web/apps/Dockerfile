@@ -18,7 +18,8 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
 
 ENV GITHUB_SHA=$GITHUB_SHA
 
-RUN pnpm run build
+WORKDIR /app/web/apps
+RUN pnpm --filter . build
 
 FROM nginx:${NGINX_VERSION}-alpine
 WORKDIR /usr/share/nginx/html
@@ -26,10 +27,11 @@ WORKDIR /usr/share/nginx/html
 RUN --mount=type=cache,target=/var/cache/apk \
   apk add --no-cache jq
 
-COPY --from=builder --chown=nginx:nginx /app/dist /usr/share/nginx/html
-COPY --chown=nginx:nginx docker/nginx.conf.template /etc/nginx/templates/nginx.conf.template
-COPY --chown=nginx:nginx docker/40-envsubst-on-reearth-config.sh /docker-entrypoint.d
-COPY --chown=nginx:nginx docker/reearth_config.json.template /opt/reearth/reearth_config.json.template
+COPY --from=builder --chown=nginx:nginx /app/web/apps/.next/static /usr/share/nginx/html/_next/static
+COPY --from=builder --chown=nginx:nginx /app/web/apps/out /usr/share/nginx/html
+COPY --chown=nginx:nginx web/apps/docker/nginx.conf.template /etc/nginx/templates/nginx.conf.template
+COPY --chown=nginx:nginx web/apps/docker/40-envsubst-on-reearth-config.sh /docker-entrypoint.d
+COPY --chown=nginx:nginx web/apps/docker/reearth_config.json.template /opt/reearth/reearth_config.json.template
 
 # Quite the Nginx startup logs.
 ENV NGINX_ENTRYPOINT_QUIET_LOGS=true
