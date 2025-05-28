@@ -35,7 +35,7 @@ func (cfg *Config) JWTProviders() []appx.JWTProvider {
 }
 
 func (cfg *Config) Print() {
-	pp.Printf("config: %+v\n", cfg)
+	_, _ = pp.Printf("config: %+v\n", cfg)
 }
 
 func LoadConfig() *Config {
