@@ -4,7 +4,7 @@ jobs:
   nginx-config-validation:
     uses: reearth/actions/.github/workflows/validate-nginx-config.yml@ecb4231198dc0992c3f69c333ee9748ec50ee8a4
     with:
-      template_directory: apps/docker
+      template_directory: docker
       template_values: '{"PORT": 8080, "REAL_IP_HEADER": "X-Forwarded-For"}'
       working_directory: web/apps
   ci:
@@ -24,7 +24,7 @@ jobs:
           cache: pnpm
           cache-dependency-path: "**/pnpm-lock.yaml"
       - name: Install
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-workspace
       - name: Lint
         run: pnpm run lint
       - name: Test
