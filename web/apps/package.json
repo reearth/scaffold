@@ -65,7 +65,7 @@
     "node": ">=22.11.0"
   },
   "graphql": {
-    "schema": "../../server/schema/*.graphql"
+    "schema": "../../../schema/graphql/*.graphql"
   },
   "packageManager": "pnpm@10.11.0"
 }
