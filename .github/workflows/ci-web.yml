@@ -6,13 +6,13 @@ jobs:
     with:
       template_directory: apps/docker
       template_values: '{"PORT": 8080, "REAL_IP_HEADER": "X-Forwarded-For"}'
-      working_directory: web
+      working_directory: web/apps
   ci:
     name: ci
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: web
+        working-directory: web/apps
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4
@@ -44,5 +44,5 @@ jobs:
         if: github.ref_name == 'main' || github.ref_name == 'release'
         with:
           name: dist
-          path: web/dist.tar.gz
+          path: web/apps/dist.tar.gz
           if-no-files-found: error
