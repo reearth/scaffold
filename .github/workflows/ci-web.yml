@@ -4,7 +4,7 @@ jobs:
   nginx-config-validation:
     uses: reearth/actions/.github/workflows/validate-nginx-config.yml@ecb4231198dc0992c3f69c333ee9748ec50ee8a4
     with:
-      template_directory: docker
+      template_directory: apps/docker
       template_values: '{"PORT": 8080, "REAL_IP_HEADER": "X-Forwarded-For"}'
       working_directory: web
   ci:
@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4
         with:
-          package_json_file: web/package.json
+          package_json_file: web/apps/package.json
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: lts/*
