@@ -25,5 +25,5 @@ func (id *ID) UnmarshalGQL(v interface{}) error {
 }
 
 func (id ID) MarshalGQL(w io.Writer) {
-	fmt.Fprintf(w, `"%s"`, ulid.ULID(id).String())
+	_, _ = fmt.Fprintf(w, `"%s"`, ulid.ULID(id).String())
 }
