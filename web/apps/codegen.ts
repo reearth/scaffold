@@ -3,7 +3,7 @@ import type { CodegenConfig } from "@graphql-codegen/cli";
 import pkgjson from "./package.json";
 
 const schema = pkgjson.graphql.schema;
-const rootGQLDirectory = "src/lib/gql/__gen__/";
+const rootGQLDirectory = "src/gql/__gen__/";
 const pluginsDirectory = `${rootGQLDirectory}/plugins`;
 
 const config: CodegenConfig = {

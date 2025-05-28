@@ -1,17 +1,16 @@
-import React from 'react'
-import { Button } from "../@/components/ui/button";
+import { hello } from "@scaffold/ui";
+
+import { Button } from "@/components/ui/button";
+
+console.log(hello());
 
 function App() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="space-y-4 text-center">
-        <h1 className="text-4xl font-bold text-foreground">
-          Vite + Tailwind CSS + shadcn/ui
-        </h1>
+        <h1 className="text-4xl font-bold text-foreground">Vite + Tailwind CSS + shadcn/ui</h1>
 
-        <p className="text-muted-foreground">
-          テスト用のページです
-        </p>
+        <p className="text-muted-foreground">テスト用のページです</p>
 
         <div className="flex gap-4 justify-center">
           <Button>Default</Button>
@@ -29,7 +28,7 @@ function App() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

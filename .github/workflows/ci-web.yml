@@ -10,9 +10,6 @@ jobs:
   ci:
     name: ci
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: web/apps
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4
@@ -24,22 +21,28 @@ jobs:
           cache: pnpm
           cache-dependency-path: "**/pnpm-lock.yaml"
       - name: Install
-        run: pnpm install --frozen-lockfile --ignore-workspace
+        run: pnpm install --frozen-lockfile
+        working-directory: web
       - name: Lint
         run: pnpm run lint
+        working-directory: web
       - name: Test
         run: pnpm run coverage
+        working-directory: web/apps
       # - name: Send coverage report
       #   uses: codecov/codecov-action@v4
       #   with:
       #     flags: web
-      # - name: Check translations
-      #   run: pnpm run i18n --fail-on-update
+      - name: Check translations
+        run: pnpm run i18n --fail-on-update
+        working-directory: web/apps
       - name: Build
         run: pnpm run build
+        working-directory: web/apps
       - name: Pack
         if: github.ref_name == 'main' || github.ref_name == 'release'
         run: tar -zcvf dist.tar.gz dist
+        working-directory: web/apps
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: github.ref_name == 'main' || github.ref_name == 'release'
         with:
