@@ -3,10 +3,5 @@
   "version": "0.0.1",
   "private": true,
   "exports": "./index.ts",
-  "scripts": {
-    "test": "vitest"
-  },
-  "devDependencies": {
-    "vitest": "^3.0.7"
-  }
+  "scripts": {}
 }
