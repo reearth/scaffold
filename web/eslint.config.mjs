@@ -4,6 +4,11 @@ import config from "eslint-config-reearth";
 export default [
   ...config("", { reactRecommended: true }),
   {
-    ignores: ["**/__gen__", "**/dist", "**/coverage"]
-  }
+    ignores: ["**/__gen__", "**/dist", "**/coverage"],
+  },
+  {
+    rules: {
+      "react-refresh/only-export-components": "off",
+    },
+  },
 ];
