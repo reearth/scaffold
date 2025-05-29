@@ -28,7 +28,7 @@ WORKDIR /usr/share/nginx/html
 
 COPY --from=builder --chown=nginx:nginx /app/web/apps/dist /usr/share/nginx/html
 
-COPY --chown=nginx:nginx web/apps/docker/nginx.conf.template /etc/nginx/templates/nginx.conf.template
+COPY --chown=nginx:nginx web/docker/nginx.conf.template /etc/nginx/templates/nginx.conf.template
 
 ENV NGINX_ENTRYPOINT_QUIET_LOGS=true
 ENV PORT=8080
