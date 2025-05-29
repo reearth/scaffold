@@ -8,8 +8,6 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "test": "vitest",
-    "coverage": "vitest --coverage",
     "i18n": "i18next",
     "gql": "graphql-codegen",
     "gql:watch": "graphql-codegen --watch",
@@ -30,7 +28,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-i18next": "^15.5.2",
-    "tailwind-merge": "^3.3.0"
+    "tailwind-merge": "^3.3.0",
+    "vitest": "^3.1.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.6",
@@ -47,18 +46,17 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10",
+    "autoprefixer": "^10.4.21",
     "del-cli": "^6.0.0",
     "happy-dom": "^17.1.8",
     "i18next-parser": "^9.3.0",
     "msw": "^2.7.3",
-    "postcss": "^8",
+    "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "~5.7.2",
     "vite": "^6.2.0",
-    "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.0.7"
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "engines": {
     "node": ">=22.11.0"

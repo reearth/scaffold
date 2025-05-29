@@ -3,9 +3,9 @@ services:
   reearth-flow-ui:
     image: reearth/scaffold-web:latest
     build:
-      context: ../..
-      dockerfile: web/apps/Dockerfile
+      context: ..
+      dockerfile: web/Dockerfile
     ports:
       - "3000:8080"
     env_file:
-      - .env
+      - apps/.env
