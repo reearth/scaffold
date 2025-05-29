@@ -13,7 +13,7 @@ RUN npm install -g pnpm
 WORKDIR /app
 
 RUN echo "manage-package-manager-versions=true" > .npmrc
-COPY pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm fetch
 
 ENV GITHUB_SHA=$GITHUB_SHA
