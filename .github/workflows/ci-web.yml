@@ -6,7 +6,7 @@ jobs:
     with:
       template_directory: docker
       template_values: '{"PORT": 8080, "REAL_IP_HEADER": "X-Forwarded-For"}'
-      working_directory: web/apps
+      working_directory: web
   ci:
     name: ci
     runs-on: ubuntu-latest
@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: lts/*
           cache: pnpm
-          cache-dependency-path: "**/pnpm-lock.yaml"
+          cache-dependency-path: '**/pnpm-lock.yaml'
       - name: Install
         run: pnpm install --frozen-lockfile
         working-directory: web
