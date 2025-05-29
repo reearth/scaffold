@@ -1,8 +1,8 @@
-import { hello } from "@scaffold/ui";
+// import { hello } from "@scaffold/ui";
 
 import { Button } from "@/components/ui/button";
 
-console.log(hello());
+// console.log(hello());
 
 function App() {
   return (
