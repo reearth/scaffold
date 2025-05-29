@@ -80,7 +80,7 @@ jobs:
       image: ${{ vars.IMAGE_WEB }}
       context: web
       use_dockerhub: false
-      name: ${{ needs.prepare.outputs.name }}
+      name: ${{ needs.prepare.outputs.name || "nightly" }}
       new_tag: ${{ needs.prepare.outputs.new_tag }}
       new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
       sha_short: ${{ needs.prepare.outputs.sha_short }}
