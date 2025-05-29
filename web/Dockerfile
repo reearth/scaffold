@@ -8,28 +8,30 @@ FROM node:${NODE_VERSION}-slim AS builder
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
-RUN npm install -g corepack && corepack enable
+RUN npm install -g pnpm
 
 WORKDIR /app
 
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./web/
 
-RUN pnpm install
+WORKDIR /app/web
+RUN pnpm fetch
 
 ENV GITHUB_SHA=$GITHUB_SHA
 
-COPY . ./web/
+COPY . .
 
 WORKDIR /app/web/apps
 
-RUN pnpm build
+RUN pnpm i
+RUN pnpm run build
 
 FROM nginx:${NGINX_VERSION}-alpine
 WORKDIR /usr/share/nginx/html
 
 COPY --from=builder --chown=nginx:nginx /app/web/apps/dist /usr/share/nginx/html
 
-COPY --chown=nginx:nginx ./docker/nginx.conf.template /etc/nginx/templates/nginx.conf.template
+COPY --chown=nginx:nginx docker/nginx.conf.template /etc/nginx/templates/nginx.conf.template
 
 ENV NGINX_ENTRYPOINT_QUIET_LOGS=true
 ENV PORT=8080
