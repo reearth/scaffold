@@ -8,8 +8,6 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "test": "vitest",
-    "coverage": "vitest --coverage",
     "i18n": "i18next",
     "gql": "graphql-codegen",
     "gql:watch": "graphql-codegen --watch",
@@ -57,8 +55,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "~5.7.2",
     "vite": "^6.2.0",
-    "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.0.7"
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "engines": {
     "node": ">=22.11.0"
