@@ -5,6 +5,7 @@
   "editor.formatOnSave": true,
   "eslint.enable": true,
   "eslint.useFlatConfig": true,
+  "eslint.workingDirectories": [{ "mode": "auto" }],
   "prettier.enable": true,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
