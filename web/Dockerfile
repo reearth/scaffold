@@ -12,24 +12,23 @@ RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./web/
-
-WORKDIR /app/web
+RUN echo "manage-package-manager-versions=true" > .npmrc
+COPY pnpm-lock.yaml ./
 RUN pnpm fetch
 
 ENV GITHUB_SHA=$GITHUB_SHA
 
 COPY . .
 
-WORKDIR /app/web/apps
+WORKDIR /app/apps
 
-RUN pnpm i
+RUN pnpm i --frozen-lockfile
 RUN pnpm run build
 
 FROM nginx:${NGINX_VERSION}-alpine
 WORKDIR /usr/share/nginx/html
 
-COPY --from=builder --chown=nginx:nginx /app/web/apps/dist /usr/share/nginx/html
+COPY --from=builder --chown=nginx:nginx /app/apps/dist /usr/share/nginx/html
 
 COPY --chown=nginx:nginx docker/nginx.conf.template /etc/nginx/templates/nginx.conf.template
 
