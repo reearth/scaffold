@@ -1,13 +1,13 @@
 version: "3.8"
 services:
   mongo:
-    image: mongo:7
+    image: mongo:8
     ports:
       - 27017:27017
     volumes:
       - ./mongo:/data/db
   gcs:
-    image: fsouza/fake-gcs-server:1.52.1
+    image: fsouza/fake-gcs-server:1.52.2
     ports:
       - 4443:4443
     volumes:
