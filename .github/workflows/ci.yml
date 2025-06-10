@@ -99,7 +99,7 @@ jobs:
       - uses: reearth/actions/deploy-cloud-run@b63f7da8796f4514712947e1a4902994be29e3d9
         with:
           service: reearth-scaffold-web
-          image: ${{ needs.build-server.outputs.image }}
+          image: ${{ needs.build-web.outputs.image }}
           image_internal: '${{ secrets.GC_REGION }}-docker.pkg.dev/${{ secrets.GC_PROJECT_ID }}/reearth/reearth-scaffold-web:latest'
           region: ${{ secrets.GC_REGION }}
           service_account: ${{ secrets.GC_SA_EMAIL }}
