@@ -1,6 +1,6 @@
 module github.com/reearth/scaffold/server
 
-go 1.24.0
+go 1.24.4
 
 require (
 	github.com/99designs/gqlgen v0.17.63
