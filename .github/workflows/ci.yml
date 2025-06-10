@@ -48,7 +48,7 @@ jobs:
     uses: ./.github/workflows/ci-web.yml
 
   build-server:
-    needs: ci-server
+    needs: [prepare, ci-server]
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_server == 'true'
     uses: reearth/actions/.github/workflows/build-docker.yml@b63f7da8796f4514712947e1a4902994be29e3d9
     with:
@@ -64,7 +64,7 @@ jobs:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
   build-web:
-    needs: ci-web
+    needs: [prepare, ci-web]
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_web == 'true'
     uses: reearth/actions/.github/workflows/build-docker.yml@b63f7da8796f4514712947e1a4902994be29e3d9
     with:
