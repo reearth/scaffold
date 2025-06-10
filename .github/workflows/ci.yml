@@ -47,17 +47,8 @@ jobs:
     if: needs.prepare.outputs.changed_web == 'true'
     uses: ./.github/workflows/ci-web.yml
 
-  ci:
-    runs-on: ubuntu-latest
-    needs:
-      - ci-server
-      - ci-web
-    if: ${{ !failure() }}
-    steps:
-      - run: echo OK
-
   build-server:
-    needs: prepare
+    needs: ci-server
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_server == 'true'
     uses: reearth/actions/.github/workflows/build-docker.yml@main
     with:
@@ -73,7 +64,7 @@ jobs:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
   build-web:
-    needs: prepare
+    needs: ci-web
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_web == 'true'
     uses: reearth/actions/.github/workflows/build-docker.yml@main
     with:
@@ -88,37 +79,28 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
-  build:
+  deploy-server:
+    needs: [build-server]
     runs-on: ubuntu-latest
-    needs:
-      - build-web
-      - build-server
-    if: ${{ success() }}
     steps:
-      - run: echo OK
+      - uses: reearth/actions/deploy-cloud-run@main
+        with:
+          service: reearth-scaffold-api
+          image: ${{ needs.build-server.outputs.image }}
+          image_internal: '${{ secrets.GC_REGION }}-docker.pkg.dev/${{ secrets.GC_PROJECT_ID }}/reearth/reearth-scaffold-api:latest'
+          region: ${{ secrets.GC_REGION }}
+          service_account: ${{ secrets.GC_SA_EMAIL }}
+          workload_identity_provider: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
 
-  # deploy-server:
-  #   needs: [build, build-server, ci-server]
-  #   if: needs.ci-server.result == 'success'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: reearth/actions/deploy-cloud-run@main
-  #       with:
-  #         service: ${{ vars.SERVICE_NAME_API }}
-  #         image: ${{ needs.build-server.outputs.image }}
-  #         region: ${{ vars.REGION }}
-  #         service_account: ${{ secrets.GCP_SA_EMAIL }}
-  #         workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-
-  # deploy-web:
-  #   needs: [build, build-web, ci-web]
-  #   if: needs.ci-web.result == 'success'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: reearth/actions/deploy-cloud-run@main
-  #       with:
-  #         service: ${{ vars.SERVICE_NAME_WEB }}
-  #         image: ${{ needs.build-web.outputs.image }}
-  #         region: ${{ vars.REGION }}
-  #         service_account: ${{ secrets.GCP_SA_EMAIL }}
-  #         workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+  deploy-web:
+    needs: [build-web]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: reearth/actions/deploy-cloud-run@main
+        with:
+          service: reearth-scaffold-web
+          image: ${{ needs.build-server.outputs.image }}
+          image_internal: '${{ secrets.GC_REGION }}-docker.pkg.dev/${{ secrets.GC_PROJECT_ID }}/reearth/reearth-scaffold-web:latest'
+          region: ${{ secrets.GC_REGION }}
+          service_account: ${{ secrets.GC_SA_EMAIL }}
+          workload_identity_provider: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
