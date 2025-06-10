@@ -54,7 +54,7 @@ jobs:
     with:
       image: ${{ vars.IMAGE_SERVER }}
       context: server
-      use_dockerhub: false
+      use_dockerhub: true
       name: ${{ needs.prepare.outputs.name }}
       new_tag: ${{ needs.prepare.outputs.new_tag }}
       new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
@@ -70,7 +70,7 @@ jobs:
     with:
       image: ${{ vars.IMAGE_WEB }}
       context: web
-      use_dockerhub: false
+      use_dockerhub: true
       name: ${{ needs.prepare.outputs.name }}
       new_tag: ${{ needs.prepare.outputs.new_tag }}
       new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
