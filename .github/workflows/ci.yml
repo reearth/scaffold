@@ -16,13 +16,13 @@ jobs:
       new_tag_short: ${{ steps.prepare.outputs.new_tag_short }}
       name: ${{ steps.prepare.outputs.name }}
     steps:
-      - uses: reearth/actions/prepare-build@main
+      - uses: reearth/actions/prepare-build@b63f7da8796f4514712947e1a4902994be29e3d9
         id: prepare
         with:
           repo: ${{ vars.REPO }}
       - name: changed files for server
         id: server
-        uses: step-security/changed-files@95b56dadb92a30ca9036f16423fd3c088a71ee94 # v46
+        uses: step-security/changed-files@95b56dadb92a30ca9036f16423fd3c088a71ee94 # v46.0.5
         with:
           files: |
             server/**
@@ -30,7 +30,7 @@ jobs:
             .github/workflows/ci-server.yml
       - name: changed files for web
         id: web
-        uses: step-security/changed-files@95b56dadb92a30ca9036f16423fd3c088a71ee94 # v46
+        uses: step-security/changed-files@95b56dadb92a30ca9036f16423fd3c088a71ee94 # v46.0.5
         with:
           files: |
             web/**
@@ -50,7 +50,7 @@ jobs:
   build-server:
     needs: ci-server
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_server == 'true'
-    uses: reearth/actions/.github/workflows/build-docker.yml@main
+    uses: reearth/actions/.github/workflows/build-docker.yml@b63f7da8796f4514712947e1a4902994be29e3d9
     with:
       image: ${{ vars.IMAGE_SERVER }}
       context: server
@@ -66,7 +66,7 @@ jobs:
   build-web:
     needs: ci-web
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_web == 'true'
-    uses: reearth/actions/.github/workflows/build-docker.yml@main
+    uses: reearth/actions/.github/workflows/build-docker.yml@b63f7da8796f4514712947e1a4902994be29e3d9
     with:
       image: ${{ vars.IMAGE_WEB }}
       context: web
@@ -83,7 +83,7 @@ jobs:
     needs: [build-server]
     runs-on: ubuntu-latest
     steps:
-      - uses: reearth/actions/deploy-cloud-run@main
+      - uses: reearth/actions/deploy-cloud-run@b63f7da8796f4514712947e1a4902994be29e3d9
         with:
           service: reearth-scaffold-api
           image: ${{ needs.build-server.outputs.image }}
@@ -96,7 +96,7 @@ jobs:
     needs: [build-web]
     runs-on: ubuntu-latest
     steps:
-      - uses: reearth/actions/deploy-cloud-run@main
+      - uses: reearth/actions/deploy-cloud-run@b63f7da8796f4514712947e1a4902994be29e3d9
         with:
           service: reearth-scaffold-web
           image: ${{ needs.build-server.outputs.image }}
