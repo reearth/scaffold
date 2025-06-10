@@ -54,7 +54,7 @@ jobs:
     with:
       image: ${{ vars.IMAGE_SERVER }}
       context: server
-      use_dockerhub: true
+      use_dockerhub: false
       name: ${{ needs.prepare.outputs.name }}
       new_tag: ${{ needs.prepare.outputs.new_tag }}
       new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
@@ -70,7 +70,7 @@ jobs:
     with:
       image: ${{ vars.IMAGE_WEB }}
       context: web
-      use_dockerhub: true
+      use_dockerhub: false
       name: ${{ needs.prepare.outputs.name }}
       new_tag: ${{ needs.prepare.outputs.new_tag }}
       new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
@@ -82,7 +82,17 @@ jobs:
   deploy-server:
     needs: [build-server]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
     steps:
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - uses: reearth/actions/deploy-cloud-run@b63f7da8796f4514712947e1a4902994be29e3d9
         with:
           service: reearth-scaffold-api
@@ -95,7 +105,17 @@ jobs:
   deploy-web:
     needs: [build-web]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
     steps:
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - uses: reearth/actions/deploy-cloud-run@b63f7da8796f4514712947e1a4902994be29e3d9
         with:
           service: reearth-scaffold-web
