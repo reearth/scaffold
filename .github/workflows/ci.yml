@@ -79,6 +79,44 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
+  build-web-pr:
+    needs: [prepare, ci-web]
+    if:  ${{ needs.prepare.outputs.build && needs.prepare.outputs.changed_web == 'true' && github.event_name == 'pull_request' && github.base_ref == 'main' && (github.event.action == 'opened' || github.event.action == 'synchronize') }}
+    uses: reearth/actions/.github/workflows/build-docker.yml@b63f7da8796f4514712947e1a4902994be29e3d9
+    with:
+      image: ${{ vars.IMAGE_WEB }}
+      context: web
+      use_dockerhub: false
+      name: ${{ needs.prepare.outputs.sha_short }}
+      new_tag: ${{ needs.prepare.outputs.new_tag }}
+      new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
+      sha_short: ${{ needs.prepare.outputs.sha_short }}
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  deploy-web-pr:
+    needs: [build-web-pr, prepare]
+    runs-on: ubuntu-latest
+    outputs:
+      preview_url: ${{ steps.deploy.outputs.url }}
+    permissions:
+      contents: read
+      id-token: write
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: reearth/actions/deploy-cloud-run-with-tag@b63f7da8796f4514712947e1a4902994be29e3d9 # main
+        id: deploy
+        with:
+          image: ${{ needs.build-web-pr.outputs.image }}
+          image_internal: '${{ secrets.GC_REGION }}-docker.pkg.dev/${{ secrets.GC_PROJECT_ID }}/reearth/reearth-scaffold-web:${{ needs.prepare.outputs.sha_short }}'
+          region: ${{ secrets.GC_REGION }}
+          service: reearth-scaffold-web
+          service_account: ${{ secrets.GC_SA_EMAIL }}
+          tag: pr-${{ github.event.pull_request.number }}
+          workload_identity_provider: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
+
   deploy-server:
     needs: [build-server]
     runs-on: ubuntu-latest
