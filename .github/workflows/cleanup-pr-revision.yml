@@ -23,7 +23,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   steps:
   #     - name: Remove Cloud Run Tag
-  #       uses: reearth/actions/remove-cloud-run-tag@b63f7da8796f4514712947e1a4902994be29e3d9 # main
+  #       uses: reearth/actions/remove-cloud-run-tag@f11fdfe98bfdcd44a697577ba0ae2d4f56a45ea5 # main
   #       with:
   #         region: ${{ secrets.GC_REGION }}
   #         service: reearth-scaffold-api
@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Remove Cloud Run Tag
-        uses: reearth/actions/remove-cloud-run-tag@b63f7da8796f4514712947e1a4902994be29e3d9 # main
+        uses: reearth/actions/remove-cloud-run-tag@f11fdfe98bfdcd44a697577ba0ae2d4f56a45ea5 # main
         with:
           region: ${{ secrets.GC_REGION }}
           service: reearth-scaffold-web
