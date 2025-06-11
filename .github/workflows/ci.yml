@@ -81,7 +81,7 @@ jobs:
 
   build-web-pr:
     needs: [prepare, ci-web]
-    if:  ${{ needs.prepare.outputs.build && needs.prepare.outputs.changed_web == 'true' && github.event_name == 'pull_request' && github.base_ref == 'main' && (github.event.action == 'opened' || github.event.action == 'synchronize') }}
+    if:  ${{ needs.prepare.outputs.changed_web == 'true' && github.event_name == 'pull_request' && github.base_ref == 'main' && (github.event.action == 'opened' || github.event.action == 'synchronize') }}
     uses: reearth/actions/.github/workflows/build-docker.yml@b63f7da8796f4514712947e1a4902994be29e3d9
     with:
       image: ${{ vars.IMAGE_WEB }}
