@@ -86,7 +86,40 @@ Ensure Docker images have been saved at a registry. Deployment will fail, but do
 
 ## 6. Deploy infrastructure
 
-(WIP)
+Initialize the modules for API and Web using standard terraform module [GitHub source](https://developer.hashicorp.com/terraform/language/modules/sources#github)
+
+For example:
+
+- API:
+
+```hcl
+module "reearth_scaffold_api" {
+  source                = "github.com/reearth/scaffold//terraform/reearth_scaffold_api?ref=main"
+  auth0_domain          = local.auth0_domain
+  auth0_audience        = local.auth0_audience
+  database_secret_id    = google_secret_manager_secret.reearth_db.secret_id
+  domain                = local.test_domain
+  image                 = "${google_artifact_registry_repository.reearth.location}-docker.pkg.dev/${google_artifact_registry_repository.reearth.project}/${google_artifact_registry_repository.reearth.name}/reearth-scaffold-api:latest"
+  project               = module.starter_kit.gcp_project_id
+  region                = "us-central1"
+  service_account_email = google_service_account.reearth_scaffold_api.email
+}
+```
+
+- Web:
+
+```hcl
+module "reearth_scaffold_web" {
+  source                = "github.com/reearth/scaffold//terraform/reearth_scaffold_web?ref=main"
+  auth0_client_id       = local.auth0_client_id
+  auth0_domain          = local.auth0_domain
+  auth0_audience        = local.auth0_audience
+  image                 = "${google_artifact_registry_repository.reearth.location}-docker.pkg.dev/${google_artifact_registry_repository.reearth.project}/${google_artifact_registry_repository.reearth.name}/reearth-scaffold-web:latest"
+  project               = module.starter_kit.gcp_project_id
+  region                = "us-central1"
+  service_account_email = google_service_account.reearth_scaffold_web.email
+}
+```
 
 ## 7. Trigger CI/CD again
 
