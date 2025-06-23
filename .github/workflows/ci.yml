@@ -16,7 +16,7 @@ jobs:
       new_tag_short: ${{ steps.prepare.outputs.new_tag_short }}
       name: ${{ steps.prepare.outputs.name }}
     steps:
-      - uses: reearth/actions/prepare-build@f11fdfe98bfdcd44a697577ba0ae2d4f56a45ea5
+      - uses: reearth/actions/prepare-build@b12dfb7c4df09bedab30fda1177d8ef59fbcb1cf # main
         id: prepare
         with:
           repo: ${{ github.repository }}
@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_server == 'true'
     steps:
-      - uses: reearth/actions/build-docker-image@03c56a86033879b4fd6b0bf68e08e993a41f5126
+      - uses: reearth/actions/build-docker-image@b12dfb7c4df09bedab30fda1177d8ef59fbcb1cf # main
         with:
           image: ${{ secrets.IMAGE_SERVER }}
           context: server
@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_web == 'true'
     steps:
-      - uses: reearth/actions/build-docker-image@03c56a86033879b4fd6b0bf68e08e993a41f5126
+      - uses: reearth/actions/build-docker-image@b12dfb7c4df09bedab30fda1177d8ef59fbcb1cf
         with:
           image: ${{ secrets.IMAGE_WEB }}
           context: web
@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     if:  ${{ needs.prepare.outputs.changed_web == 'true' && github.event_name == 'pull_request' && github.base_ref == 'main' && (github.event.action == 'opened' || github.event.action == 'synchronize') }}
     steps:
-      - uses: reearth/actions/build-docker-image@03c56a86033879b4fd6b0bf68e08e993a41f5126
+      - uses: reearth/actions/build-docker-image@b12dfb7c4df09bedab30fda1177d8ef59fbcb1cf # main
         with:
           image: ${{ secrets.IMAGE_WEB }}
           context: web
@@ -119,11 +119,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: reearth/actions/deploy-cloud-run-with-tag@f11fdfe98bfdcd44a697577ba0ae2d4f56a45ea5 # main
+      - uses: reearth/actions/deploy-cloud-run-with-tag@b12dfb7c4df09bedab30fda1177d8ef59fbcb1cf # main
         id: deploy
         with:
           image: ${{ needs.build-web-pr.outputs.image }}
-          image_internal: '${{ secrets.GC_REGION }}-docker.pkg.dev/${{ secrets.GC_PROJECT_ID }}/reearth/reearth-scaffold-web:${{ needs.prepare.outputs.sha_short }}'
+          image_internal: '${{ secrets.IMAGE_WEB_GC }}:${{ needs.prepare.outputs.sha_short }}'
           region: ${{ secrets.GC_REGION }}
           service: reearth-scaffold-web
           service_account: ${{ secrets.GC_SA_EMAIL }}
@@ -144,11 +144,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: reearth/actions/deploy-cloud-run@f11fdfe98bfdcd44a697577ba0ae2d4f56a45ea5
+      - uses: reearth/actions/deploy-cloud-run@b12dfb7c4df09bedab30fda1177d8ef59fbcb1cf # main
         with:
           service: reearth-scaffold-api
           image: ${{ needs.build-server.outputs.image }}
-          image_internal: '${{ secrets.GC_REGION }}-docker.pkg.dev/${{ secrets.GC_PROJECT_ID }}/reearth/reearth-scaffold-api:latest'
+          image_internal: '${{ secrets.IMAGE_SERVER_GC }}:latest'
           region: ${{ secrets.GC_REGION }}
           service_account: ${{ secrets.GC_SA_EMAIL }}
           workload_identity_provider: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
@@ -167,11 +167,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: reearth/actions/deploy-cloud-run@f11fdfe98bfdcd44a697577ba0ae2d4f56a45ea5
+      - uses: reearth/actions/deploy-cloud-run@b12dfb7c4df09bedab30fda1177d8ef59fbcb1cf # main
         with:
           service: reearth-scaffold-web
           image: ${{ needs.build-web.outputs.image }}
-          image_internal: '${{ secrets.GC_REGION }}-docker.pkg.dev/${{ secrets.GC_PROJECT_ID }}/reearth/reearth-scaffold-web:latest'
+          image_internal: '${{ secrets.IMAGE_WEB_GC }}:latest'
           region: ${{ secrets.GC_REGION }}
           service_account: ${{ secrets.GC_SA_EMAIL }}
           workload_identity_provider: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
