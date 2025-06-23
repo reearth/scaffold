@@ -16,7 +16,7 @@ jobs:
       new_tag_short: ${{ steps.prepare.outputs.new_tag_short }}
       name: ${{ steps.prepare.outputs.name }}
     steps:
-      - uses: reearth/actions/prepare-build@02b885e7171f11cb92c86f4720a1dc082b435edb # main
+      - uses: reearth/actions/prepare-build@c1576f047634cc9d171eaed269d64e3c852ab984 # main
         id: prepare
         with:
           repo: ${{ github.repository }}
@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_server == 'true'
     steps:
-      - uses: reearth/actions/build-docker-image@02b885e7171f11cb92c86f4720a1dc082b435edb # main
+      - uses: reearth/actions/build-docker-image@c1576f047634cc9d171eaed269d64e3c852ab984 # main
         with:
           image: ${{ secrets.IMAGE_SERVER }}
           context: server
@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_web == 'true'
     steps:
-      - uses: reearth/actions/build-docker-image@02b885e7171f11cb92c86f4720a1dc082b435edb
+      - uses: reearth/actions/build-docker-image@c1576f047634cc9d171eaed269d64e3c852ab984
         with:
           image: ${{ secrets.IMAGE_WEB }}
           context: web
@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     if:  ${{ needs.prepare.outputs.changed_web == 'true' && github.event_name == 'pull_request' && github.base_ref == 'main' && (github.event.action == 'opened' || github.event.action == 'synchronize') }}
     steps:
-      - uses: reearth/actions/build-docker-image@02b885e7171f11cb92c86f4720a1dc082b435edb # main
+      - uses: reearth/actions/build-docker-image@c1576f047634cc9d171eaed269d64e3c852ab984 # main
         with:
           image: ${{ secrets.IMAGE_WEB }}
           context: web
@@ -119,7 +119,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: reearth/actions/deploy-cloud-run-with-tag@02b885e7171f11cb92c86f4720a1dc082b435edb # main
+      - uses: reearth/actions/deploy-cloud-run-with-tag@c1576f047634cc9d171eaed269d64e3c852ab984 # main
         id: deploy
         with:
           image: ${{ needs.build-web-pr.outputs.image }}
@@ -144,7 +144,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: reearth/actions/deploy-cloud-run@02b885e7171f11cb92c86f4720a1dc082b435edb # main
+      - uses: reearth/actions/deploy-cloud-run@c1576f047634cc9d171eaed269d64e3c852ab984 # main
         with:
           service: reearth-scaffold-api
           image: ${{ needs.build-server.outputs.image }}
@@ -167,7 +167,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: reearth/actions/deploy-cloud-run@02b885e7171f11cb92c86f4720a1dc082b435edb # main
+      - uses: reearth/actions/deploy-cloud-run@c1576f047634cc9d171eaed269d64e3c852ab984 # main
         with:
           service: reearth-scaffold-web
           image: ${{ needs.build-web.outputs.image }}
