@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_server == 'true'
     outputs:
-      image: ${{ steps.build-docker-image.outputs.image }}
+      digest: ${{ steps.build-docker-image.outputs.image }}
     steps:
       - uses: reearth/actions/build-docker-image@c1576f047634cc9d171eaed269d64e3c852ab984
         id: build-docker-image
@@ -76,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_web == 'true'
     outputs:
-      image: ${{ steps.build-docker-image.outputs.image }}
+      digest: ${{ steps.build-docker-image.outputs.image }}
     steps:
       - uses: reearth/actions/build-docker-image@c1576f047634cc9d171eaed269d64e3c852ab984
         id: build-docker-image
@@ -97,7 +97,7 @@ jobs:
     runs-on: ubuntu-latest
     if:  ${{ needs.prepare.outputs.changed_web == 'true' && github.event_name == 'pull_request' && github.base_ref == 'main' && (github.event.action == 'opened' || github.event.action == 'synchronize') }}
     outputs:
-      image: ${{ steps.build-docker-image.outputs.image }}
+      digest: ${{ steps.build-docker-image.outputs.image }}
     steps:
       - uses: reearth/actions/build-docker-image@c1576f047634cc9d171eaed269d64e3c852ab984 # main
         id: build-docker-image
@@ -127,11 +127,11 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ github.token }}
       - uses: reearth/actions/deploy-cloud-run-with-tag@c1576f047634cc9d171eaed269d64e3c852ab984 # main
         id: deploy
         with:
-          image: ${{ needs.build-web-pr.outputs.image }}
+          image: ${{ needs.build-web-pr.outputs.digest }}
           image_internal: '${{ secrets.IMAGE_WEB_GC }}:${{ needs.prepare.outputs.sha_short }}'
           region: ${{ secrets.GC_REGION }}
           service: reearth-scaffold-web
@@ -156,7 +156,7 @@ jobs:
       - uses: reearth/actions/deploy-cloud-run@c1576f047634cc9d171eaed269d64e3c852ab984 # main
         with:
           service: reearth-scaffold-api
-          image: ${{ needs.build-server.outputs.image }}
+          image: ${{ needs.build-server.outputs.digest }}
           image_internal: '${{ secrets.IMAGE_SERVER_GC }}:latest'
           region: ${{ secrets.GC_REGION }}
           service_account: ${{ secrets.GC_SA_EMAIL }}
@@ -179,7 +179,7 @@ jobs:
       - uses: reearth/actions/deploy-cloud-run@c1576f047634cc9d171eaed269d64e3c852ab984 # main
         with:
           service: reearth-scaffold-web
-          image: ${{ needs.build-web.outputs.image }}
+          image: ${{ needs.build-web.outputs.digest }}
           image_internal: '${{ secrets.IMAGE_WEB_GC }}:latest'
           region: ${{ secrets.GC_REGION }}
           service_account: ${{ secrets.GC_SA_EMAIL }}
