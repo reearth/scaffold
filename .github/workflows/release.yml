@@ -17,6 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/release'
     steps:
-      - uses: reearth/actions/release@f11fdfe98bfdcd44a697577ba0ae2d4f56a45ea5
+      - uses: reearth/actions/release@c1576f047634cc9d171eaed269d64e3c852ab984
         with:
           version: ${{ inputs.version }}
