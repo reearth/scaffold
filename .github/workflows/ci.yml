@@ -54,8 +54,11 @@ jobs:
       packages: write
     runs-on: ubuntu-latest
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_server == 'true'
+    outputs:
+      image: ${{ steps.build-docker-image.outputs.image }}
     steps:
-      - uses: reearth/actions/build-docker-image@c1576f047634cc9d171eaed269d64e3c852ab984 # main
+      - uses: reearth/actions/build-docker-image@c1576f047634cc9d171eaed269d64e3c852ab984
+        id: build-docker-image
         with:
           image: ${{ secrets.IMAGE_SERVER }}
           context: server
@@ -72,8 +75,11 @@ jobs:
       packages: write
     runs-on: ubuntu-latest
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_web == 'true'
+    outputs:
+      image: ${{ steps.build-docker-image.outputs.image }}
     steps:
       - uses: reearth/actions/build-docker-image@c1576f047634cc9d171eaed269d64e3c852ab984
+        id: build-docker-image
         with:
           image: ${{ secrets.IMAGE_WEB }}
           context: web
@@ -90,8 +96,11 @@ jobs:
       packages: write
     runs-on: ubuntu-latest
     if:  ${{ needs.prepare.outputs.changed_web == 'true' && github.event_name == 'pull_request' && github.base_ref == 'main' && (github.event.action == 'opened' || github.event.action == 'synchronize') }}
+    outputs:
+      image: ${{ steps.build-docker-image.outputs.image }}
     steps:
       - uses: reearth/actions/build-docker-image@c1576f047634cc9d171eaed269d64e3c852ab984 # main
+        id: build-docker-image
         with:
           image: ${{ secrets.IMAGE_WEB }}
           context: web
