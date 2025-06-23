@@ -131,7 +131,7 @@ jobs:
       - uses: reearth/actions/deploy-cloud-run-with-tag@c1576f047634cc9d171eaed269d64e3c852ab984 # main
         id: deploy
         with:
-          image: ${{ needs.build-web-pr.outputs.digest }}
+          image: '${{ secrets.IMAGE_WEB }}:${{ needs.prepare.outputs.sha_short }}'
           image_internal: '${{ secrets.IMAGE_WEB_GC }}:${{ needs.prepare.outputs.sha_short }}'
           region: ${{ secrets.GC_REGION }}
           service: reearth-scaffold-web
@@ -156,7 +156,7 @@ jobs:
       - uses: reearth/actions/deploy-cloud-run@c1576f047634cc9d171eaed269d64e3c852ab984 # main
         with:
           service: reearth-scaffold-api
-          image: ${{ needs.build-server.outputs.digest }}
+          image: '${{ secrets.IMAGE_SERVER }}:latest'
           image_internal: '${{ secrets.IMAGE_SERVER_GC }}:latest'
           region: ${{ secrets.GC_REGION }}
           service_account: ${{ secrets.GC_SA_EMAIL }}
@@ -179,7 +179,7 @@ jobs:
       - uses: reearth/actions/deploy-cloud-run@c1576f047634cc9d171eaed269d64e3c852ab984 # main
         with:
           service: reearth-scaffold-web
-          image: ${{ needs.build-web.outputs.digest }}
+          image: '${{ secrets.IMAGE_WEB }}:latest'
           image_internal: '${{ secrets.IMAGE_WEB_GC }}:latest'
           region: ${{ secrets.GC_REGION }}
           service_account: ${{ secrets.GC_SA_EMAIL }}
