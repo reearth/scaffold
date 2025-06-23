@@ -19,7 +19,7 @@ jobs:
       - uses: reearth/actions/prepare-build@f11fdfe98bfdcd44a697577ba0ae2d4f56a45ea5
         id: prepare
         with:
-          repo: ${{ vars.REPO }}
+          repo: ${{ github.repository }}
       - name: changed files for server
         id: server
         uses: step-security/changed-files@95b56dadb92a30ca9036f16423fd3c088a71ee94 # v46.0.5
@@ -49,51 +49,57 @@ jobs:
 
   build-server:
     needs: [prepare, ci-server]
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_server == 'true'
-    uses: reearth/actions/.github/workflows/build-docker.yml@f11fdfe98bfdcd44a697577ba0ae2d4f56a45ea5
-    with:
-      image: ${{ vars.IMAGE_SERVER }}
-      context: server
-      use_dockerhub: false
-      name: ${{ needs.prepare.outputs.name }}
-      new_tag: ${{ needs.prepare.outputs.new_tag }}
-      new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
-      sha_short: ${{ needs.prepare.outputs.sha_short }}
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      - uses: reearth/actions/build-docker-image@03c56a86033879b4fd6b0bf68e08e993a41f5126
+        with:
+          image: ${{ secrets.IMAGE_SERVER }}
+          context: server
+          use_dockerhub: false
+          name: ${{ needs.prepare.outputs.name }}
+          new_tag: ${{ needs.prepare.outputs.new_tag }}
+          new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
+          sha_short: ${{ needs.prepare.outputs.sha_short }}
 
   build-web:
     needs: [prepare, ci-web]
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
     if: needs.prepare.outputs.build && needs.prepare.outputs.changed_web == 'true'
-    uses: reearth/actions/.github/workflows/build-docker.yml@f11fdfe98bfdcd44a697577ba0ae2d4f56a45ea5
-    with:
-      image: ${{ vars.IMAGE_WEB }}
-      context: web
-      use_dockerhub: false
-      name: ${{ needs.prepare.outputs.name }}
-      new_tag: ${{ needs.prepare.outputs.new_tag }}
-      new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
-      sha_short: ${{ needs.prepare.outputs.sha_short }}
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      - uses: reearth/actions/build-docker-image@03c56a86033879b4fd6b0bf68e08e993a41f5126
+        with:
+          image: ${{ secrets.IMAGE_WEB }}
+          context: web
+          use_dockerhub: false
+          name: ${{ needs.prepare.outputs.name }}
+          new_tag: ${{ needs.prepare.outputs.new_tag }}
+          new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
+          sha_short: ${{ needs.prepare.outputs.sha_short }}
 
   build-web-pr:
     needs: [prepare, ci-web]
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
     if:  ${{ needs.prepare.outputs.changed_web == 'true' && github.event_name == 'pull_request' && github.base_ref == 'main' && (github.event.action == 'opened' || github.event.action == 'synchronize') }}
-    uses: reearth/actions/.github/workflows/build-docker.yml@f11fdfe98bfdcd44a697577ba0ae2d4f56a45ea5
-    with:
-      image: ${{ vars.IMAGE_WEB }}
-      context: web
-      use_dockerhub: false
-      name: ${{ needs.prepare.outputs.sha_short }}
-      new_tag: ${{ needs.prepare.outputs.new_tag }}
-      new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
-      sha_short: ${{ needs.prepare.outputs.sha_short }}
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      - uses: reearth/actions/build-docker-image@03c56a86033879b4fd6b0bf68e08e993a41f5126
+        with:
+          image: ${{ secrets.IMAGE_WEB }}
+          context: web
+          use_dockerhub: false
+          name: ${{ needs.prepare.outputs.name }}
+          new_tag: ${{ needs.prepare.outputs.new_tag }}
+          new_tag_short: ${{ needs.prepare.outputs.new_tag_short }}
+          sha_short: ${{ needs.prepare.outputs.sha_short }}
 
   deploy-web-pr:
     needs: [build-web-pr, prepare]
