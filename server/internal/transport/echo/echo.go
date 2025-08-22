@@ -60,6 +60,9 @@ func initEcho(e *echo.Echo, conf Config) error {
 		return c.String(200, "pong")
 	})
 
+	// health check endpoint
+	api.GET("/health", HealthCheck(conf))
+
 	api.POST("/graphql", echo.WrapHandler(gql.NewServer(conf.Usecases, conf.Dev)))
 	if conf.Dev {
 		api.GET("/graphql", echo.WrapHandler(gql.Playground("/graphql")))
