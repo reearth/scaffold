@@ -22,7 +22,7 @@ func HealthCheck(conf Config) echo.HandlerFunc {
 	}
 
 	h, err := health.New(health.WithComponent(health.Component{
-		Name:    "reearth-cms",
+		Name:    "scaffold",
 		Version: conf.Version,
 	}), health.WithChecks(checks...))
 	if err != nil {
