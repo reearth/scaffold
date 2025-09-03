@@ -16,7 +16,7 @@ jobs:
       new_tag_short: ${{ steps.prepare.outputs.new_tag_short }}
       name: ${{ steps.prepare.outputs.name }}
     steps:
-      - uses: reearth/actions/prepare-build@d0dcdcab46874e6e17c0d006209fef5668d00196 # main
+      - uses: reearth/actions/prepare-build@e05fcd1efc6c985c7c0c906cff1452ee634232c8 # main
         id: prepare
         with:
           repo: ${{ github.repository }}
@@ -57,7 +57,7 @@ jobs:
     outputs:
       digest: ${{ steps.build-docker-image.outputs.image }}
     steps:
-      - uses: reearth/actions/build-docker-image@d0dcdcab46874e6e17c0d006209fef5668d00196
+      - uses: reearth/actions/build-docker-image@e05fcd1efc6c985c7c0c906cff1452ee634232c8
         id: build-docker-image
         with:
           image: ${{ secrets.IMAGE_SERVER }}
@@ -78,7 +78,7 @@ jobs:
     outputs:
       digest: ${{ steps.build-docker-image.outputs.image }}
     steps:
-      - uses: reearth/actions/build-docker-image@d0dcdcab46874e6e17c0d006209fef5668d00196
+      - uses: reearth/actions/build-docker-image@e05fcd1efc6c985c7c0c906cff1452ee634232c8
         id: build-docker-image
         with:
           image: ${{ secrets.IMAGE_WEB }}
@@ -99,7 +99,7 @@ jobs:
     outputs:
       digest: ${{ steps.build-docker-image.outputs.image }}
     steps:
-      - uses: reearth/actions/build-docker-image@d0dcdcab46874e6e17c0d006209fef5668d00196 # main
+      - uses: reearth/actions/build-docker-image@e05fcd1efc6c985c7c0c906cff1452ee634232c8 # main
         id: build-docker-image
         with:
           image: ${{ secrets.IMAGE_WEB }}
@@ -128,7 +128,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - uses: reearth/actions/deploy-cloud-run-with-tag@d0dcdcab46874e6e17c0d006209fef5668d00196 # main
+      - uses: reearth/actions/deploy-cloud-run-with-tag@e05fcd1efc6c985c7c0c906cff1452ee634232c8 # main
         id: deploy
         with:
           image: '${{ secrets.IMAGE_WEB }}:${{ needs.prepare.outputs.sha_short }}'
@@ -153,7 +153,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: reearth/actions/deploy-cloud-run@d0dcdcab46874e6e17c0d006209fef5668d00196 # main
+      - uses: reearth/actions/deploy-cloud-run@e05fcd1efc6c985c7c0c906cff1452ee634232c8 # main
         with:
           service: reearth-scaffold-api
           image: '${{ secrets.IMAGE_SERVER }}:latest'
@@ -176,7 +176,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: reearth/actions/deploy-cloud-run@d0dcdcab46874e6e17c0d006209fef5668d00196 # main
+      - uses: reearth/actions/deploy-cloud-run@e05fcd1efc6c985c7c0c906cff1452ee634232c8 # main
         with:
           service: reearth-scaffold-web
           image: '${{ secrets.IMAGE_WEB }}:latest'

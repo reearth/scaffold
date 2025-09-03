@@ -44,7 +44,7 @@ jobs:
           check-latest: true
           cache-dependency-path: |
             server/go.sum
-      - uses: reearth/actions/license-checker/go@d0dcdcab46874e6e17c0d006209fef5668d00196
+      - uses: reearth/actions/license-checker/go@e05fcd1efc6c985c7c0c906cff1452ee634232c8
         with:
           subdirectory: server
 
@@ -68,6 +68,6 @@ jobs:
           cache-dependency-path: "web/pnpm-lock.yaml"
       - name: Install
         run: pnpm install --frozen-lockfile
-      - uses: reearth/actions/license-checker/npm@d0dcdcab46874e6e17c0d006209fef5668d00196
+      - uses: reearth/actions/license-checker/npm@e05fcd1efc6c985c7c0c906cff1452ee634232c8
         with:
           subdirectory: web

@@ -7,4 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: reearth/actions/stage@d0dcdcab46874e6e17c0d006209fef5668d00196
+      - uses: reearth/actions/stage@e05fcd1efc6c985c7c0c906cff1452ee634232c8
