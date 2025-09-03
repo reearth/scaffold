@@ -10,4 +10,12 @@ type Config struct {
 	Usecases     usecase.Usecases
 	Dev          bool
 	JWTProviders []appx.JWTProvider
+	HealthCheck  HealthCheckConfig
+	Version      string
+	DB           string
+}
+
+type HealthCheckConfig struct {
+	Username string
+	Password string
 }
