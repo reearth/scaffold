@@ -48,6 +48,7 @@ func initEcho(e *echo.Echo, conf Config) error {
 		middleware.RecoverWithConfig(middleware.RecoverConfig{
 			LogLevel: glog.ERROR,
 		}),
+		middleware.Gzip(),
 		echo.WrapMiddleware(appx.RequestIDMiddleware()),
 		logger.AccessLogger(),
 		echo.WrapMiddleware(jwtMiddleware),
