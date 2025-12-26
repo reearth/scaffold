@@ -5,6 +5,6 @@
   "exports": "./index.ts",
   "scripts": {},
   "dependencies": {
-    "vitest": "^3.1.4"
+    "vitest": "^4.0.16"
   }
 }
