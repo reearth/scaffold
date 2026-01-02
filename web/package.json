@@ -9,12 +9,12 @@
     "typecheck": "tsc -b apps/tsconfig.json --noEmit"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "3.0.7",
-    "eslint": "^9.21.0",
+    "@vitest/coverage-v8": "4.0.16",
+    "eslint": "^9.39.2",
     "eslint-config-reearth": "^0.3.8",
-    "prettier": "^3.5.2",
-    "vitest": "^3.0.7"
+    "prettier": "^3.7.4",
+    "vitest": "^4.0.16"
   },
   "prettier": "eslint-config-reearth/.prettierrc.json",
-  "packageManager": "pnpm@10.11.0"
+  "packageManager": "pnpm@10.27.0"
 }
