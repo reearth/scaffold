@@ -10,19 +10,19 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 3.0.7
-        version: 3.0.7(vitest@3.1.4(@types/node@22.15.23)(happy-dom@17.5.6)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0))
+        version: 3.0.7(vitest@3.1.4(@types/node@22.15.23)(happy-dom@20.11.1)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0))
       eslint:
         specifier: ^9.21.0
         version: 9.27.0(jiti@2.4.2)
       eslint-config-reearth:
         specifier: ^0.3.8
-        version: 0.3.8(@typescript-eslint/parser@8.25.0(eslint@9.27.0(jiti@2.4.2))(typescript@5.7.3))(eslint@9.27.0(jiti@2.4.2))(typescript@5.7.3)(vitest@3.1.4(@types/node@22.15.23)(happy-dom@17.5.6)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0))
+        version: 0.3.8(@typescript-eslint/parser@8.25.0(eslint@9.27.0(jiti@2.4.2))(typescript@5.7.3))(eslint@9.27.0(jiti@2.4.2))(typescript@5.7.3)(vitest@3.1.4(@types/node@22.15.23)(happy-dom@20.11.1)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0))
       prettier:
         specifier: ^3.5.2
         version: 3.5.3
       vitest:
         specifier: ^3.0.7
-        version: 3.1.4(@types/node@22.15.23)(happy-dom@17.5.6)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0)
+        version: 3.1.4(@types/node@22.15.23)(happy-dom@20.11.1)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0)
 
   apps:
     dependencies:
@@ -73,7 +73,7 @@ importers:
         version: 3.3.0
       vitest:
         specifier: ^3.1.4
-        version: 3.1.4(@types/node@22.15.23)(happy-dom@17.5.6)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0)
+        version: 3.1.4(@types/node@22.15.23)(happy-dom@20.11.1)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0)
     devDependencies:
       '@graphql-codegen/cli':
         specifier: 5.0.6
@@ -124,8 +124,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0
       happy-dom:
-        specifier: ^17.1.8
-        version: 17.5.6
+        specifier: ^20.0.0
+        version: 20.11.1
       i18next-parser:
         specifier: ^9.3.0
         version: 9.3.0
@@ -155,7 +155,7 @@ importers:
     dependencies:
       vitest:
         specifier: ^3.1.4
-        version: 3.1.4(@types/node@22.15.23)(happy-dom@17.5.6)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0)
+        version: 3.1.4(@types/node@22.15.23)(happy-dom@20.11.1)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0)
 
 packages:
 
@@ -906,6 +906,7 @@ packages:
   '@graphql-tools/prisma-loader@8.0.17':
     resolution: {integrity: sha512-fnuTLeQhqRbA156pAyzJYN0KxCjKYRU5bz1q/SKOwElSnAU4k7/G1kyVsWLh7fneY78LoMNH5n+KlFV8iQlnyg==}
     engines: {node: '>=16.0.0'}
+    deprecated: 'This package was intended to be used with an older versions of Prisma.\nThe newer versions of Prisma has a different approach to GraphQL integration.\nTherefore, this package is no longer needed and has been deprecated and removed.\nLearn more: https://www.prisma.io/graphql'
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
 
@@ -1371,6 +1372,9 @@ packages:
   '@types/tough-cookie@4.0.5':
     resolution: {integrity: sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA==}
 
+  '@types/whatwg-mimetype@3.0.2':
+    resolution: {integrity: sha512-c2AKvDT8ToxLIOUlN51gTiHXflsfIFisS4pO7pDPoKouJCESkhZnEy623gwP9laCy5lnLDAw1vAzu2vM2YLOrA==}
+
   '@types/ws@8.18.1':
     resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
 
@@ -1724,6 +1728,10 @@ packages:
 
   bser@2.1.1:
     resolution: {integrity: sha512-gQxTNE/GAfIIrmHLUE3oJyp5FO6HRBfhjnw4/wMmA63ZGDJnWBmgY/lyQBpnDUkGmAhbSe39tx2d/iTOAfglwQ==}
+
+  buffer-image-size@0.6.4:
+    resolution: {integrity: sha512-nEh+kZOPY1w+gcCMobZ6ETUp9WfibndnosbpwB1iJk/8Gt5ZF2bhS6+B6bPYz424KtwsR6Rflc3tCz1/ghX2dQ==}
+    engines: {node: '>=4.0'}
 
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
@@ -2109,6 +2117,10 @@ packages:
     resolution: {integrity: sha512-aKstq2TDOndCn4diEyp9Uq/Flu2i1GlLkc6XIDQSDMuaFE3OPW5OphLCyQ5SpSJZTb4reN+kTcYru5yIfXoRPw==}
     engines: {node: '>=0.12'}
 
+  entities@7.0.1:
+    resolution: {integrity: sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==}
+    engines: {node: '>=0.12'}
+
   eol@0.9.1:
     resolution: {integrity: sha512-Ds/TEoZjwggRoz/Q2O7SE3i4Jm66mqTDfmdHdq/7DKVk3bro9Q8h6WdXKdPqFLMoqxrDK5SVRzHVPOS6uuGtrg==}
 
@@ -2437,11 +2449,12 @@ packages:
 
   glob@10.4.5:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   globals@11.12.0:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
@@ -2532,9 +2545,9 @@ packages:
   gulp-sort@2.0.0:
     resolution: {integrity: sha512-MyTel3FXOdh1qhw1yKhpimQrAmur9q1X0ZigLmCOxouQD+BD3za9/89O+HfbgBQvvh4igEbp0/PUWO+VqGYG1g==}
 
-  happy-dom@17.5.6:
-    resolution: {integrity: sha512-B4U6jKuiizwCJ2WP0YreQmRdeBrHKOXhpz7YUbbwdSAKfWEhdG4UfWZOZTZ5Oejs/9yJtk7xmbfp8YdVL9LVFA==}
-    engines: {node: '>=18.0.0'}
+  happy-dom@20.11.1:
+    resolution: {integrity: sha512-XSt8tMzbW9ymE7687xztkO1ckR7qJNQ3LywY9vlYGhGi3zXrGBHuUo2Cl1ztZaICW+1eAGdkLbj6iwVqDT33kg==}
+    engines: {node: '>=20.0.0'}
 
   has-bigints@1.1.0:
     resolution: {integrity: sha512-R3pbpkcIqv2Pm3dUwgjclDRVmWpTJW2DcMzcIhEXEx1oh/CEMObMm3KLmRJOdvhM7o4uQBnwr8pzRK2sJWIqfg==}
@@ -2598,6 +2611,7 @@ packages:
   i18next-parser@9.3.0:
     resolution: {integrity: sha512-VaQqk/6nLzTFx1MDiCZFtzZXKKyBV6Dv0cJMFM/hOt4/BWHWRgYafzYfVQRUzotwUwjqeNCprWnutzD/YAGczg==}
     engines: {node: ^18.0.0 || ^20.0.0 || ^22.0.0, npm: '>=6', yarn: '>=1'}
+    deprecated: Project is deprecated, use i18next-cli instead
     hasBin: true
 
   i18next@24.2.3:
@@ -3908,6 +3922,7 @@ packages:
   tar@7.4.3:
     resolution: {integrity: sha512-5S7Va8hKfV7W5U6g3aYxXmlPoZVAwUMy9AOKyF2fVuZa2UD3qZjg578OrLRt8PcNN1PleVaL/5/yYATNL0ICUw==}
     engines: {node: '>=18'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   teex@1.0.1:
     resolution: {integrity: sha512-eYE6iEI62Ni1H8oIa7KlDU6uQBtqr4Eajni3wX7rpfXD8ysFx8z0+dri+KWEPWpBsxXfxu58x/0jvTVT1ekOSg==}
@@ -3995,6 +4010,7 @@ packages:
   tsconfck@3.1.6:
     resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
     engines: {node: ^18 || >=20}
+    deprecated: unmaintained
     hasBin: true
     peerDependencies:
       typescript: ^5.0.0
@@ -4239,13 +4255,10 @@ packages:
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
 
-  webidl-conversions@7.0.0:
-    resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
-    engines: {node: '>=12'}
-
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@3.0.0:
     resolution: {integrity: sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==}
@@ -4308,6 +4321,18 @@ packages:
 
   ws@8.18.2:
     resolution: {integrity: sha512-DMricUmwGZUVr++AEAe2uiVM7UoO9MAVZMDu05UQOaUII0lp+zOzLLU4Xqh/JvTqklB1T4uELaaPBKyjE1r4fQ==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
+  ws@8.21.1:
+    resolution: {integrity: sha512-+0NTnW77fFN/DjQi6k/Sq/Yvk4Sgajw7urW8V+asjXnRgDs9gyGkdb7EzgfhA4goXsRIZKE28fzIXBHEzhuiWw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -5766,6 +5791,8 @@ snapshots:
 
   '@types/tough-cookie@4.0.5': {}
 
+  '@types/whatwg-mimetype@3.0.2': {}
+
   '@types/ws@8.18.1':
     dependencies:
       '@types/node': 22.15.23
@@ -5911,7 +5938,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@3.0.7(vitest@3.1.4(@types/node@22.15.23)(happy-dom@17.5.6)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0))':
+  '@vitest/coverage-v8@3.0.7(vitest@3.1.4(@types/node@22.15.23)(happy-dom@20.11.1)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 1.0.2
@@ -5925,16 +5952,16 @@ snapshots:
       std-env: 3.9.0
       test-exclude: 7.0.1
       tinyrainbow: 2.0.0
-      vitest: 3.1.4(@types/node@22.15.23)(happy-dom@17.5.6)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0)
+      vitest: 3.1.4(@types/node@22.15.23)(happy-dom@20.11.1)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/eslint-plugin@1.1.32-beta.3(eslint@9.27.0(jiti@2.4.2))(typescript@5.7.3)(vitest@3.1.4(@types/node@22.15.23)(happy-dom@17.5.6)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0))':
+  '@vitest/eslint-plugin@1.1.32-beta.3(eslint@9.27.0(jiti@2.4.2))(typescript@5.7.3)(vitest@3.1.4(@types/node@22.15.23)(happy-dom@20.11.1)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0))':
     dependencies:
       eslint: 9.27.0(jiti@2.4.2)
     optionalDependencies:
       typescript: 5.7.3
-      vitest: 3.1.4(@types/node@22.15.23)(happy-dom@17.5.6)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0)
+      vitest: 3.1.4(@types/node@22.15.23)(happy-dom@20.11.1)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0)
 
   '@vitest/expect@3.1.4':
     dependencies:
@@ -6249,6 +6276,10 @@ snapshots:
   bser@2.1.1:
     dependencies:
       node-int64: 0.4.0
+
+  buffer-image-size@0.6.4:
+    dependencies:
+      '@types/node': 22.15.23
 
   buffer@5.7.1:
     dependencies:
@@ -6650,6 +6681,8 @@ snapshots:
 
   entities@6.0.0: {}
 
+  entities@7.0.1: {}
+
   eol@0.9.1: {}
 
   error-ex@1.3.2:
@@ -6790,10 +6823,10 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
-  eslint-config-reearth@0.3.8(@typescript-eslint/parser@8.25.0(eslint@9.27.0(jiti@2.4.2))(typescript@5.7.3))(eslint@9.27.0(jiti@2.4.2))(typescript@5.7.3)(vitest@3.1.4(@types/node@22.15.23)(happy-dom@17.5.6)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0)):
+  eslint-config-reearth@0.3.8(@typescript-eslint/parser@8.25.0(eslint@9.27.0(jiti@2.4.2))(typescript@5.7.3))(eslint@9.27.0(jiti@2.4.2))(typescript@5.7.3)(vitest@3.1.4(@types/node@22.15.23)(happy-dom@20.11.1)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0)):
     dependencies:
       '@eslint/js': 9.21.0
-      '@vitest/eslint-plugin': 1.1.32-beta.3(eslint@9.27.0(jiti@2.4.2))(typescript@5.7.3)(vitest@3.1.4(@types/node@22.15.23)(happy-dom@17.5.6)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0))
+      '@vitest/eslint-plugin': 1.1.32-beta.3(eslint@9.27.0(jiti@2.4.2))(typescript@5.7.3)(vitest@3.1.4(@types/node@22.15.23)(happy-dom@20.11.1)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0))
       eslint: 9.27.0(jiti@2.4.2)
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.25.0(eslint@9.27.0(jiti@2.4.2))(typescript@5.7.3))(eslint@9.27.0(jiti@2.4.2))
       eslint-plugin-react: 7.37.4(eslint@9.27.0(jiti@2.4.2))
@@ -7278,10 +7311,18 @@ snapshots:
     dependencies:
       through2: 2.0.5
 
-  happy-dom@17.5.6:
+  happy-dom@20.11.1:
     dependencies:
-      webidl-conversions: 7.0.0
+      '@types/node': 22.15.23
+      '@types/whatwg-mimetype': 3.0.2
+      '@types/ws': 8.18.1
+      buffer-image-size: 0.6.4
+      entities: 7.0.1
       whatwg-mimetype: 3.0.0
+      ws: 8.21.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   has-bigints@1.1.0: {}
 
@@ -9017,7 +9058,7 @@ snapshots:
       lightningcss: 1.30.1
       yaml: 2.8.0
 
-  vitest@3.1.4(@types/node@22.15.23)(happy-dom@17.5.6)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0):
+  vitest@3.1.4(@types/node@22.15.23)(happy-dom@20.11.1)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(yaml@2.8.0):
     dependencies:
       '@vitest/expect': 3.1.4
       '@vitest/mocker': 3.1.4(msw@2.8.5(@types/node@22.15.23)(typescript@5.7.3))(vite@6.3.5(@types/node@22.15.23)(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.8.0))
@@ -9042,7 +9083,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 22.15.23
-      happy-dom: 17.5.6
+      happy-dom: 20.11.1
     transitivePeerDependencies:
       - jiti
       - less
@@ -9073,8 +9114,6 @@ snapshots:
   web-streams-polyfill@3.3.3: {}
 
   webidl-conversions@3.0.1: {}
-
-  webidl-conversions@7.0.0: {}
 
   whatwg-encoding@3.1.1:
     dependencies:
@@ -9164,6 +9203,8 @@ snapshots:
   wrappy@1.0.2: {}
 
   ws@8.18.2: {}
+
+  ws@8.21.1: {}
 
   xtend@4.0.2: {}
 
