@@ -16,6 +16,10 @@ jobs:
       new_tag_short: ${{ steps.prepare.outputs.new_tag_short }}
       name: ${{ steps.prepare.outputs.name }}
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2
+        with:
+          egress-policy: audit
       - uses: reearth/actions/prepare-build@e05fcd1efc6c985c7c0c906cff1452ee634232c8 # main
         id: prepare
         with:
@@ -57,6 +61,10 @@ jobs:
     outputs:
       digest: ${{ steps.build-docker-image.outputs.image }}
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2
+        with:
+          egress-policy: audit
       - uses: reearth/actions/build-docker-image@e05fcd1efc6c985c7c0c906cff1452ee634232c8
         id: build-docker-image
         with:
@@ -78,6 +86,10 @@ jobs:
     outputs:
       digest: ${{ steps.build-docker-image.outputs.image }}
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2
+        with:
+          egress-policy: audit
       - uses: reearth/actions/build-docker-image@e05fcd1efc6c985c7c0c906cff1452ee634232c8
         id: build-docker-image
         with:
@@ -99,6 +111,10 @@ jobs:
     outputs:
       digest: ${{ steps.build-docker-image.outputs.image }}
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2
+        with:
+          egress-policy: audit
       - uses: reearth/actions/build-docker-image@e05fcd1efc6c985c7c0c906cff1452ee634232c8 # main
         id: build-docker-image
         with:
@@ -122,6 +138,10 @@ jobs:
       packages: write
       pull-requests: write
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2
+        with:
+          egress-policy: audit
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
         with:
@@ -147,6 +167,10 @@ jobs:
       id-token: write
       packages: write
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2
+        with:
+          egress-policy: audit
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
         with:
@@ -170,6 +194,10 @@ jobs:
       id-token: write
       packages: write
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@b09bb98e06d4d774595224525879c09bc6e98c40 # v2
+        with:
+          egress-policy: audit
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
         with:
