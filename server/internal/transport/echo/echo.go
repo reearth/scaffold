@@ -3,8 +3,8 @@ package echo
 import (
 	"fmt"
 
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/echo/v5"
+	"github.com/labstack/echo/v5/middleware"
 	glog "github.com/labstack/gommon/log"
 	"github.com/reearth/reearthx/appx"
 	"github.com/reearth/reearthx/log"
