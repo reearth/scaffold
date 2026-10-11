@@ -17,6 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/release'
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2
+        with:
+          egress-policy: audit
       - uses: reearth/actions/release@e05fcd1efc6c985c7c0c906cff1452ee634232c8
         with:
           version: ${{ inputs.version }}
