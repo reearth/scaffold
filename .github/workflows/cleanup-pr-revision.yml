@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Remove Cloud Run Tag
-        uses: reearth/actions/remove-cloud-run-tag@e05fcd1efc6c985c7c0c906cff1452ee634232c8 # main
+        uses: reearth/actions/remove-cloud-run-tag@a75bb60a59c8192805a55c3e0854c8298d8a2bcc # main
         with:
           region: ${{ secrets.GC_REGION }}
           service: reearth-scaffold-web
