@@ -16,7 +16,7 @@ require (
 	github.com/samber/lo v1.50.0
 	github.com/stretchr/testify v1.10.0
 	github.com/vektah/gqlparser/v2 v2.5.27
-	go.mongodb.org/mongo-driver/v2 v2.2.2
+	go.mongodb.org/mongo-driver/v2 v2.4.2
 	golang.org/x/net v0.41.0
 )
 
