@@ -2,7 +2,7 @@ on:
   workflow_call:
 jobs:
   nginx-config-validation:
-    uses: reearth/actions/.github/workflows/validate-nginx-config.yml@e05fcd1efc6c985c7c0c906cff1452ee634232c8
+    uses: reearth/actions/.github/workflows/validate-nginx-config.yml@a75bb60a59c8192805a55c3e0854c8298d8a2bcc
     with:
       template_directory: docker
       template_values: '{"PORT": 8080, "REAL_IP_HEADER": "X-Forwarded-For"}'
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2
+        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2 # v2
         with:
           egress-policy: audit
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
